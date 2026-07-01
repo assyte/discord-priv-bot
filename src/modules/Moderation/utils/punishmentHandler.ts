@@ -1,7 +1,7 @@
 import { Database } from '../../../database/connection.js';
 import { infractions } from '../../../database/schema/infraction.js';
 import { members } from '../../../database/schema/member.js';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, desc, sql } from 'drizzle-orm';
 import { Logger } from '../../../utils/logger.js';
 
 const logger = new Logger('PunishmentHandler');
@@ -20,7 +20,7 @@ export class PunishmentHandler {
     try {
       const db = Database.getInstance().db;
 
-      const result = await db.insert(infractions).values({
+      const [result] = await db.insert(infractions).values({
         guildId: options.guildId,
         userId: options.userId,
         moderatorId: options.moderatorId,
@@ -38,12 +38,12 @@ export class PunishmentHandler {
           warnCount: 1,
         }).onConflictDoUpdate({
           target: [members.id, members.guildId],
-          set: { warnCount: sql`members.warn_count + 1` },
+          set: { warnCount: sql`${members.warnCount} + 1` },
         });
       }
 
-      logger.info(`Ceza #${result[0]?.id} — ${options.type} — ${options.userId}`);
-      return result[0];
+      logger.info(`Ceza #${result?.id} — ${options.type} — ${options.userId}`);
+      return result;
     } catch (error) {
       logger.error('Ceza oluşturma hatası:', error);
       throw error;
@@ -53,14 +53,13 @@ export class PunishmentHandler {
   static async getMemberInfractions(guildId: string, userId: string) {
     try {
       const db = Database.getInstance().db;
-      return db.query.infractions.findMany({
-        where: and(
+      return db.select().from(infractions)
+        .where(and(
           eq(infractions.guildId, guildId),
           eq(infractions.userId, userId),
-        ),
-        orderBy: (i, { desc }) => desc(i.createdAt),
-        limit: 50,
-      });
+        ))
+        .orderBy(desc(infractions.createdAt))
+        .limit(50);
     } catch (error) {
       logger.error('Ceza sorgulama hatası:', error);
       return [];
@@ -70,13 +69,12 @@ export class PunishmentHandler {
   static async getActiveInfractions(guildId: string, userId: string) {
     try {
       const db = Database.getInstance().db;
-      return db.query.infractions.findMany({
-        where: and(
+      return db.select().from(infractions)
+        .where(and(
           eq(infractions.guildId, guildId),
           eq(infractions.userId, userId),
           eq(infractions.active, true),
-        ),
-      });
+        ));
     } catch {
       return [];
     }
@@ -97,9 +95,7 @@ export class PunishmentHandler {
   static async getStats(guildId: string) {
     try {
       const db = Database.getInstance().db;
-      const all = await db.query.infractions.findMany({
-        where: eq(infractions.guildId, guildId),
-      });
+      const all = await db.select().from(infractions).where(eq(infractions.guildId, guildId));
 
       return {
         total: all.length,

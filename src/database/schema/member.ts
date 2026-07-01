@@ -1,4 +1,4 @@
-import { pgTable, varchar, boolean, timestamp, integer } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, boolean, timestamp, integer, primaryKey } from 'drizzle-orm/pg-core';
 
 export const members = pgTable('members', {
   id: varchar('id', { length: 20 }).notNull(),
@@ -19,6 +19,6 @@ export const members = pgTable('members', {
   lastMessageAt: timestamp('last_message_at'),
   joinAt: timestamp('join_at').defaultNow(),
   warnCount: integer('warn_count').default(0),
-
-  primaryKey: { columns: ['id', 'guildId'] },
-});
+}, (table) => ({
+  pk: primaryKey({ columns: [table.id, table.guildId] }),
+}));

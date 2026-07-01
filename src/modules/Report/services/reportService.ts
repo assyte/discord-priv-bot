@@ -1,6 +1,6 @@
 import { Database } from '../../../database/connection.js';
 import { reports } from '../../../database/schema/report.js';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, desc } from 'drizzle-orm';
 import { Logger } from '../../../utils/logger.js';
 
 const logger = new Logger('ReportService');
@@ -19,20 +19,18 @@ export class ReportService {
     try {
       const db = Database.getInstance().db;
 
-      const existing = await db.query.reports.findFirst({
-        where: and(
+      const existing = await db.select().from(reports)
+        .where(and(
           eq(reports.guildId, options.guildId),
           eq(reports.reporterId, options.reporterId),
           eq(reports.targetId, options.targetId),
           eq(reports.status, 'beklemede'),
-        ),
-      });
+        ))
+        .limit(1);
 
-      if (existing) {
-        return null;
-      }
+      if (existing.length > 0) return null;
 
-      const result = await db.insert(reports).values({
+      const [result] = await db.insert(reports).values({
         guildId: options.guildId,
         reporterId: options.reporterId,
         targetId: options.targetId,
@@ -41,8 +39,8 @@ export class ReportService {
         evidenceUrl: options.evidenceUrl,
       }).returning();
 
-      logger.info(`Yeni rapor #${result[0]?.id}: ${options.targetId}`);
-      return result[0];
+      logger.info(`Yeni rapor #${result?.id}: ${options.targetId}`);
+      return result ?? null;
     } catch (error) {
       logger.error('Rapor oluşturma hatası:', error);
       throw error;
@@ -52,9 +50,10 @@ export class ReportService {
   static async getReport(reportId: number, guildId: string) {
     try {
       const db = Database.getInstance().db;
-      return db.query.reports.findFirst({
-        where: and(eq(reports.id, reportId), eq(reports.guildId, guildId)),
-      });
+      const [result] = await db.select().from(reports)
+        .where(and(eq(reports.id, reportId), eq(reports.guildId, guildId)))
+        .limit(1);
+      return result ?? null;
     } catch (error) {
       logger.error('Rapor sorgulama hatası:', error);
       return null;
@@ -64,10 +63,9 @@ export class ReportService {
   static async getPendingReports(guildId: string) {
     try {
       const db = Database.getInstance().db;
-      return db.query.reports.findMany({
-        where: and(eq(reports.guildId, guildId), eq(reports.status, 'beklemede')),
-        orderBy: (r, { desc }) => desc(r.createdAt),
-      });
+      return db.select().from(reports)
+        .where(and(eq(reports.guildId, guildId), eq(reports.status, 'beklemede')))
+        .orderBy(desc(reports.createdAt));
     } catch (error) {
       logger.error('Rapor listeleme hatası:', error);
       return [];
@@ -83,30 +81,28 @@ export class ReportService {
   ) {
     try {
       const db = Database.getInstance().db;
-      const result = await db.update(reports)
+      const [result] = await db.update(reports)
         .set({
           status,
-          resolution: resolution || null,
-          assignedMod: moderatorId,
+          resolution: resolution ?? null,
+          assignedMod: moderatorId ?? null,
           resolvedAt: ['çözüldü', 'reddedildi'].includes(status) ? new Date() : null,
         })
         .where(and(eq(reports.id, reportId), eq(reports.guildId, guildId)))
         .returning();
-
-      logger.info(`Rapor #${reportId} durumu: ${status}`);
-      return result[0];
+      return result;
     } catch (error) {
       logger.error('Rapor güncelleme hatası:', error);
       throw error;
     }
   }
 
-  static async addMessageId(reportId: number | string, messageId: string, channelId: string) {
+  static async addMessageId(reportId: number, messageId: string, channelId: string) {
     try {
       const db = Database.getInstance().db;
       await db.update(reports)
         .set({ messageId, channelId })
-        .where(eq(reports.id, Number(reportId)));
+        .where(eq(reports.id, reportId));
     } catch (error) {
       logger.error('Rapor mesaj ID güncelleme hatası:', error);
     }
@@ -115,9 +111,7 @@ export class ReportService {
   static async getStats(guildId: string) {
     try {
       const db = Database.getInstance().db;
-      const all = await db.query.reports.findMany({
-        where: eq(reports.guildId, guildId),
-      });
+      const all = await db.select().from(reports).where(eq(reports.guildId, guildId));
 
       return {
         total: all.length,

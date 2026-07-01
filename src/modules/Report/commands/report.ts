@@ -55,7 +55,7 @@ const command: BotCommand = {
       targetId: target.id,
       reason,
       channelId: channel?.id,
-      evidenceUrl: evidence,
+      evidenceUrl: evidence ?? undefined,
     });
 
     const reportId = report?.id ?? '?';
@@ -102,7 +102,7 @@ const command: BotCommand = {
         const reportChannel = interaction.guild!.channels.cache.get(guildConfig.reportChannel);
         if (reportChannel?.isTextBased()) {
           const msg = await reportChannel.send({ embeds: [logEmbed] });
-          await ReportService.addMessageId(reportId, msg.id, reportChannel.id);
+          if (report) await ReportService.addMessageId(report.id, msg.id, reportChannel.id);
         }
       }
     } catch {

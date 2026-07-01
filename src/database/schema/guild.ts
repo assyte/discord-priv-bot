@@ -7,7 +7,7 @@ export const guilds = pgTable('guilds', {
   guardEnabled: boolean('guard_enabled').default(true),
   antiRaidLimit: integer('anti_raid_limit').default(5),
   antiNukeEnabled: boolean('anti_nuke_enabled').default(true),
-  whitelistRoles: text('whitelist_roles').array().default('{}'),
+  whitelistRoles: text('whitelist_roles').array().default([]),
 
   registerChannel: varchar('register_channel', { length: 20 }),
   registerRole: varchar('register_role', { length: 20 }),

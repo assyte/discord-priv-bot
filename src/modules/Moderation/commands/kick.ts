@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction, GuildMemberRoleManager } from 'discord.js';
 import type { Client } from '../../../client/Client.js';
 import type { BotCommand } from '../../../types/index.js';
 import { PunishmentHandler } from '../utils/punishmentHandler.js';
@@ -36,7 +36,7 @@ const command: BotCommand = {
       return;
     }
 
-    if (member.roles.highest.position >= interaction.member!.roles.highest.position) {
+    if (member.roles.highest.position >= (interaction.member!.roles as GuildMemberRoleManager).highest.position) {
       await interaction.editReply({ embeds: [errorEmbed('Bu üyeyi atamazsın — rolü senden yüksek.')] });
       return;
     }

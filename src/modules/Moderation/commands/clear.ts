@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits, type TextChannel } from 'discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { Client } from '../../../client/Client.js';
 import type { BotCommand } from '../../../types/index.js';
@@ -30,7 +30,8 @@ const command: BotCommand = {
       return;
     }
 
-    const messages = await channel.messages.fetch({ limit: 100 });
+    const textChannel = channel as TextChannel;
+    const messages = await textChannel.messages.fetch({ limit: 100 });
     let messagesToDelete = messages.filter(m => {
       const age = Date.now() - m.createdTimestamp;
       if (age > 1209600000) return false; // 14 günden eski mesajlar silinemez
@@ -43,7 +44,7 @@ const command: BotCommand = {
       return;
     }
 
-    await channel.bulkDelete(messagesToDelete, true);
+    await textChannel.bulkDelete(messagesToDelete, true);
 
     const embed = createEmbed({
       title: '🗑 Mesajlar Silindi',

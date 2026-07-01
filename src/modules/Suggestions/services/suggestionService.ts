@@ -1,6 +1,6 @@
 import { Database } from '../../../database/connection.js';
 import { suggestions } from '../../../database/schema/suggestion.js';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, desc } from 'drizzle-orm';
 import { Logger } from '../../../utils/logger.js';
 
 const logger = new Logger('SuggestionService');
@@ -18,7 +18,7 @@ export class SuggestionService {
     try {
       const db = Database.getInstance().db;
 
-      const result = await db.insert(suggestions).values({
+      const [result] = await db.insert(suggestions).values({
         guildId: options.guildId,
         authorId: options.authorId,
         title: options.title,
@@ -26,8 +26,8 @@ export class SuggestionService {
         category: options.category || 'diğer',
       }).returning();
 
-      logger.info(`Yeni öneri #${result[0]?.id}: ${options.title}`);
-      return result[0];
+      logger.info(`Yeni öneri #${result?.id}: ${options.title}`);
+      return result ?? null;
     } catch (error) {
       logger.error('Öneri oluşturma hatası:', error);
       return null;
@@ -37,9 +37,10 @@ export class SuggestionService {
   static async get(suggestionId: number, guildId: string) {
     try {
       const db = Database.getInstance().db;
-      return db.query.suggestions.findFirst({
-        where: and(eq(suggestions.id, suggestionId), eq(suggestions.guildId, guildId)),
-      });
+      const [result] = await db.select().from(suggestions)
+        .where(and(eq(suggestions.id, suggestionId), eq(suggestions.guildId, guildId)))
+        .limit(1);
+      return result ?? null;
     } catch (error) {
       logger.error('Öneri sorgulama hatası:', error);
       return null;
@@ -52,11 +53,10 @@ export class SuggestionService {
       const conditions = [eq(suggestions.guildId, guildId)];
       if (status) conditions.push(eq(suggestions.status, status));
 
-      return db.query.suggestions.findMany({
-        where: and(...conditions),
-        orderBy: (s, { desc }) => desc(s.createdAt),
-        limit: 50,
-      });
+      return db.select().from(suggestions)
+        .where(and(...conditions))
+        .orderBy(desc(suggestions.createdAt))
+        .limit(50);
     } catch (error) {
       logger.error('Öneri listeleme hatası:', error);
       return [];
@@ -72,18 +72,16 @@ export class SuggestionService {
   ) {
     try {
       const db = Database.getInstance().db;
-      const result = await db.update(suggestions)
+      const [result] = await db.update(suggestions)
         .set({
           status,
-          adminResponse: adminResponse || null,
-          respondedBy,
+          adminResponse: adminResponse ?? null,
+          respondedBy: respondedBy ?? null,
           respondedAt: new Date(),
         })
         .where(and(eq(suggestions.id, suggestionId), eq(suggestions.guildId, guildId)))
         .returning();
-
-      logger.info(`Öneri #${suggestionId} durumu: ${status}`);
-      return result[0];
+      return result ?? null;
     } catch (error) {
       logger.error('Öneri güncelleme hatası:', error);
       return null;
@@ -93,9 +91,9 @@ export class SuggestionService {
   static async vote(suggestionId: number, guildId: string, voteType: 'up' | 'down') {
     try {
       const db = Database.getInstance().db;
-      const suggestion = await db.query.suggestions.findFirst({
-        where: and(eq(suggestions.id, suggestionId), eq(suggestions.guildId, guildId)),
-      });
+      const [suggestion] = await db.select().from(suggestions)
+        .where(and(eq(suggestions.id, suggestionId), eq(suggestions.guildId, guildId)))
+        .limit(1);
 
       if (!suggestion) return null;
 
@@ -103,12 +101,12 @@ export class SuggestionService {
         ? { upvotes: (suggestion.upvotes || 0) + 1 }
         : { downvotes: (suggestion.downvotes || 0) + 1 };
 
-      const result = await db.update(suggestions)
+      const [result] = await db.update(suggestions)
         .set(updateData)
         .where(eq(suggestions.id, suggestionId))
         .returning();
 
-      return result[0];
+      return result ?? null;
     } catch (error) {
       logger.error('Öneri oylama hatası:', error);
       return null;
@@ -129,9 +127,7 @@ export class SuggestionService {
   static async getStats(guildId: string) {
     try {
       const db = Database.getInstance().db;
-      const all = await db.query.suggestions.findMany({
-        where: eq(suggestions.guildId, guildId),
-      });
+      const all = await db.select().from(suggestions).where(eq(suggestions.guildId, guildId));
 
       return {
         total: all.length,
@@ -140,7 +136,7 @@ export class SuggestionService {
         accepted: all.filter(s => s.status === 'kabul').length,
         rejected: all.filter(s => s.status === 'red').length,
       };
-    } catch (error) {
+    } catch {
       return { total: 0, pending: 0, reviewing: 0, accepted: 0, rejected: 0 };
     }
   }

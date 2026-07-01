@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction, GuildMemberRoleManager } from 'discord.js';
 import type { Client } from '../../../client/Client.js';
 import type { BotCommand } from '../../../types/index.js';
 import { PunishmentHandler } from '../utils/punishmentHandler.js';
@@ -35,12 +35,14 @@ const command: BotCommand = {
     }
 
     const member = await interaction.guild!.members.fetch(target.id).catch(() => null);
-    if (member && member.roles.highest.position >= interaction.member!.roles.highest.position) {
+    const authorRoles = interaction.member!.roles as GuildMemberRoleManager;
+    if (member && member.roles.highest.position >= authorRoles.highest.position) {
       await interaction.editReply({ embeds: [errorEmbed('Bu üyeyi yasaklayamazsın — rolü senden yüksek.')] });
       return;
     }
 
     await interaction.guild!.members.ban(target, { reason, deleteMessageDays: deleteDays });
+
     await PunishmentHandler.create({
       guildId: interaction.guild!.id,
       userId: target.id,

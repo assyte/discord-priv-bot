@@ -1,6 +1,8 @@
-import type { Message } from 'discord.js';
+import type { Message, TextChannel } from 'discord.js';
 import type { Client } from '../../../client/Client.js';
 import { Database } from '../../../database/connection.js';
+import { infractions } from '../../../database/schema/infraction.js';
+import { and, eq } from 'drizzle-orm';
 import { Logger } from '../../../utils/logger.js';
 
 const logger = new Logger('MessageFilter');
@@ -48,7 +50,7 @@ export async function messageCreate(client: Client, message: Message) {
 
       if (cached.count >= config.spam.limit && !cached.warned) {
         cached.warned = true;
-        await message.channel.send(`${message.author}, spam yapmayı kes!`).catch(() => {});
+        await (message.channel as TextChannel).send(`${message.author}, spam yapmayı kes!`).catch(() => {});
 
         if (config.spam.action === 'mute') {
           await message.member.timeout(60000, 'Spam - otomatik moderasyon').catch(() => {});
@@ -69,7 +71,7 @@ export async function messageCreate(client: Client, message: Message) {
 
       if (upperPercent >= config.caps.percentage) {
         await message.delete().catch(() => {});
-        const reply = await message.channel.send(`${message.author}, çok fazla büyük harf kullanma!`).catch(() => {});
+        const reply = await (message.channel as TextChannel).send(`${message.author}, çok fazla büyük harf kullanma!`).catch(() => {});
         setTimeout(() => reply?.delete().catch(() => {}), 3000);
         return;
       }
@@ -98,16 +100,16 @@ export async function messageCreate(client: Client, message: Message) {
       if (config.swear.action === 'delete') {
         await message.delete().catch(() => {});
       }
-      const reply = await message.channel.send(`${message.author}, küfürlü dil kullanma!`).catch(() => {});
+      const reply = await (message.channel as TextChannel).send(`${message.author}, küfürlü dil kullanma!`).catch(() => {});
       setTimeout(() => reply?.delete().catch(() => {}), 3000);
 
-      const warnCount = await Database.getInstance().db.query.infractions.findMany({
-        where: (i, { and, eq }) => and(
-          eq(i.guildId, message.guild!.id),
-          eq(i.userId, message.author.id),
-          eq(i.type, 'uyarı'),
-        ),
-      });
+      const warnCount = await Database.getInstance().db.select()
+        .from(infractions)
+        .where(and(
+          eq(infractions.guildId, message.guild!.id),
+          eq(infractions.userId, message.author.id),
+          eq(infractions.type, 'uyarı'),
+        ));
 
       if (warnCount.length >= 3) {
         await message.member.timeout(3600000, 'Küfür - otomatik moderasyon').catch(() => {});
@@ -126,7 +128,7 @@ export async function messageCreate(client: Client, message: Message) {
 
         if (!isWhitelisted) {
           await message.delete().catch(() => {});
-          const reply = await message.channel.send(`${message.author}, bu kanalda link paylaşımına izin verilmiyor.`).catch(() => {});
+          const reply = await (message.channel as TextChannel).send(`${message.author}, bu kanalda link paylaşımına izin verilmiyor.`).catch(() => {});
           setTimeout(() => reply?.delete().catch(() => {}), 3000);
           return;
         }

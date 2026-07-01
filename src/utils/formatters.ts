@@ -13,7 +13,8 @@ export function formatDuration(ms: number): string {
   return parts.length > 0 ? parts.join(' ') : '0 saniye';
 }
 
-export function formatDate(date: Date): string {
+export function formatDate(date: Date | null | undefined): string {
+  if (!date) return 'Bilinmiyor';
   return date.toLocaleDateString('tr-TR', {
     day: 'numeric',
     month: 'long',

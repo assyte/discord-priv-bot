@@ -1,12 +1,14 @@
 import { Pool } from 'pg';
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { Logger } from '../utils/logger.js';
 import * as schema from './schema/index.js';
+
+export type DbInstance = NodePgDatabase<typeof schema>;
 
 export class Database {
   private static instance: Database;
   private pool: Pool;
-  public db: ReturnType<typeof drizzle>;
+  public db: DbInstance;
   private logger: Logger;
 
   private constructor() {
@@ -27,7 +29,7 @@ export class Database {
       this.logger.error('PostgreSQL bağlantı hatası:', err);
     });
 
-    this.db = drizzle(this.pool, { schema });
+    this.db = drizzle(this.pool, { schema }) as DbInstance;
   }
 
   static getInstance(): Database {

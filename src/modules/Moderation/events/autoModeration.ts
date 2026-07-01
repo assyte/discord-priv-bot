@@ -1,4 +1,4 @@
-import type { GuildMember, PartialGuildMember } from 'discord.js';
+import type { GuildMember, PartialGuildMember, TextChannel, VoiceChannel } from 'discord.js';
 import type { Client } from '../../../client/Client.js';
 
 const joinCache = new Map<string, number[]>();
@@ -16,9 +16,9 @@ export async function guildMemberAdd(client: Client, member: GuildMember) {
   if (recentJoins.length > 10) {
     const everyone = member.guild.roles.everyone;
     await member.guild.channels.cache.forEach(async channel => {
-      if (channel.isTextBased?.()) {
+      if (channel.isTextBased?.() && 'permissionOverwrites' in channel) {
         try {
-          await channel.permissionOverwrites.edit(everyone, {
+          await (channel as TextChannel | VoiceChannel).permissionOverwrites.edit(everyone, {
             SendMessages: false,
           }).catch(() => {});
         } catch {}
@@ -32,9 +32,9 @@ export async function guildMemberAdd(client: Client, member: GuildMember) {
 
     setTimeout(async () => {
       await member.guild.channels.cache.forEach(async channel => {
-        if (channel.isTextBased?.()) {
+        if (channel.isTextBased?.() && 'permissionOverwrites' in channel) {
           try {
-            await channel.permissionOverwrites.edit(everyone, {
+            await (channel as TextChannel | VoiceChannel).permissionOverwrites.edit(everyone, {
               SendMessages: null,
             }).catch(() => {});
           } catch {}

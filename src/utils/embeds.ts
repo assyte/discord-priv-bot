@@ -6,7 +6,7 @@ export function createEmbed(options: {
   description?: string;
   color?: ColorResolvable;
   fields?: APIEmbedField[];
-  footer?: string;
+  footer?: string | { text: string; iconURL?: string };
   timestamp?: boolean;
   author?: { name: string; iconURL?: string };
   thumbnail?: string;
@@ -18,7 +18,13 @@ export function createEmbed(options: {
   if (options.title) embed.setTitle(options.title);
   if (options.description) embed.setDescription(options.description);
   if (options.fields) embed.addFields(options.fields);
-  if (options.footer) embed.setFooter({ text: options.footer });
+  if (options.footer) {
+    if (typeof options.footer === 'string') {
+      embed.setFooter({ text: options.footer });
+    } else {
+      embed.setFooter(options.footer);
+    }
+  }
   if (options.timestamp ?? true) embed.setTimestamp();
   if (options.author) embed.setAuthor(options.author);
   if (options.thumbnail) embed.setThumbnail(options.thumbnail);

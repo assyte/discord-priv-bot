@@ -1,4 +1,4 @@
-import { Client as DiscordClient, GatewayIntentBits, Partials, type ClientOptions } from 'discord.js';
+import { Client as DiscordClient, GatewayIntentBits, Partials, type ClientOptions, type Interaction } from 'discord.js';
 import { CommandHandler } from '../core/CommandHandler.js';
 import { ComponentHandler } from '../core/ComponentHandler.js';
 import { EventHandler } from '../core/EventHandler.js';
@@ -61,7 +61,7 @@ export class Client {
       this.commandHandler.registerCommands();
     });
 
-    this.client.on('interactionCreate', async (interaction) => {
+    this.client.on('interactionCreate', async (interaction: Interaction) => {
       try {
         if (interaction.isChatInputCommand()) {
           await this.commandHandler.handleCommand(interaction);
@@ -72,11 +72,13 @@ export class Client {
         }
       } catch (error) {
         this.logger.error('Interaction hatası:', error);
-        const reply = { content: 'Bir hata oluştu.', ephemeral: true };
-        if (interaction.replied || interaction.deferred) {
-          await interaction.followUp(reply);
-        } else {
-          await interaction.reply(reply);
+        const content = 'Bir hata oluştu.';
+        if (interaction.isRepliable()) {
+          if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content, ephemeral: true });
+          } else {
+            await interaction.reply({ content, ephemeral: true });
+          }
         }
       }
     });
