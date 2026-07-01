@@ -1,4 +1,4 @@
-import { Client as DiscordClient, GatewayIntentBits, Partials, type ClientOptions, type Interaction } from 'discord.js';
+import { ActivityType, Client as DiscordClient, GatewayIntentBits, Partials, type ClientOptions, type Interaction } from 'discord.js';
 import { CommandHandler } from '../core/CommandHandler.js';
 import { ComponentHandler } from '../core/ComponentHandler.js';
 import { EventHandler } from '../core/EventHandler.js';
@@ -35,7 +35,7 @@ export class Client {
         Partials.GuildMember,
       ],
       presence: {
-        activities: [{ name: '/yardım | premium bot', type: 3 }],
+        activities: [{ name: 'başlatılıyor...', type: ActivityType.Playing }],
         status: 'online',
       },
     };
@@ -56,9 +56,22 @@ export class Client {
   }
 
   private setupListeners(): void {
-    this.client.once('ready', () => {
+    this.client.once('ready', async () => {
       this.logger.info(`${this.client.user?.tag} olarak giriş yapıldı!`);
-      this.commandHandler.registerCommands();
+      await this.commandHandler.registerCommands();
+
+      const guildId = process.env.GUILD_ID;
+      if (guildId) {
+        const guild = this.client.guilds.cache.get(guildId);
+        if (guild) {
+          const count = guild.memberCount;
+          this.client.user?.setPresence({
+            activities: [{ name: `${count} kişi ile konuşuyor`, type: ActivityType.Playing }],
+            status: 'online',
+          });
+          this.logger.info(`Presence güncellendi: ${count} kişi ile konuşuyor`);
+        }
+      }
     });
 
     this.client.on('interactionCreate', async (interaction: Interaction) => {

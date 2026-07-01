@@ -35,6 +35,7 @@ const command: BotCommand = {
         .setDescription('Öneri istatistiklerini göster')),
 
   guildOnly: true,
+  category: 'Öneri',
 
   async execute(interaction: ChatInputCommandInteraction, client: Client) {
     await interaction.deferReply();

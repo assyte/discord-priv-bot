@@ -30,6 +30,7 @@ const command: BotCommand = {
 
   guildOnly: true,
   cooldown: 30,
+  category: 'Rapor',
 
   async execute(interaction: ChatInputCommandInteraction, client: Client) {
     await interaction.deferReply({ ephemeral: true });

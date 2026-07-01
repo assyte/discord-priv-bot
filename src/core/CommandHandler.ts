@@ -25,7 +25,8 @@ export class CommandHandler {
       try {
         const files = readdirSync(commandsPath).filter(f => f.endsWith('.ts') || f.endsWith('.js'));
         for (const file of files) {
-          const command: BotCommand = await import(`file://${join(commandsPath, file)}`);
+          const mod = await import(`file://${join(commandsPath, file)}`);
+          const command: BotCommand = mod.default;
           if (command.data?.name) {
             this.commands.set(command.data.name, command);
             this.client.logger.debug(`Komut yüklendi: ${command.data.name} (${module})`);

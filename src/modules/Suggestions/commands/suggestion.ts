@@ -36,6 +36,7 @@ const command: BotCommand = {
 
   guildOnly: true,
   cooldown: 120,
+  category: 'Öneri',
 
   async execute(interaction: ChatInputCommandInteraction, client: Client) {
     await interaction.deferReply({ ephemeral: true });

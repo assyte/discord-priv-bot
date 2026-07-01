@@ -21,6 +21,7 @@ const command: BotCommand = {
 
   guildOnly: true,
   cooldown: 5,
+  category: 'Moderasyon',
 
   async execute(interaction: ChatInputCommandInteraction, client: Client) {
     await interaction.deferReply();
