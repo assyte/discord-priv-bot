@@ -28,5 +28,14 @@ export const guilds = pgTable('guilds', {
   inviteRoles: jsonb('invite_roles').default('[]'),
 
   createdAt: timestamp('created_at').defaultNow(),
+  autoModEnabled: boolean('auto_mod_enabled').default(true),
+  filterSwear: boolean('filter_swear').default(true),
+  filterSpam: boolean('filter_spam').default(true),
+  filterCaps: boolean('filter_caps').default(true),
+  filterLinks: boolean('filter_links').default(false),
+  filterMentions: boolean('filter_mentions').default(true),
+  maxWarns: integer('max_warns').default(5),
+  autoMuteDuration: integer('auto_mute_duration').default(60),
+
   updatedAt: timestamp('updated_at').defaultNow(),
 });
