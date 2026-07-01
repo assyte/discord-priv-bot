@@ -28,6 +28,8 @@ const command: BotCommand = {
   category: 'Yardım',
 
   async execute(interaction: ChatInputCommandInteraction, client: Client) {
+    await interaction.deferReply();
+
     const commands = client.commandHandler.commands;
     const total = commands.size;
 
@@ -70,7 +72,7 @@ const command: BotCommand = {
       timestamp: true,
     });
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
   },
 };
 
