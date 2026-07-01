@@ -1,0 +1,39 @@
+{
+  "name": "premium-discord-bot",
+  "version": "1.0.0",
+  "description": "Premium Turkish Discord Bot - Moderation, Guard, Registration, Invite, Log, Report",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "biome check src/",
+    "format": "biome format --write src/",
+    "migrate": "drizzle-kit push:pg",
+    "migrate:generate": "drizzle-kit generate:pg",
+    "migrate:drop": "drizzle-kit drop",
+    "studio": "drizzle-kit studio",
+    "docker:dev": "docker compose -f docker/docker-compose.dev.yml up",
+    "docker:prod": "docker compose -f docker/docker-compose.prod.yml up -d"
+  },
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "drizzle-orm": "^0.38.0",
+    "pg": "^8.13.0",
+    "ioredis": "^5.4.0",
+    "bullmq": "^5.20.0",
+    "winston": "^3.17.0",
+    "dotenv": "^16.4.0",
+    "eventemitter3": "^5.0.0",
+    "i18next": "^24.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0",
+    "drizzle-kit": "^0.30.0",
+    "@types/pg": "^8.11.0",
+    "@types/node": "^22.0.0",
+    "biome": "^1.9.0"
+  }
+}
