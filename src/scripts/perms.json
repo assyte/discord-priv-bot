@@ -1,0 +1,1470 @@
+[
+  {
+    "id": "1264111848861601805",
+    "name": "sense",
+    "type": 0,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1264111850430402591",
+    "name": "kurallar",
+    "type": 0,
+    "parent": "Bilgilendirme",
+    "everyoneRead": true,
+    "everyoneWrite": false,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "SendMessages"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904313423630490",
+    "name": "Bilgilendirme",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904322672066761",
+    "name": "duyuru",
+    "type": 0,
+    "parent": "Bilgilendirme",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904324266037338",
+    "name": "kayit",
+    "type": 0,
+    "parent": "Bilgilendirme",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904325855547593",
+    "name": "rol-al",
+    "type": 0,
+    "parent": "Bilgilendirme",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "ReadMessageHistory"
+        ],
+        "deny": [
+          "SendMessages"
+        ]
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904327289999561",
+    "name": "hosgeldin",
+    "type": 0,
+    "parent": "Bilgilendirme",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904328816721931",
+    "name": "Sosyal",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "EmbedLinks",
+          "AttachFiles",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904330364424262",
+    "name": "chat",
+    "type": 0,
+    "parent": "Sosyal",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521950552051945655",
+        "type": 0,
+        "roleName": "Mute",
+        "allow": [],
+        "deny": [
+          "SendMessages",
+          "CreatePublicThreads",
+          "CreatePrivateThreads",
+          "SendMessagesInThreads"
+        ]
+      },
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "EmbedLinks",
+          "AttachFiles",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904331702665403",
+    "name": "foto-chat",
+    "type": 0,
+    "parent": "Sosyal",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "EmbedLinks",
+          "AttachFiles",
+          "ReadMessageHistory"
+        ],
+        "deny": [
+          "SendMessages"
+        ]
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904333598228631",
+    "name": "bot-komut",
+    "type": 0,
+    "parent": "Sosyal",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "EmbedLinks",
+          "AttachFiles",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904337356324945",
+    "name": "Premate",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory",
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904338883317902",
+    "name": "duo-sohbet",
+    "type": 0,
+    "parent": "Premate",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory",
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904343996170471",
+    "name": "Müzik",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879819984568442",
+        "type": 0,
+        "roleName": "Muzik",
+        "allow": [
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904345631686687",
+    "name": "🎵 Müzik 1",
+    "type": 2,
+    "parent": "Müzik",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879819984568442",
+        "type": 0,
+        "roleName": "Muzik",
+        "allow": [
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904347057750157",
+    "name": "🎵 Müzik 2",
+    "type": 2,
+    "parent": "Müzik",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879819984568442",
+        "type": 0,
+        "roleName": "Muzik",
+        "allow": [
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904354037334098",
+    "name": "Özel Oda",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel",
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "Connect"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904362685726921",
+    "name": "owo",
+    "type": 0,
+    "parent": "Sosyal",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "EmbedLinks",
+          "AttachFiles",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904364313383182",
+    "name": "💤 AFK",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904365890179093",
+    "name": "AFK",
+    "type": 2,
+    "parent": "💤 AFK",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521904369342091326",
+    "name": "Log",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904371095568581",
+    "name": "join-log",
+    "type": 0,
+    "parent": "Log",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904373012234352",
+    "name": "message-log",
+    "type": 0,
+    "parent": "Log",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904374903734421",
+    "name": "voice-log",
+    "type": 0,
+    "parent": "Log",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904376531390505",
+    "name": "mod-log",
+    "type": 0,
+    "parent": "Log",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904378691453070",
+    "name": "Yönetim",
+    "type": 4,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "Administrator"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "Administrator"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ManageMessages",
+          "ReadMessageHistory",
+          "Connect",
+          "Speak",
+          "ModerateMembers"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904380272574578",
+    "name": "admin-chat",
+    "type": 0,
+    "parent": "Yönetim",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "Administrator"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "Administrator"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ManageMessages",
+          "ReadMessageHistory",
+          "Connect",
+          "Speak",
+          "ModerateMembers"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521904725732364484",
+    "name": "duo-ara",
+    "type": 0,
+    "parent": "Premate",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory",
+          "Connect"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1521945003566301405",
+    "name": "admin-komut",
+    "type": 0,
+    "parent": "Yönetim",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "ViewChannel"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521953836607078612",
+    "name": "hapis",
+    "type": 0,
+    "parent": "No Category",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      }
+    ]
+  },
+  {
+    "id": "1521954113582268482",
+    "name": "özel-oda-panel",
+    "type": 0,
+    "parent": "Özel Oda",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521950552051945655",
+        "type": 0,
+        "roleName": "Mute",
+        "allow": [],
+        "deny": [
+          "SendMessages"
+        ]
+      },
+      {
+        "id": "1521879823855779950",
+        "type": 0,
+        "roleName": "Uye",
+        "allow": [
+          "ViewChannel"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1522106914702360596",
+    "name": "genel-log",
+    "type": 0,
+    "parent": "Log",
+    "everyoneRead": false,
+    "everyoneWrite": true,
+    "everyoneConnect": true,
+    "overwrites": [
+      {
+        "id": "1521950552051945655",
+        "type": 0,
+        "roleName": "Mute",
+        "allow": [],
+        "deny": [
+          "SendMessages"
+        ]
+      },
+      {
+        "id": "1521879813537927280",
+        "type": 0,
+        "roleName": "Admin",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1521879812132700330",
+        "type": 0,
+        "roleName": "Kurucu",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      },
+      {
+        "id": "1264110767641464844",
+        "type": 0,
+        "roleName": "@everyone",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521953833633185954",
+        "type": 0,
+        "roleName": "Hapis",
+        "allow": [],
+        "deny": [
+          "ViewChannel"
+        ]
+      },
+      {
+        "id": "1521879815140147221",
+        "type": 0,
+        "roleName": "Mod",
+        "allow": [
+          "ViewChannel",
+          "SendMessages",
+          "ReadMessageHistory"
+        ],
+        "deny": []
+      }
+    ]
+  }
+]

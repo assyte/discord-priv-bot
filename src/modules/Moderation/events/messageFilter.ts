@@ -23,10 +23,10 @@ interface ModerationConfig {
 
 const DEFAULT_CONFIG: ModerationConfig = {
   spam: { enabled: true, action: 'mute', window: 5000, limit: 5 },
-  caps: { enabled: true, action: 'warn', percentage: 70 },
+  caps: { enabled: false, action: 'warn', percentage: 70 },
   mention: { enabled: true, action: 'warn', limit: 5 },
-  link: { enabled: false, action: 'delete', whitelist: ['discord.gg', 'discord.com', 'tenor.com', 'giphy.com'] },
-  swear: { enabled: true, action: 'delete', words: ['amk', 'aq', 'sik', 'orospu', 'piç', 'göt', 'yarrak', 'puşt', 'ananı', 'babanı'] },
+  link: { enabled: true, action: 'delete', whitelist: ['discord.com/channels', 'youtube.com', 'youtu.be', 'spotify.com', 'tenor.com', 'giphy.com', 'twitch.tv'] },
+  swear: { enabled: false, action: 'delete', words: ['amk', 'aq', 'sik', 'orospu', 'piç', 'göt', 'yarrak', 'puşt', 'ananı', 'babanı'] },
 };
 
 const messageCache = new Map<string, { count: number; firstMessage: number; warned: boolean }>();
@@ -115,6 +115,15 @@ export async function messageCreate(client: Client, message: Message) {
         await message.member.timeout(3600000, 'Küfür - otomatik moderasyon').catch(() => {});
       }
     }
+  }
+
+  // Discord Invite (Reklam) Kontrolü
+  const inviteRegex = /(?:https?:\/\/)?(?:www\.)?(?:discord\.gg|discordapp\.com\/invite|discord\.com\/invite)\/([a-zA-Z0-9-]+)/gi;
+  if (inviteRegex.test(content)) {
+    await message.delete().catch(() => {});
+    const reply = await (message.channel as TextChannel).send(`${message.author}, sunucu daveti (reklam) paylaşmak yasaktır!`).catch(() => {});
+    setTimeout(() => reply?.delete().catch(() => {}), 3000);
+    return;
   }
 
   // Link kontrolü

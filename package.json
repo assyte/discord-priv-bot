@@ -18,22 +18,24 @@
     "docker:prod": "docker compose -f docker/docker-compose.prod.yml up -d"
   },
   "dependencies": {
-    "discord.js": "^14.18.0",
-    "drizzle-orm": "^0.38.0",
-    "pg": "^8.13.0",
-    "ioredis": "^5.4.0",
+    "@discordjs/voice": "^0.19.2",
     "bullmq": "^5.20.0",
-    "winston": "^3.17.0",
+    "discord.js": "^14.18.0",
     "dotenv": "^16.4.0",
+    "drizzle-orm": "^0.38.0",
     "eventemitter3": "^5.0.0",
-    "i18next": "^24.2.0"
+    "i18next": "^24.2.0",
+    "ioredis": "^5.4.0",
+    "libsodium-wrappers": "^0.8.4",
+    "pg": "^8.13.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
-    "typescript": "^5.8.0",
-    "tsx": "^4.19.0",
-    "drizzle-kit": "^0.30.0",
-    "@types/pg": "^8.11.0",
+    "@biomejs/biome": "^2.5.0",
     "@types/node": "^22.0.0",
-    "@biomejs/biome": "^2.5.0"
+    "@types/pg": "^8.11.0",
+    "drizzle-kit": "^0.30.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
   }
 }

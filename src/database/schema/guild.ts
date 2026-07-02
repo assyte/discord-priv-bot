@@ -17,6 +17,9 @@ export const guilds = pgTable('guilds', {
 
   logChannel: varchar('log_channel', { length: 20 }),
   modLogChannel: varchar('mod_log_channel', { length: 20 }),
+  joinLogChannel: varchar('join_log_channel', { length: 20 }),
+  messageLogChannel: varchar('message_log_channel', { length: 20 }),
+  voiceLogChannel: varchar('voice_log_channel', { length: 20 }),
   messageLogEnabled: boolean('message_log_enabled').default(false),
   memberLogEnabled: boolean('member_log_enabled').default(true),
   voiceLogEnabled: boolean('voice_log_enabled').default(false),

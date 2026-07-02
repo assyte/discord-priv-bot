@@ -1,28 +1,32 @@
-import type { Guild } from 'discord.js';
+import type { Guild, User } from 'discord.js';
 import type { Client } from '../../../client/Client.js';
 import { LogService } from '../services/logService.js';
 
 export async function modLogAction(
   guild: Guild,
   action: string,
-  target: { id: string; tag: string; displayAvatarURL: () => string },
-  moderator: { id: string; tag: string },
+  target: User,
+  moderator: User,
   reason?: string,
   duration?: string,
 ) {
+  const dur = duration || 'Kalici';
+  const reasonText = reason || 'Belirtilmemis';
+
   await LogService.sendLog(guild, 'modAction', {
-    target: target as any,
-    moderator: moderator as any,
-    reason: reason || 'Belirtilmemiş',
-    changes: { işlem: action, süre: duration || 'Kalıcı' },
+    target,
+    moderator,
+    reason: reasonText,
+    changes: { islem: action, sure: dur },
   });
 
   const embed = LogService.createLogEmbed('modAction', {
-    target: target as any,
-    moderator: moderator as any,
-    reason: reason || 'Belirtilmemiş',
-    changes: `🔨 İşlem: **${action}**\n⏱ Süre: ${duration || 'Kalıcı'}`,
+    target,
+    moderator,
+    reason: reasonText,
+    description: `${target.toString()} uyesine ${action} islemi uygulandi.`,
+    changes: `Sure: ${dur}`,
   });
 
-  await LogService.sendToChannel(guild, embed);
+  await LogService.sendToChannel(guild, embed, 'modAction');
 }

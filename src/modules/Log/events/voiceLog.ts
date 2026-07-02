@@ -3,46 +3,52 @@ import type { Client } from '../../../client/Client.js';
 import { LogService } from '../services/logService.js';
 
 export async function voiceStateUpdate(client: Client, oldState: VoiceState, newState: VoiceState) {
-  if (!oldState.guild || newState.member?.user.bot) return;
+  const guild = oldState.guild || newState.guild;
+  if (!guild) return;
 
   const member = newState.member || oldState.member;
-  if (!member) return;
-
-  const guild = oldState.guild || newState.guild;
+  if (!member || member.user.bot) return;
 
   if (!oldState.channelId && newState.channelId) {
-    const embed = LogService.createLogEmbed('voiceJoin', {
-      target: member.user,
-      changes: `🔊 Oda: ${newState.channel?.name}`,
-    });
+    const channelName = newState.channel?.name || 'Bilinmiyor';
     await LogService.sendLog(guild, 'voiceJoin', {
       target: member.user,
-      changes: { oda: newState.channel?.name },
+      changes: { oda: channelName },
     });
-    await LogService.sendToChannel(guild, embed);
+    const embed = LogService.createLogEmbed('voiceJoin', {
+      target: member.user,
+      description: `${member.user.toString()} ses odasina katildi.`,
+      changes: `Oda: ${channelName}`,
+    });
+    await LogService.sendToChannel(guild, embed, 'voiceJoin');
   }
 
   else if (oldState.channelId && !newState.channelId) {
-    const embed = LogService.createLogEmbed('voiceLeave', {
-      target: member.user,
-      changes: `🔇 Oda: ${oldState.channel?.name}`,
-    });
+    const channelName = oldState.channel?.name || 'Bilinmiyor';
     await LogService.sendLog(guild, 'voiceLeave', {
       target: member.user,
-      changes: { oda: oldState.channel?.name },
+      changes: { oda: channelName },
     });
-    await LogService.sendToChannel(guild, embed);
+    const embed = LogService.createLogEmbed('voiceLeave', {
+      target: member.user,
+      description: `${member.user.toString()} ses odasindan ayrildi.`,
+      changes: `Oda: ${channelName}`,
+    });
+    await LogService.sendToChannel(guild, embed, 'voiceLeave');
   }
 
   else if (oldState.channelId !== newState.channelId) {
-    const embed = LogService.createLogEmbed('voiceMove', {
-      target: member.user,
-      changes: `➡️ ${oldState.channel?.name} → ${newState.channel?.name}`,
-    });
+    const oldName = oldState.channel?.name || 'Bilinmiyor';
+    const newName = newState.channel?.name || 'Bilinmiyor';
     await LogService.sendLog(guild, 'voiceMove', {
       target: member.user,
-      changes: { eski: oldState.channel?.name, yeni: newState.channel?.name },
+      changes: { eski: oldName, yeni: newName },
     });
-    await LogService.sendToChannel(guild, embed);
+    const embed = LogService.createLogEmbed('voiceMove', {
+      target: member.user,
+      description: `${member.user.toString()} ses odasi degistirdi.`,
+      changes: `${oldName} -> ${newName}`,
+    });
+    await LogService.sendToChannel(guild, embed, 'voiceMove');
   }
 }

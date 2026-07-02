@@ -5,16 +5,23 @@ import { LogService } from '../services/logService.js';
 export async function channelCreate(client: Client, channel: GuildChannel) {
   if (!channel.guild) return;
 
+  const parentName = channel.parent?.name || 'Yok';
+  const channelType = channel.type === 0 ? 'Metin' : channel.type === 2 ? 'Ses' : 'Dig er';
+
   await LogService.sendLog(channel.guild, 'channelCreate', {
-    reason: `Kanal oluşturuldu: ${channel.name}`,
-    changes: { tür: channel.type, kategori: channel.parent?.name || 'Yok' },
+    reason: `Kanal olusturuldu: ${channel.name}`,
+    changes: { tur: channelType, kategori: parentName },
   });
 
   const embed = LogService.createLogEmbed('channelCreate', {
-    changes: `📢 Kanal: ${channel.toString()}\n📁 Kategori: ${channel.parent?.name || 'Yok'}`,
+    description: `${channel.toString()} kanali olusturuldu.`,
+    changes: [
+      `Kategori: ${parentName}`,
+      `Tur: ${channelType}`,
+    ].join('\n'),
   });
 
-  await LogService.sendToChannel(channel.guild, embed);
+  await LogService.sendToChannel(channel.guild, embed, 'channelCreate');
 }
 
 export async function channelDelete(client: Client, channel: GuildChannel) {
@@ -22,12 +29,16 @@ export async function channelDelete(client: Client, channel: GuildChannel) {
 
   await LogService.sendLog(channel.guild, 'channelDelete', {
     reason: `Kanal silindi: ${channel.name}`,
-    changes: { id: channel.id, tür: channel.type },
+    changes: { id: channel.id, tur: channel.type },
   });
 
   const embed = LogService.createLogEmbed('channelDelete', {
-    changes: `🗑 Silinen kanal: **${channel.name}**\n🆔 ${channel.id}`,
+    description: `${channel.name} kanali silindi.`,
+    changes: [
+      `ID: ${channel.id}`,
+      `Tur: ${channel.type === 0 ? 'Metin' : channel.type === 2 ? 'Ses' : 'Diger'}`,
+    ].join('\n'),
   });
 
-  await LogService.sendToChannel(channel.guild, embed);
+  await LogService.sendToChannel(channel.guild, embed, 'channelDelete');
 }

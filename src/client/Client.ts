@@ -3,6 +3,7 @@ import { CommandHandler } from '../core/CommandHandler.js';
 import { ComponentHandler } from '../core/ComponentHandler.js';
 import { EventHandler } from '../core/EventHandler.js';
 import { Logger } from '../utils/logger.js';
+import { VoiceConnectionService } from '../modules/Management/services/voiceConnection.js';
 
 export class Client {
   private static instance: Client;
@@ -58,6 +59,8 @@ export class Client {
   private setupListeners(): void {
     this.client.once('ready', async () => {
       this.logger.info(`${this.client.user?.tag} olarak giriş yapıldı!`);
+      await this.componentHandler.loadComponents();
+      await this.eventHandler.loadEvents();
       await this.commandHandler.registerCommands();
 
       const guildId = process.env.GUILD_ID;
@@ -72,6 +75,9 @@ export class Client {
           this.logger.info(`Presence güncellendi: ${count} kişi ile konuşuyor`);
         }
       }
+
+      // Sese otomatik katıl
+      await VoiceConnectionService.connect(this.client, this.logger);
     });
 
     this.client.on('interactionCreate', async (interaction: Interaction) => {

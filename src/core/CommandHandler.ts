@@ -1,4 +1,4 @@
-import { type ChatInputCommandInteraction, Collection, type RESTPostAPIChatInputApplicationCommandsJSONBody, Routes, type Snowflake } from 'discord.js';
+import { type ChatInputCommandInteraction, Collection, type RESTPostAPIChatInputApplicationCommandsJSONBody, Routes, type Snowflake, MessageFlags } from 'discord.js';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -23,16 +23,17 @@ export class CommandHandler {
     for (const module of modules) {
       const commandsPath = join(modulesPath, module, 'commands');
       try {
-        const files = readdirSync(commandsPath).filter(f => f.endsWith('.ts') || f.endsWith('.js'));
+        const files = readdirSync(commandsPath).filter(f => f.endsWith('.js') && !f.endsWith('.d.ts') && !f.endsWith('.d.ts.map'));
         for (const file of files) {
           const mod = await import(`file://${join(commandsPath, file)}`);
           const command: BotCommand = mod.default;
-          if (command.data?.name) {
+          if (command?.data?.name) {
             this.commands.set(command.data.name, command);
             this.client.logger.debug(`Komut yüklendi: ${command.data.name} (${module})`);
           }
         }
-      } catch {
+      } catch (err) {
+        this.client.logger.warn(`Komut yüklenemedi (${module}): ${err}`);
         continue;
       }
     }
@@ -75,14 +76,14 @@ export class CommandHandler {
     if (!command) return;
 
     if (command.guildOnly && !interaction.guild) {
-      await interaction.reply({ content: 'Bu komut sadece sunucularda kullanılabilir.', ephemeral: true });
+      await interaction.reply({ content: 'Bu komut sadece sunucularda kullanılabilir.', flags: [MessageFlags.Ephemeral] as const });
       return;
     }
 
     if (command.permissions) {
       const member = interaction.guild?.members.cache.get(interaction.user.id);
       if (member && !member.permissions.has(command.permissions)) {
-        await interaction.reply({ content: 'Bu komutu kullanma yetkin yok.', ephemeral: true });
+        await interaction.reply({ content: 'Bu komutu kullanma yetkin yok.', flags: [MessageFlags.Ephemeral] as const });
         return;
       }
     }
@@ -101,7 +102,7 @@ export class CommandHandler {
           const timeLeft = (expirationTime - now) / 1000;
           await interaction.reply({
             content: `Bu komutu tekrar kullanmak için ${timeLeft.toFixed(1)} saniye beklemelisin.`,
-            ephemeral: true,
+            flags: [MessageFlags.Ephemeral] as const,
           });
           return;
         }
@@ -114,11 +115,11 @@ export class CommandHandler {
       await command.execute(interaction, this.client);
     } catch (error) {
       this.client.logger.error(`Komut hatası (${command.data.name}):`, error);
-      const reply = { content: 'Komut çalıştırılırken bir hata oluştu.', ephemeral: true };
+      const reply = { content: 'Komut çalıştırılırken bir hata oluştu.', flags: [MessageFlags.Ephemeral] as const };
       if (interaction.replied || interaction.deferred) {
-        await interaction.followUp(reply);
+        await interaction.followUp(reply).catch(() => {});
       } else {
-        await interaction.reply(reply);
+        await interaction.reply(reply).catch(() => {});
       }
     }
   }

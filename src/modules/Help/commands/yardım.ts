@@ -68,7 +68,7 @@ const command: BotCommand = {
       ].join('\n'),
       color: COLORS.primary,
       fields,
-      footer: { text: 'ᴅᴇᴠ ʙʏ ᴀꜱꜱʏᴛᴇ • premium bot' },
+      footer: { text: 'dev by assyte' },
       timestamp: true,
     });
 

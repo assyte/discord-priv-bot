@@ -24,33 +24,56 @@ export class ComponentHandler {
 
   constructor(client: Client) {
     this.client = client;
-    this.loadComponents();
   }
 
-  private loadComponents(): void {
+  async loadComponents(): Promise<void> {
     const modulesPath = join(__dirname, '..', 'modules');
     const modules = readdirSync(modulesPath);
 
     for (const module of modules) {
       const componentsPath = join(modulesPath, module, 'components');
       try {
-        const files = readdirSync(componentsPath).filter(f => f.endsWith('.ts') || f.endsWith('.js'));
+        const files = readdirSync(componentsPath).filter(f => f.endsWith('.js') && !f.endsWith('.d.ts') && !f.endsWith('.d.ts.map'));
         for (const file of files) {
-          const component: Component = { customId: '', execute: async () => {} };
-          const imported = { ...component, ...require(join(componentsPath, file)) };
+          const imported = await import(join(componentsPath, file));
           if (imported.customId) {
-            this.buttons.set(imported.customId, imported);
-            this.client.logger.debug(`Component yüklendi: ${imported.customId}`);
+            if (imported.isModal) {
+              this.modals.set(imported.customId, imported);
+              this.client.logger.debug(`Modal yüklendi: ${imported.customId}`);
+            } else {
+              this.buttons.set(imported.customId, imported);
+              this.client.logger.debug(`Component yüklendi: ${imported.customId}`);
+            }
+          }
+          // prefix, prefix2, prefix3 ... şeklindeki tüm prefix export'larını kayıt et
+          for (const key of Object.keys(imported)) {
+            if (key === 'prefix' || key.match(/^prefix\d+$/)) {
+              const prefixVal = imported[key];
+              if (typeof prefixVal === 'string') {
+                this.buttons.set(prefixVal, imported);
+                this.client.logger.debug(`Prefix component yüklendi: ${prefixVal}`);
+              }
+            }
           }
         }
-      } catch {
+
+      } catch (err) {
+        this.client.logger.debug(`Component yüklenemedi (${module}): ${err}`);
         continue;
       }
     }
   }
 
   async handleComponent(interaction: ButtonInteraction | StringSelectMenuInteraction): Promise<void> {
-    const component = this.buttons.get(interaction.customId);
+    let component = this.buttons.get(interaction.customId);
+    if (!component) {
+      for (const [key, val] of this.buttons.entries()) {
+        if (interaction.customId.startsWith(key)) {
+          component = val;
+          break;
+        }
+      }
+    }
     if (!component) return;
 
     try {

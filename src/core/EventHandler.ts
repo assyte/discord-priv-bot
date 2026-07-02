@@ -10,31 +10,28 @@ export class EventHandler {
 
   constructor(client: Client) {
     this.client = client;
-    this.loadEvents();
   }
 
-  private loadEvents(): void {
+  async loadEvents(): Promise<void> {
     const modulesPath = join(__dirname, '..', 'modules');
     const modules = readdirSync(modulesPath);
 
     for (const module of modules) {
       const eventsPath = join(modulesPath, module, 'events');
       try {
-        const files = readdirSync(eventsPath).filter(f => f.endsWith('.ts') || f.endsWith('.js'));
+        const files = readdirSync(eventsPath).filter(f => f.endsWith('.js') && !f.endsWith('.d.ts') && !f.endsWith('.d.ts.map'));
         for (const file of files) {
-          const eventName = file.replace(/\.(ts|js)$/, '');
-          const eventModule = require(join(eventsPath, file));
-          const execute = eventModule.default || eventModule;
+          const eventModule = await import(join(eventsPath, file));
 
-          const eventKey = eventName
-            .replace(/([A-Z])/g, '_$1')
-            .toLowerCase()
-            .replace(/^_/, '');
-
-          this.client.client.on(eventKey, (...args: unknown[]) => execute(this.client, ...args));
-          this.client.logger.debug(`Event yüklendi: ${eventKey} (${module})`);
+          for (const [exportName, fn] of Object.entries(eventModule)) {
+            if (typeof fn === 'function' && exportName !== 'default') {
+              this.client.client.on(exportName, (...args: unknown[]) => fn(this.client, ...args));
+              this.client.logger.debug(`Event yüklendi: ${exportName} (${module}/${file})`);
+            }
+          }
         }
-      } catch {
+      } catch (err) {
+        this.client.logger.debug(`Event yüklenemedi (${module}): ${err}`);
         continue;
       }
     }

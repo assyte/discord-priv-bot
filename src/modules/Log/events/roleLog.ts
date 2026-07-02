@@ -1,4 +1,4 @@
-import type { Role, GuildChannel } from 'discord.js';
+import type { Role } from 'discord.js';
 import type { Client } from '../../../client/Client.js';
 import { LogService } from '../services/logService.js';
 
@@ -8,16 +8,19 @@ export async function roleCreate(client: Client, role: Role) {
   const permissions = role.permissions.toArray().join(', ') || 'Yok';
 
   await LogService.sendLog(role.guild, 'roleCreate', {
-    reason: `Rol oluşturuldu: ${role.name}`,
-    changes: { renk: role.hexColor, izinler: permissions, ayrı_gösterim: role.hoist },
+    reason: `Rol olusturuldu: ${role.name}`,
+    changes: { renk: role.hexColor, izinler: permissions, ayri_gosterim: role.hoist },
   });
 
   const embed = LogService.createLogEmbed('roleCreate', {
-    target: role.guild.ownerId ? { id: role.guild.ownerId, tag: role.name, displayAvatarURL: () => '' } as any : undefined,
-    changes: `🎨 Rol: ${role.toString()}\n🏷 Renk: ${role.hexColor}\n🔒 İzinler: ${permissions}`,
+    description: `${role.toString()} rolu olusturuldu.`,
+    changes: [
+      `Renk: ${role.hexColor}`,
+      `Ayri gosterim: ${role.hoist ? 'Evet' : 'Hayir'}`,
+    ].join('\n'),
   });
 
-  await LogService.sendToChannel(role.guild, embed);
+  await LogService.sendToChannel(role.guild, embed, 'roleCreate');
 }
 
 export async function roleDelete(client: Client, role: Role) {
@@ -29,8 +32,12 @@ export async function roleDelete(client: Client, role: Role) {
   });
 
   const embed = LogService.createLogEmbed('roleDelete', {
-    changes: `🗑 Silinen rol: **${role.name}**\n🆔 ${role.id}`,
+    description: `${role.name} rolu silindi.`,
+    changes: [
+      `ID: ${role.id}`,
+      `Renk: ${role.hexColor}`,
+    ].join('\n'),
   });
 
-  await LogService.sendToChannel(role.guild, embed);
+  await LogService.sendToChannel(role.guild, embed, 'roleDelete');
 }

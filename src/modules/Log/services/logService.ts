@@ -1,13 +1,13 @@
-import type { TextChannel, Guild, User } from 'discord.js';
+import { EmbedBuilder, type TextChannel, type Guild, type User } from 'discord.js';
 import { Database } from '../../../database/connection.js';
 import { logs } from '../../../database/schema/log.js';
 import { guilds } from '../../../database/schema/guild.js';
 import { eq } from 'drizzle-orm';
 import { Logger } from '../../../utils/logger.js';
-import { createEmbed } from '../../../utils/embeds.js';
-import { COLORS, EMOJIS } from '../../../utils/constants.js';
 
 const logger = new Logger('LogService');
+
+const DARK = 0x2B2D31;
 
 export class LogService {
   static async sendLog(
@@ -39,19 +39,41 @@ export class LogService {
     }
   }
 
-  static async sendToChannel(guild: Guild, embed: ReturnType<typeof createEmbed>): Promise<void> {
+  static async sendToChannel(guild: Guild, embed: EmbedBuilder, logType?: string): Promise<void> {
     try {
       const db = Database.getInstance().db;
       const [guildConfig] = await db.select().from(guilds).where(eq(guilds.id, guild.id)).limit(1);
 
-      if (!guildConfig?.logChannel) return;
+      if (!guildConfig) return;
 
-      const channel = guild.channels.cache.get(guildConfig.logChannel) as TextChannel;
+      const channelMap: Record<string, string | undefined | null> = {
+        memberJoin: guildConfig.joinLogChannel,
+        memberLeave: guildConfig.joinLogChannel,
+        memberBan: guildConfig.joinLogChannel,
+        memberUnban: guildConfig.joinLogChannel,
+        messageDelete: guildConfig.messageLogChannel,
+        messageUpdate: guildConfig.messageLogChannel,
+        voiceJoin: guildConfig.voiceLogChannel,
+        voiceLeave: guildConfig.voiceLogChannel,
+        voiceMove: guildConfig.voiceLogChannel,
+        modAction: guildConfig.modLogChannel,
+        roleCreate: guildConfig.modLogChannel,
+        roleDelete: guildConfig.modLogChannel,
+        roleUpdate: guildConfig.modLogChannel,
+        channelCreate: guildConfig.modLogChannel,
+        channelDelete: guildConfig.modLogChannel,
+        channelUpdate: guildConfig.modLogChannel,
+      };
+
+      const channelId = logType ? channelMap[logType] || guildConfig.logChannel : guildConfig.logChannel;
+      if (!channelId) return;
+
+      const channel = guild.channels.cache.get(channelId) as TextChannel;
       if (channel) {
         await channel.send({ embeds: [embed] });
       }
     } catch (error) {
-      logger.error('Log kanala gönderilemedi:', error);
+      logger.error('Log kanala gonderilemedi:', error);
     }
   }
 
@@ -62,47 +84,43 @@ export class LogService {
       moderator?: User;
       reason?: string;
       changes?: string;
+      description?: string;
     },
   ) {
     const titles: Record<string, string> = {
       messageDelete: 'Mesaj Silindi',
-      messageUpdate: 'Mesaj Düzenlendi',
-      memberJoin: 'Üye Katıldı',
-      memberLeave: 'Üye Ayrıldı',
-      memberBan: 'Üye Yasaklandı',
-      memberUnban: 'Yasak Kaldırıldı',
-      voiceJoin: 'Ses Odasına Katıldı',
-      voiceLeave: 'Ses Odasından Ayrıldı',
-      voiceMove: 'Ses Odası Taşındı',
-      roleCreate: 'Rol Oluşturuldu',
+      messageUpdate: 'Mesaj Duzenlendi',
+      memberJoin: 'Uye Katildi',
+      memberLeave: 'Uye Ayrildi',
+      memberBan: 'Uye Yasaklandi',
+      memberUnban: 'Yasak Kaldirildi',
+      voiceJoin: 'Ses Odasina Katildi',
+      voiceLeave: 'Ses Odasindan Ayrildi',
+      voiceMove: 'Ses Odasi Tasindi',
+      roleCreate: 'Rol Olusturuldu',
       roleDelete: 'Rol Silindi',
-      roleUpdate: 'Rol Güncellendi',
-      channelCreate: 'Kanal Oluşturuldu',
+      roleUpdate: 'Rol Guncellendi',
+      channelCreate: 'Kanal Olusturuldu',
       channelDelete: 'Kanal Silindi',
-      channelUpdate: 'Kanal Güncellendi',
-      modAction: 'Yetkili İşlemi',
+      channelUpdate: 'Kanal Guncellendi',
+      modAction: 'Yetkili Islemi',
     };
 
-    const colors: Record<string, number> = {
-      messageDelete: COLORS.danger,
-      memberJoin: COLORS.success,
-      memberLeave: COLORS.warning,
-      memberBan: COLORS.danger,
-      modAction: COLORS.primary,
-    };
-
-    const embed = createEmbed({
-      title: `${EMOJIS.log} ${titles[type] || type}`,
-      color: colors[type] || COLORS.info,
-      timestamp: true,
-      footer: { text: `ID: ${options.target?.id || 'N/A'}` },
-    });
+    const embed = new EmbedBuilder()
+      .setColor(DARK)
+      .setTitle(titles[type] || type)
+      .setFooter({ text: 'dev by assyte' })
+      .setTimestamp();
 
     if (options.target) {
       embed.setAuthor({
         name: options.target.tag,
         iconURL: options.target.displayAvatarURL(),
       });
+    }
+
+    if (options.description) {
+      embed.setDescription(options.description);
     }
 
     if (options.moderator) {
@@ -114,7 +132,7 @@ export class LogService {
     }
 
     if (options.changes) {
-      embed.addFields({ name: 'Değişiklik', value: options.changes, inline: false });
+      embed.addFields({ name: 'Detay', value: options.changes, inline: false });
     }
 
     return embed;
