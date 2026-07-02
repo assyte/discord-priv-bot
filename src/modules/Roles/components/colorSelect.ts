@@ -13,6 +13,17 @@ export async function execute(interaction: StringSelectMenuInteraction, client: 
     const selectedRoleId = interaction.values[0]; // e.g. "role_id" or "none"
     if (!selectedRoleId) return;
     const member = await interaction.guild.members.fetch(interaction.user.id);
+    
+    // Boost kontrolü
+    if (!member.premiumSince) {
+      const embed = new EmbedBuilder()
+        .setColor(COLORS.danger)
+        .setDescription('❌ **Erişim Reddedildi!**\n\nBu özelliği (İsim Rengi Değiştirme) sadece sunucumuza **Takviye (Boost)** basan seçkin üyelerimiz kullanabilir.')
+        .setFooter({ text: 'Kafadan Tayfa Premium' });
+      await interaction.editReply({ embeds: [embed] });
+      return;
+    }
+
     const allColorRoleIds = interaction.component.options.map(o => o.value).filter(v => v !== 'none');
 
     // Remove all existing color roles from the user
