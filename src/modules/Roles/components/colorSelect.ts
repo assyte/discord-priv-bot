@@ -11,6 +11,7 @@ export async function execute(interaction: StringSelectMenuInteraction, client: 
 
   try {
     const selectedRoleId = interaction.values[0]; // e.g. "role_id" or "none"
+    if (!selectedRoleId) return;
     const member = await interaction.guild.members.fetch(interaction.user.id);
     const allColorRoleIds = interaction.component.options.map(o => o.value).filter(v => v !== 'none');
 
