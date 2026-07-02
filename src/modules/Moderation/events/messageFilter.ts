@@ -25,7 +25,16 @@ const DEFAULT_CONFIG: ModerationConfig = {
   spam: { enabled: true, action: 'mute', window: 5000, limit: 5 },
   caps: { enabled: false, action: 'warn', percentage: 70 },
   mention: { enabled: true, action: 'warn', limit: 5 },
-  link: { enabled: true, action: 'delete', whitelist: ['discord.com/channels', 'youtube.com', 'youtu.be', 'spotify.com', 'tenor.com', 'giphy.com', 'twitch.tv'] },
+  link: { 
+    enabled: true, 
+    action: 'delete', 
+    whitelist: [
+      'discord.com', 'discordapp.com', 'discordapp.net', // Discord resimleri ve emojileri
+      'youtube.com', 'youtu.be', 'spotify.com', 'twitch.tv', // Medya
+      'tenor.com', 'giphy.com', 'imgur.com', 'gfycat.com', // GIF ve Resim
+      'tiktok.com', 'instagram.com', 'twitter.com', 'x.com' // Sosyal medya
+    ] 
+  },
   swear: { enabled: false, action: 'delete', words: ['amk', 'aq', 'sik', 'orospu', 'piç', 'göt', 'yarrak', 'puşt', 'ananı', 'babanı'] },
 };
 
