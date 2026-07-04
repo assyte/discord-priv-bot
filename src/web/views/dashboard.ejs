@@ -241,7 +241,10 @@
                     </div>
                 </div>
                 <% if (dbUser && dbUser.faceit_username && dbUser.faceit_username !== 'N/A') { %>
-                    <div class="status connected"><i class="fa-solid fa-check"></i> Connected</div>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="status connected"><i class="fa-solid fa-check"></i> Connected</div>
+                        <button class="btn" style="padding: 5px 10px; font-size: 0.9em;" onclick="submitConnection(event, 'faceit', '<%= dbUser.faceit_username %>')"><i class="fa-solid fa-arrows-rotate"></i> Sync</button>
+                    </div>
                 <% } else { %>
                     <button class="btn" onclick="toggleForm('faceitForm')">Connect</button>
                 <% } %>
@@ -295,12 +298,17 @@
             form.style.display = form.style.display === 'block' ? 'none' : 'block';
         }
 
-        async function submitConnection(event, type) {
-            event.preventDefault();
-            const btn = document.getElementById(type + 'Btn');
+        async function submitConnection(event, type, existingValue = null) {
+            if (event) event.preventDefault();
+            const btn = existingValue ? event.target : document.getElementById(type + 'Btn');
             const input = document.getElementById(type + 'Link');
             const alertBox = document.getElementById('alertBox');
             
+            const linkValue = existingValue || (input ? input.value : '');
+            
+            if (!linkValue) return;
+            
+            const originalHtml = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             alertBox.style.display = 'none';
@@ -314,14 +322,14 @@
                     },
                     body: JSON.stringify({
                         type: type,
-                        link: input.value
+                        link: linkValue
                     })
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
-                    alertBox.textContent = 'Account successfully connected! Roles are updated.';
+                    alertBox.textContent = 'Account successfully connected and synced! Roles are updated.';
                     alertBox.classList.add('success');
                     alertBox.style.display = 'block';
                     setTimeout(() => window.location.reload(), 2000);
@@ -330,14 +338,14 @@
                     alertBox.classList.add('error');
                     alertBox.style.display = 'block';
                     btn.disabled = false;
-                    btn.innerHTML = 'Save';
+                    btn.innerHTML = originalHtml;
                 }
             } catch (error) {
                 alertBox.textContent = 'Network error. Please try again.';
                 alertBox.classList.add('error');
                 alertBox.style.display = 'block';
                 btn.disabled = false;
-                btn.innerHTML = 'Save';
+                btn.innerHTML = originalHtml;
             }
         }
     </script>
