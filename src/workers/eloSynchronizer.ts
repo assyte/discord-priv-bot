@@ -10,7 +10,7 @@ export function startWorkers() {
   // Her 15 dakikada bir çalıştır
   cron.schedule('*/15 * * * *', async () => {
     logger.info('ELO Senkronizasyon işçisi çalışıyor...');
-    let conn;
+    let conn: any;
     try {
       conn = await dbPool.getConnection();
       // Sadece onaylanmış kullanıcıları çek

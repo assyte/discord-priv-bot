@@ -20,7 +20,7 @@ export default {
     
     const targetUser = interaction.options.getUser('user') || interaction.user;
     
-    let conn;
+    let conn: any;
     try {
       conn = await dbPool.getConnection();
       const rows = await conn.query('SELECT * FROM users WHERE discord_id = ?', [targetUser.id]);

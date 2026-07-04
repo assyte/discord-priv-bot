@@ -16,7 +16,7 @@ export const dbPool = mariadb.createPool({
 });
 
 export async function initDatabase() {
-  let conn;
+  let conn: any;
   try {
     conn = await dbPool.getConnection();
     

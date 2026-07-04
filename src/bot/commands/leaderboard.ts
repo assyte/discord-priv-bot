@@ -12,7 +12,7 @@ export default {
   async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
-    let conn;
+    let conn: any;
     try {
       conn = await dbPool.getConnection();
       const rows = await conn.query(`

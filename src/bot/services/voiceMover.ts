@@ -11,7 +11,7 @@ export async function handleMatchReady(payload: any) {
   const teamA = payload.teams[0];
   const teamB = payload.teams[1];
 
-  let conn;
+  let conn: any;
   try {
     conn = await dbPool.getConnection();
     
@@ -77,7 +77,7 @@ export async function handleMatchReady(payload: any) {
 export async function handleMatchFinished(payload: any) {
   const matchId = payload.id;
   
-  let conn;
+  let conn: any;
   try {
     conn = await dbPool.getConnection();
     const matchRows = await conn.query('SELECT * FROM active_matches WHERE match_id = ?', [matchId]);
