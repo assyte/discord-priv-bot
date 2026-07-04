@@ -41,7 +41,9 @@ export class ClutchClient extends Client {
     const commandsPath = path.join(__dirname, 'commands');
     if (!fs.existsSync(commandsPath)) fs.mkdirSync(commandsPath, { recursive: true });
     
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts') || file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(commandsPath).filter(file => 
+      (file.endsWith('.ts') || file.endsWith('.js')) && !file.endsWith('.d.ts')
+    );
     const slashCommands: any[] = [];
 
     for (const file of commandFiles) {
@@ -76,7 +78,9 @@ export class ClutchClient extends Client {
     const eventsPath = path.join(__dirname, 'events');
     if (!fs.existsSync(eventsPath)) fs.mkdirSync(eventsPath, { recursive: true });
 
-    const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts') || file.endsWith('.js'));
+    const eventFiles = fs.readdirSync(eventsPath).filter(file => 
+      (file.endsWith('.ts') || file.endsWith('.js')) && !file.endsWith('.d.ts')
+    );
 
     for (const file of eventFiles) {
       const filePath = path.join(eventsPath, file);
