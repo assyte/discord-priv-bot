@@ -25,7 +25,7 @@ if (process.env.DISCORD_CLIENT_SECRET) {
   passport.use(new DiscordStrategy({
     clientID: process.env.CLIENT_ID!,
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    callbackURL: `http://${process.env.DOMAIN || 'localhost:3000'}/auth/discord/callback`,
+    callbackURL: `https://${process.env.DOMAIN || 'localhost:3000'}/auth/discord/callback`,
     scope: ['identify', 'guilds', 'guilds.join']
   }, async (accessToken, refreshToken, profile, done) => {
     try {
@@ -38,8 +38,8 @@ if (process.env.DISCORD_CLIENT_SECRET) {
 
 if (process.env.STEAM_API_KEY) {
   passport.use(new SteamStrategy({
-    returnURL: `http://${process.env.DOMAIN || 'localhost:3000'}/auth/steam/callback`,
-    realm: `http://${process.env.DOMAIN || 'localhost:3000'}/`,
+    returnURL: `https://${process.env.DOMAIN || 'localhost:3000'}/auth/steam/callback`,
+    realm: `https://${process.env.DOMAIN || 'localhost:3000'}/`,
     apiKey: process.env.STEAM_API_KEY
   }, async (identifier: string, profile: any, done: any) => {
     try {
