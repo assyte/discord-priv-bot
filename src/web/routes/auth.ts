@@ -75,17 +75,31 @@ router.get('/steam', (req, res, next) => {
   next();
 }, passport.authenticate('steam'));
 
-router.get('/steam/callback', passport.authenticate('steam', {
-  failureRedirect: '/'
+router.get('/steam/callback', (req, res, next) => {
+  logger.info('Steam callback hit. Session ID: ' + req.sessionID);
+  logger.info('Session contents: ' + JSON.stringify(req.session));
+  next();
+}, passport.authenticate('steam', {
+  failureRedirect: '/?error=steam_failed'
 }), (req, res) => {
   // Steam dönüşü req.user Steam bilgisini alır, önceki Discord datasını birleştirelim
   const steamData = req.user as any;
   const discordData = (req.session as any).tempDiscord;
   
-  if (!discordData) return res.redirect('/');
+  logger.info('Steam Auth Success. SteamData: ' + JSON.stringify(steamData));
+  logger.info('DiscordData from session: ' + JSON.stringify(discordData));
+
+  if (!discordData) {
+      logger.error('Discord data missing from session!');
+      return res.redirect('/?error=missing_discord');
+  }
 
   req.login({ ...discordData, steamId64: steamData.steamId64 }, (err) => {
-    if (err) return res.redirect('/');
+    if (err) {
+        logger.error('Login error after Steam: ' + err);
+        return res.redirect('/?error=login_error');
+    }
+    logger.info('Login successful, redirecting to step3');
     res.redirect('/auth/step3');
   });
 });

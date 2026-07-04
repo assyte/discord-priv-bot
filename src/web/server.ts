@@ -31,10 +31,15 @@ export async function startWeb() {
 
   // Session
   app.use(session({
+    name: 'clutch.sid',
     secret: process.env.SESSION_SECRET || 'fallback_secret',
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false } // Geliştirme aşamasında false, HTTPS geçince true olacak
+    saveUninitialized: true,
+    cookie: { 
+        secure: true, 
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000
+    }
   }));
 
   // Passport Init
