@@ -2,6 +2,7 @@ import { Events, Interaction } from 'discord.js';
 import { Logger } from '../../utils/logger.js';
 import { handleRulesAccept } from '../services/rulesPanel.js';
 import type { ClutchClient } from '../client.js';
+import { handleCS2RankSelect, handleChatColorSelect } from '../services/rolePanelManager.js';
 
 const logger = new Logger('InteractionCreate');
 
@@ -19,16 +20,26 @@ export default {
       return;
     }
 
+
     if (interaction.isStringSelectMenu()) {
-      switch (interaction.customId) {
-        case 'cs2_rank_select':
-          const { handleCS2RankSelect } = await import('../services/rolePanelManager.js');
-          return handleCS2RankSelect(interaction);
-        case 'chat_color_select':
-          const { handleChatColorSelect } = await import('../services/rolePanelManager.js');
-          return handleChatColorSelect(interaction);
-        default:
-          break;
+      try {
+        switch (interaction.customId) {
+          case 'cs2_rank_select':
+            await handleCS2RankSelect(interaction);
+            break;
+          case 'chat_color_select':
+            await handleChatColorSelect(interaction);
+            break;
+          default:
+            break;
+        }
+      } catch (err) {
+        logger.error('SelectMenu Interaction Error:', err);
+        if (interaction.deferred || interaction.replied) {
+          await interaction.followUp({ content: '❌ An error occurred.', flags: ['Ephemeral'] }).catch(()=>null);
+        } else {
+          await interaction.reply({ content: '❌ An error occurred.', flags: ['Ephemeral'] }).catch(()=>null);
+        }
       }
       return;
     }
