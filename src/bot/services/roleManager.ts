@@ -155,7 +155,7 @@ export async function sendVerificationLogPanel(
   discordId: string, 
   steamId64: string, 
   faceitData: { username?: string, level?: number, elo?: number } | null,
-  fastcupData: { url?: string, level?: string, skill?: string } | null
+  fastcupData: { url?: string, level?: string, skill?: string | number } | null
 ) {
   const client = getClient();
   const guild = client.guilds.cache.get(process.env.GUILD_ID!);
