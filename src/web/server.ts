@@ -81,7 +81,7 @@ export async function startWeb() {
     if (!req.user) return res.redirect('/');
     
     try {
-      const { dbPool } = await import('../../database/connection.js');
+      const { dbPool } = await import('../database/connection.js');
       const discordUser = req.user as any;
       
       const conn = await dbPool.getConnection();

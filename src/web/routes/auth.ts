@@ -289,7 +289,7 @@ router.post('/dashboard/connect', async (req, res) => {
       const fcData = await scrapeFastcupProfile(link);
       
       await conn.query('UPDATE users SET fastcup_url = ?, fastcup_id = ?, fastcup_skill = ?, fastcup_level = ? WHERE discord_id = ?', 
-        [link, fcData.id, fcData.skill, fcData.level, user.id]);
+        [link, fcData.fastcupId, fcData.skill, fcData.level, user.id]);
         
       const { assignFastcupRoles } = await import('../../bot/services/roleManager.js');
       await assignFastcupRoles(user.id, fcData.level);
