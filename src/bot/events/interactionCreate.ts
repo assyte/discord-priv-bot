@@ -19,6 +19,20 @@ export default {
       return;
     }
 
+    if (interaction.isStringSelectMenu()) {
+      switch (interaction.customId) {
+        case 'cs2_rank_select':
+          const { handleCS2RankSelect } = await import('../services/rolePanelManager.js');
+          return handleCS2RankSelect(interaction);
+        case 'chat_color_select':
+          const { handleChatColorSelect } = await import('../services/rolePanelManager.js');
+          return handleChatColorSelect(interaction);
+        default:
+          break;
+      }
+      return;
+    }
+
     if (!interaction.isChatInputCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
