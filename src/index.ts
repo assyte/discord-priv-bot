@@ -4,7 +4,7 @@ import { initDatabase } from './database/connection.js';
 import { startBot } from './bot/client.js';
 import { startWeb } from './web/server.js';
 import { startWorkers } from './workers/eloSynchronizer.js';
-import { startActivityTracker } from './bot/services/activityTracker.js';
+import { ActivityTracker } from './bot/services/activityTracker.js';
 
 config();
 
@@ -25,7 +25,7 @@ async function bootstrap() {
     
     // 4. Start background workers (Cron Jobs)
     startWorkers();
-    startActivityTracker();
+    ActivityTracker.start();
 
     logger.info('System activated successfully.');
   } catch (error) {

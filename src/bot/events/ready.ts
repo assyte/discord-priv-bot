@@ -2,6 +2,7 @@ import { Events, ChannelType } from 'discord.js';
 import type { Guild, CategoryChannel } from 'discord.js';
 import { Logger } from '../../utils/logger.js';
 import { ActivityChannelManager } from '../services/activityChannelManager.js';
+import { ActivityTracker } from '../services/activityTracker.js';
 import { initRulesPanel } from '../services/rulesPanel.js';
 import type { ClutchClient } from '../client.js';
 
@@ -91,8 +92,9 @@ export default {
     if (guild) {
       await setupJoinRolePermissions(guild);
     }
-
+    
     await ActivityChannelManager.init();
+
     if (guild) {
       await initRulesPanel(guild);
     }
