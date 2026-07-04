@@ -235,9 +235,11 @@ router.post('/complete', async (req, res) => {
     } else {
       logger.error('Sistem Hatası: ' + error.stack);
     }
-    const errorMsg = error.response?.status === 404 
-      ? 'Kullanıcı bulunamadı.' 
-      : 'API veya Sistem Hatası. Lütfen daha sonra tekrar deneyin.';
+    const errorMsg = error.message === 'Invalid Fastcup URL format'
+      ? 'Geçersiz Fastcup Profil URLsi! Lütfen profil linkinizi tam girin (Örn: https://cs.fastcup.net/id12345) veya boş bırakın.'
+      : (error.response?.status === 404 
+        ? 'Kullanıcı bulunamadı. Lütfen kullanıcı adınızı kontrol edin.' 
+        : 'API veya Sistem Hatası. Lütfen daha sonra tekrar deneyin.');
     res.render('step3', { user, error: errorMsg });
   }
 });
