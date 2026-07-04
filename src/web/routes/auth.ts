@@ -6,7 +6,7 @@ import { config } from 'dotenv';
 import axios from 'axios';
 import { Logger } from '../../utils/logger.js';
 import { dbPool } from '../../database/connection.js';
-import { assignVerifiedRoles, assignSteamVerifiedRole, assignFastcupRoles } from '../../bot/services/roleManager.js';
+import { assignVerifiedRoles, assignSteamVerifiedRole, assignFastcupRoles, sendVerificationLogPanel } from '../../bot/services/roleManager.js';
 
 config();
 
@@ -234,6 +234,13 @@ router.post('/complete', async (req, res) => {
       if (fastcupUrl) {
         await assignFastcupRoles(user.discordId, fastcupLevel);
       }
+
+      await sendVerificationLogPanel(
+        user.discordId,
+        user.steamId64,
+        faceitUsername ? { username: faceitUsername, level: faceitLevel, elo: faceitElo } : null,
+        fastcupUrl ? { url: fastcupUrl, level: fastcupLevel, skill: fastcupSkill } : null
+      );
 
     } finally {
       conn.release();

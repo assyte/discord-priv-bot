@@ -150,3 +150,90 @@ export async function assignFastcupRoles(discordId: string, fastcupLevel: string
     logger.error(`assignFastcupRoles error: ${discordId}`, error);
   }
 }
+
+export async function sendVerificationLogPanel(
+  discordId: string, 
+  steamId64: string, 
+  faceitData: { username?: string, level?: number, elo?: number } | null,
+  fastcupData: { url?: string, level?: string, skill?: string } | null
+) {
+  const client = getClient();
+  const guild = client.guilds.cache.get(process.env.GUILD_ID!);
+  if (!guild) return;
+
+  try {
+    const channel = await guild.channels.fetch('1523040364313710782').catch(() => null);
+    if (!channel || !channel.isTextBased()) return;
+
+    const member = await guild.members.fetch(discordId).catch(() => null);
+    if (!member) return;
+
+    const embed = {
+      color: 0x00FF00,
+      title: '✅ New Account Verification',
+      author: {
+        name: member.user.tag,
+        icon_url: member.user.displayAvatarURL()
+      },
+      thumbnail: {
+        url: member.user.displayAvatarURL({ size: 256 })
+      },
+      description: `User <@${discordId}> has successfully verified their accounts on the platform!`,
+      fields: [
+        {
+          name: '🎮 Steam Verification',
+          value: `✅ Successfully Linked\n**SteamID64:** \`${steamId64}\``,
+          inline: false
+        }
+      ],
+      footer: {
+        text: 'Clutch Security & Verification System',
+        icon_url: guild.iconURL() || undefined
+      },
+      timestamp: new Date().toISOString()
+    };
+
+    let rolesGiven = '`Steam Verified`';
+
+    if (faceitData?.username) {
+      embed.fields.push({
+        name: '🟠 FACEIT Verification',
+        value: `✅ Linked as **${faceitData.username}**\n**Level:** ${faceitData.level}\n**ELO:** ${faceitData.elo}`,
+        inline: true
+      });
+      rolesGiven += `, \`Verified Player\`, \`FACEIT Level ${faceitData.level}\``;
+    } else {
+      embed.fields.push({
+        name: '🟠 FACEIT Verification',
+        value: '❌ Not Linked',
+        inline: true
+      });
+    }
+
+    if (fastcupData?.url) {
+      embed.fields.push({
+        name: '🟢 Fastcup Verification',
+        value: `✅ Linked\n**Rank:** ${fastcupData.level} (${fastcupData.skill})\n[Profile URL](${fastcupData.url})`,
+        inline: true
+      });
+      rolesGiven += `, \`CS 1.6 Player\`, \`Fastcup | Rank ${fastcupData.level}\``;
+    } else {
+      embed.fields.push({
+        name: '🟢 Fastcup Verification',
+        value: '❌ Not Linked',
+        inline: true
+      });
+    }
+
+    embed.fields.push({
+      name: '🏷️ Assigned Roles',
+      value: rolesGiven,
+      inline: false
+    });
+
+    await channel.send({ embeds: [embed] });
+
+  } catch (error) {
+    logger.error('Failed to send verification log panel:', error);
+  }
+}
