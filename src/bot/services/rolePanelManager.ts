@@ -77,12 +77,19 @@ export async function sendRoleSelectionPanel(channelId: string) {
   logger.info('Role selection panel sent to ' + channelId);
 }
 
+import { STEAM_VERIFIED_ROLE_ID } from './roleManager.js';
+
 export async function handleCS2RankSelect(interaction: StringSelectMenuInteraction) {
-  await interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ flags: ['Ephemeral'] });
   
   const member = interaction.member as GuildMember;
   const selectedRoleId = interaction.values[0];
   if (!selectedRoleId) return interaction.editReply('❌ No role selected.');
+
+  // Check if Steam Verified
+  if (!member.roles.cache.has(STEAM_VERIFIED_ROLE_ID)) {
+    return interaction.editReply('❌ **Access Denied!** You must connect and verify your Steam account first before you can select a CS2 Rank. Please go to the verification channel.');
+  }
   
   // Find all CS2 rank roles
   const allCs2Roles = interaction.guild!.roles.cache
@@ -107,7 +114,7 @@ export async function handleCS2RankSelect(interaction: StringSelectMenuInteracti
 }
 
 export async function handleChatColorSelect(interaction: StringSelectMenuInteraction) {
-  await interaction.deferReply({ ephemeral: true });
+  await interaction.deferReply({ flags: ['Ephemeral'] });
   
   const member = interaction.member as GuildMember;
   const selectedRoleId = interaction.values[0];
