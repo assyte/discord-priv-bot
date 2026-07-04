@@ -53,10 +53,10 @@ export class ActivityTracker {
     const users: DbUser[] = await conn.query('SELECT discord_id, steam_id_64 FROM users WHERE is_verified = 1');
     conn.release();
 
-    const activeCS2 = new Map<string, { id: string, username: string, extraInfo?: string }>();
-    const activeCS16 = new Map<string, { id: string, username: string, extraInfo?: string }>();
-    const activeFaceit = new Map<string, { id: string, username: string, extraInfo?: string }>();
-    const activeFastcup = new Map<string, { id: string, username: string, extraInfo?: string }>();
+    const activeCS2 = new Map<string, any>();
+    const activeCS16 = new Map<string, any>();
+    const activeFaceit = new Map<string, any>();
+    const activeFastcup = new Map<string, any>();
 
     const discordMembers = await guild.members.fetch();
 
@@ -68,24 +68,40 @@ export class ActivityTracker {
       let playingCS16 = false;
       let playingFaceit = false;
       let playingFastcup = false;
-      let extraInfo = '';
+      
+      let state = '';
+      let details = '';
+      let elapsed = '';
 
       for (const activity of member.presence.activities) {
         const name = activity.name?.toLowerCase() || '';
-        const state = activity.state?.toLowerCase() || '';
-        const details = activity.details?.toLowerCase() || '';
-        const fullText = `${name} ${state} ${details}`;
+        const actState = activity.state || '';
+        const actDetails = activity.details || '';
+        const fullText = `${name} ${actState} ${actDetails}`.toLowerCase();
 
-        if (fullText.includes('counter-strike 2') || name === 'cs2') {
-          playingCS2 = true;
-          if (details) extraInfo = activity.details!;
+        const isCS2 = fullText.includes('counter-strike 2') || name === 'cs2';
+        const isCS16 = fullText.includes('counter-strike 1.6') || name === 'counter-strike';
+        const isFaceit = fullText.includes('faceit');
+        const isFastcup = fullText.includes('fastcup');
+
+        if (isCS2 || isCS16 || isFaceit || isFastcup) {
+          if (isCS2) playingCS2 = true;
+          if (isCS16) playingCS16 = true;
+          if (isFaceit) playingFaceit = true;
+          if (isFastcup) playingFastcup = true;
+
+          state = actState;
+          details = actDetails;
+
+          if (activity.timestamps?.start) {
+            const diffMs = Date.now() - activity.timestamps.start.getTime();
+            const mins = Math.floor(diffMs / 60000);
+            elapsed = mins > 0 ? `${mins}m` : '<1m';
+          }
         }
-        if (fullText.includes('counter-strike 1.6') || name === 'counter-strike') playingCS16 = true;
-        if (fullText.includes('faceit')) playingFaceit = true;
-        if (fullText.includes('fastcup')) playingFastcup = true;
       }
 
-      const userData = { id: member.id, username: member.user.username, extraInfo };
+      const userData = { id: member.id, username: member.user.username, state, details, elapsed, source: 'discord' };
 
       if (playingCS2) activeCS2.set(member.id, userData);
       if (playingCS16) activeCS16.set(member.id, userData);
@@ -111,7 +127,7 @@ export class ActivityTracker {
 
             const discordId = discordUser.discord_id;
             const member = discordMembers.get(discordId);
-            const username = member ? member.user.username : 'Bilinmeyen Kullanıcı';
+            const username = member ? member.user.username : 'Unknown Player';
 
             const gameId = player.gameid;
             const gameInfo = player.gameextrainfo || '';
@@ -120,7 +136,7 @@ export class ActivityTracker {
             const isPlayingFaceit = gameInfo.toLowerCase().includes('faceit');
             const isPlayingFastcup = gameInfo.toLowerCase().includes('fastcup');
 
-            const userData = { id: discordId, username, extraInfo: gameInfo };
+            const userData = { id: discordId, username, state: gameInfo, details: '', elapsed: '', source: 'steam' };
 
             if (isPlayingCS2 && !activeCS2.has(discordId)) activeCS2.set(discordId, userData);
             if (isPlayingCS16 && !activeCS16.has(discordId)) activeCS16.set(discordId, userData);

@@ -130,7 +130,7 @@ export class ActivityChannelManager {
     }
   }
 
-  static async updatePanel(type: 'cs2' | 'faceit' | 'cs16' | 'fastcup', activeUsers: { id: string; username: string; extraInfo?: string }[]) {
+  static async updatePanel(type: 'cs2' | 'faceit' | 'cs16' | 'fastcup', activeUsers: any[]) {
     const msg = PANEL_MESSAGES[type];
     if (!msg) return;
 
@@ -142,7 +142,7 @@ export class ActivityChannelManager {
     }
   }
 
-  private static buildEmbed(type: string, activeUsers: { id: string; username: string; extraInfo?: string }[]) {
+  private static buildEmbed(type: string, activeUsers: any[]) {
     const cfg = PANEL_CONFIG[type];
     if (!cfg) return new EmbedBuilder();
 
@@ -160,27 +160,43 @@ export class ActivityChannelManager {
       return embed;
     }
 
-    embed.setDescription(`**${count}** player${count !== 1 ? 's' : ''} currently tracked\n${SEPARATOR.repeat(24)}`);
+    embed.setDescription(`*Currently tracking **${count}** active player${count !== 1 ? 's' : ''}.*`);
 
-    const displayLimit = 50;
+    const displayLimit = 24; // Discord max fields is 25
     const players = activeUsers.slice(0, displayLimit);
 
-    for (let i = 0; i < players.length; i += 10) {
-      const chunk = players.slice(i, i + 10);
-      let value = '';
+    for (const [index, user] of players.entries()) {
+      let icon = '🎮';
+      if (type === 'cs2') icon = '🔫';
+      if (type === 'faceit') icon = '🟠';
+      if (type === 'fastcup') icon = '🟢';
+      if (type === 'cs16') icon = '💣';
 
-      for (const [offset, user] of chunk.entries()) {
-        const rank = i + offset + 1;
-        const badge = rank <= 3 ? MEDALS[rank - 1] : `\`#${rank.toString().padStart(2, '0')}\``;
-        const info = user.extraInfo ? ` \u2022 *${user.extraInfo}*` : '';
-        value += `${badge} <@${user.id}>${info}\n`;
+      let detailsBlock = '';
+      if (user.source === 'discord') {
+        const dmap = user.details ? `🗺️ **Mode/Map:** ${user.details}\n` : '';
+        const dstate = user.state ? `📊 **Status:** ${user.state}\n` : '';
+        const dtime = user.elapsed ? `⏱️ **Elapsed:** ${user.elapsed} in-game` : '';
+        detailsBlock = `>>> ${dmap}${dstate}${dtime}`;
+      } else {
+        const info = user.state || 'In game via Steam';
+        detailsBlock = `>>> 🌐 **Source:** Steam\n📊 **Status:** ${info}`;
+      }
+      
+      // Prevent completely empty blocks from crashing Discord API
+      if (detailsBlock === '>>> ') {
+        detailsBlock = '>>> 🕹️ *Playing right now*';
       }
 
-      embed.addFields({ name: '\u200B', value: value, inline: false });
+      embed.addFields({
+        name: `${icon} ${user.username}`,
+        value: detailsBlock,
+        inline: false
+      });
     }
 
     if (count > displayLimit) {
-      embed.addFields({ name: '\u200B', value: `> *...and ${count - displayLimit} more*`, inline: false });
+      embed.addFields({ name: '\u200B', value: `> *...and ${count - displayLimit} more players hidden*`, inline: false });
     }
 
     return embed;
