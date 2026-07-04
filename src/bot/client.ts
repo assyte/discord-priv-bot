@@ -19,7 +19,8 @@ export class ClutchClient extends Client {
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.GuildMembers
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildPresences
       ]
     });
     this.commands = new Collection();
@@ -30,7 +31,7 @@ export class ClutchClient extends Client {
     await this.loadEvents();
     
     if (!process.env.BOT_TOKEN) {
-      logger.error('BOT_TOKEN bulunamadı!');
+      logger.error('BOT_TOKEN not found!');
       return;
     }
 
@@ -48,13 +49,13 @@ export class ClutchClient extends Client {
 
     for (const file of commandFiles) {
       const filePath = path.join(commandsPath, file);
-      // Windows için file:// eklentisi (dinamik import)
+      // file:// prefix for Windows dynamic imports
       const command = await import(`file://${filePath}`);
       if (command.default && command.default.data && command.default.execute) {
         this.commands.set(command.default.data.name, command.default);
         slashCommands.push(command.default.data.toJSON());
       } else {
-        logger.warn(`${file} geçerli bir komut yapısına sahip değil.`);
+        logger.warn(`${file} does not have a valid command structure.`);
       }
     }
 
@@ -69,7 +70,7 @@ export class ClutchClient extends Client {
         );
         logger.info('Successfully reloaded application (/) commands.');
       } catch (error) {
-        logger.error('Slash komutları yüklenirken hata oluştu:', error);
+        logger.error('Error loading slash commands:', error);
       }
     }
   }

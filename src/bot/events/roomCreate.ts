@@ -83,7 +83,7 @@ export default {
 
       await voiceChannel.send({ embeds: [embed], components: [row] });
 
-      // Odayı oluşturan kişiyi odaya taşı (eğer bir seste ise)
+      // Move room creator to the channel (if in voice)
       if (member.voice?.channelId) {
         await member.voice.setChannel(voiceChannel).catch(() => null);
       }

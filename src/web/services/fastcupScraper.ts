@@ -15,7 +15,7 @@ export async function scrapeFastcupProfile(url: string): Promise<FastcupData> {
   }
   const urlParts = url.split('/');
   const lastPart = urlParts[urlParts.length - 1] || '';
-  // `id12345` ise `12345` al, değilse (custom URL) direkt `asyte` olarak sakla.
+  // If `id12345` extract `12345`, otherwise use the custom slug directly (e.g. `asyte`)
   const fastcupId = lastPart.startsWith('id') && !isNaN(Number(lastPart.replace('id', ''))) 
     ? lastPart.replace('id', '') 
     : lastPart;

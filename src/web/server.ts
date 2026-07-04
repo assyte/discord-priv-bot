@@ -67,7 +67,7 @@ export async function startWeb() {
   app.use('/auth', authRoutes);
   app.use('/api', apiRoutes);
 
-  // Ana Sayfa Yönlendirmesi
+  // Homepage redirect
   app.get('/', (req, res) => {
     if (req.user) {
       res.redirect('/dashboard');
@@ -91,14 +91,14 @@ export async function startWeb() {
       const dbUser = rows[0] || null;
       res.render('dashboard', { user: discordUser, dbUser });
     } catch (err) {
-      logger.error('Dashboard yüklenirken hata:', err);
+      logger.error('Error loading dashboard:', err);
       res.redirect('/');
     }
   });
 
   return new Promise<void>((resolve) => {
     app.listen(port, () => {
-      logger.info(`Web sunucusu http://localhost:${port} (veya https://${process.env.DOMAIN}) üzerinde çalışıyor.`);
+      logger.info(`Web server running on http://localhost:${port} (or https://${process.env.DOMAIN})`);
       resolve();
     });
   });

@@ -20,7 +20,7 @@ export async function initDatabase() {
   try {
     conn = await dbPool.getConnection();
     
-    // 1. Kullanıcı Bilgileri Tablosu
+    // 1. User Information Table
     await conn.query(`
       CREATE TABLE IF NOT EXISTS users (
         discord_id VARCHAR(20) NOT NULL PRIMARY KEY,
@@ -41,20 +41,20 @@ export async function initDatabase() {
       ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     `);
 
-    // Hızlı Migrasyon: Sütunlar eksikse ekle
+    // Quick migration: add columns if missing
     try {
       await conn.query('ALTER TABLE users ADD COLUMN fastcup_url VARCHAR(255) DEFAULT NULL');
       await conn.query('ALTER TABLE users ADD COLUMN fastcup_id VARCHAR(50) DEFAULT NULL UNIQUE');
       await conn.query('ALTER TABLE users ADD COLUMN fastcup_skill INT DEFAULT 1000');
       await conn.query('ALTER TABLE users ADD COLUMN fastcup_level VARCHAR(2) DEFAULT "E"');
-      logger.info('Fastcup sütunları başarıyla eklendi.');
+      logger.info('Fastcup columns added successfully.');
     } catch (e: any) {
       if (e.code !== 'ER_DUP_FIELDNAME') {
-        logger.error('Fastcup sütunları eklenirken hata: ' + e.message);
+        logger.error('Error adding Fastcup columns: ' + e.message);
       }
     }
 
-    // 2. Canlı Hub Maçları ve Lobi Takip Tablosu
+    // 2. Live Hub Matches & Lobby Tracking Table
     await conn.query(`
       CREATE TABLE IF NOT EXISTS active_matches (
         match_id VARCHAR(50) NOT NULL PRIMARY KEY,
@@ -70,7 +70,7 @@ export async function initDatabase() {
       ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     `);
 
-    // 3. Maç Oyuncuları Eşleştirme Tablosu
+    // 3. Match Players Mapping Table
     await conn.query(`
       CREATE TABLE IF NOT EXISTS match_players (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -82,9 +82,9 @@ export async function initDatabase() {
       ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     `);
 
-    logger.info('MariaDB bağlantısı başarılı ve tablolar doğrulandı.');
+    logger.info('MariaDB connection successful and tables verified.');
   } catch (err) {
-    logger.error('Veritabanı bağlantı veya kurulum hatası:', err);
+    logger.error('Database connection or setup error:', err);
     throw err;
   } finally {
     if (conn) conn.release();

@@ -9,11 +9,10 @@ const logger = new Logger('LastMatchCommand');
 export default {
   data: new SlashCommandBuilder()
     .setName('lastmatch')
-    .setDescription('Son FACEIT CS2 maçınızın detaylarını gösterir.')
-    .addUserOption(option => 
+    .setDescription('Shows details of your last FACEIT CS2 match.')
+    .addUserOption(option =>
       option.setName('user')
-      .setDescription('İstatistiklerine bakmak istediğiniz kullanıcı (Boş bırakırsanız kendi profiliniz)')
-      .setRequired(false)
+        .setDescription('User to view stats for (leave empty for your own profile)')
     ),
   async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
@@ -27,24 +26,24 @@ export default {
       
       if (!rows || rows.length === 0) {
         return interaction.editReply({
-          content: `${targetUser.username} henüz Clutch.gg üzerinden FACEIT hesabını doğrulamamış.`
+          content: `${targetUser.username} has not verified their FACEIT account via Clutch.gg yet.`
         });
       }
 
       const userDb = rows[0];
 
-      // Kullanıcının maç geçmişini çek (Son 1 maç)
+      // Fetch user's match history (last 1 match)
       const historyRes = await axios.get(`https://open.faceit.com/data/v4/players/${userDb.faceit_id}/history?game=cs2&offset=0&limit=1`, {
         headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
       });
 
       if (historyRes.data.items.length === 0) {
-        return interaction.editReply({ content: 'Bu kullanıcının henüz FACEIT CS2 maç geçmişi bulunmuyor.' });
+        return interaction.editReply({ content: 'This user has no FACEIT CS2 match history yet.' });
       }
 
       const matchId = historyRes.data.items[0].match_id;
 
-      // Maç detaylarını çek
+      // Fetch match details
       const matchStatsRes = await axios.get(`https://open.faceit.com/data/v4/matches/${matchId}/stats`, {
         headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
       });
@@ -54,7 +53,7 @@ export default {
       const playerStats = allPlayers.find((p: any) => p.player_id === userDb.faceit_id);
 
       if (!playerStats) {
-        return interaction.editReply({ content: 'Son maç verilerinde oyuncu bulunamadı.' });
+        return interaction.editReply({ content: 'Could not find player in last match data.' });
       }
 
       const pStats = playerStats.player_stats;
@@ -62,15 +61,15 @@ export default {
 
       const embed = new EmbedBuilder()
         .setColor(isWin ? '#2e7d32' : '#d32f2f')
-        .setTitle(`🎮 Son Maç Özeti | ${userDb.faceit_username}`)
-        .setDescription(`**Harita:** ${matchData.round_stats.Map} | **Skor:** ${matchData.round_stats.Score}`)
+        .setTitle(`🎮 Last Match Summary | ${userDb.faceit_username}`)
+        .setDescription(`**Map:** ${matchData.round_stats.Map} | **Score:** ${matchData.round_stats.Score}`)
         .addFields(
-          { name: 'Sonuç', value: isWin ? '🏆 Galibiyet' : '💀 Mağlubiyet', inline: true },
+          { name: 'Result', value: isWin ? 'Victory' : 'Defeat', inline: true },
           { name: 'K/D/A', value: `${pStats.Kills} / ${pStats.Deaths} / ${pStats.Assists}`, inline: true },
-          { name: 'K/D Oranı', value: `${pStats['K/D Ratio']}`, inline: true },
+          { name: 'K/D Ratio', value: `${pStats['K/D Ratio']}`, inline: true },
           { name: 'Headshots', value: `🎯 ${pStats.Headshots} (${pStats['Headshots %']}%)`, inline: true },
           { name: 'MVP', value: `⭐ ${pStats.MVPs}`, inline: true },
-          { name: 'Puan (Kills)', value: `🔥 ${pStats.Kills}`, inline: true }
+          { name: 'Score (Kills)', value: `🔥 ${pStats.Kills}`, inline: true }
         )
         .setTimestamp()
         .setFooter({ text: 'FACEITLUTCH', iconURL: interaction.client.user?.displayAvatarURL() });
@@ -78,8 +77,8 @@ export default {
       await interaction.editReply({ embeds: [embed] });
 
     } catch (error) {
-      logger.error('Lastmatch hatası:', error);
-      await interaction.editReply({ content: 'Maç istatistikleri çekilirken bir hata oluştu.' });
+    logger.error('Lastmatch error:', error);
+    await interaction.editReply({ content: 'An error occurred while fetching match stats.' });
     } finally {
       if (conn) conn.release();
     }

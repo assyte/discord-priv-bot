@@ -7,13 +7,13 @@ import { Logger } from '../utils/logger.js';
 const logger = new Logger('EloSynchronizer');
 
 export function startWorkers() {
-  // Her 15 dakikada bir çalıştır
+  // Run every 15 minutes
   cron.schedule('*/15 * * * *', async () => {
-    logger.info('ELO Senkronizasyon işçisi çalışıyor...');
+    logger.info('ELO sync worker running...');
     let conn: any;
     try {
       conn = await dbPool.getConnection();
-      // Sadece onaylanmış kullanıcıları çek
+      // Only fetch verified users
       const users = await conn.query('SELECT discord_id, faceit_id, faceit_elo, faceit_level FROM users WHERE is_verified = 1');
       
       let updatedCount = 0;
@@ -34,19 +34,19 @@ export function startWorkers() {
             
             updatedCount++;
             
-            // Eğer seviye değiştiyse discord rolünü güncelle
+            // Update Discord role if level changed
             if (newLevel !== user.faceit_level) {
               await assignVerifiedRoles(user.discord_id, newLevel);
             }
           }
         } catch (apiErr) {
-          logger.warn(`Faceit API Hatası (User: ${user.discord_id}):`, apiErr);
+          logger.warn(`Faceit API Error (User: ${user.discord_id}):`, apiErr);
         }
       }
 
-      logger.info(`Senkronizasyon tamamlandı. Toplam ${updatedCount} kullanıcının istatistikleri güncellendi.`);
+      logger.info(`Sync complete. Updated stats for ${updatedCount} users.`);
     } catch (error) {
-      logger.error('Senkronizasyon işçisinde kritik hata:', error);
+      logger.error('Critical error in sync worker:', error);
     } finally {
       if (conn) conn.release();
     }

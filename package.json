@@ -1,7 +1,7 @@
 {
   "name": "premium-discord-bot",
   "version": "1.0.0",
-  "description": "Premium Turkish Discord Bot - Moderation, Guard, Registration, Invite, Log, Report",
+  "description": "Clutch.gg Discord Bot — FACEIT / Fastcup / Steam integration, ELO tracking, private rooms, and activity monitoring",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {

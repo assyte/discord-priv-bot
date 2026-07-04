@@ -15,7 +15,7 @@ export async function handleMatchReady(payload: any) {
   try {
     conn = await dbPool.getConnection();
     
-    // Maçı DB'ye kaydet
+    // Save match to DB
     await conn.query(`
       INSERT INTO active_matches (match_id, hub_id, status, team_a_name, team_b_name, team_a_captain, team_b_captain)
       VALUES (?, ?, 'READY', ?, ?, ?, ?)
@@ -25,7 +25,7 @@ export async function handleMatchReady(payload: any) {
     const guild = client.guilds.cache.get(process.env.GUILD_ID!);
     if (!guild) return;
 
-    // Geçici ses kanalları oluştur
+    // Create temporary voice channels
     const channelA = await guild.channels.create({
       name: `Match ${matchId.substring(0,5)} - ${teamA.name}`,
       type: ChannelType.GuildVoice,
@@ -38,15 +38,15 @@ export async function handleMatchReady(payload: any) {
       userLimit: 5
     });
 
-    // DB'ye kanalları güncelle
+    // Update channels in DB
     await conn.query(`UPDATE active_matches SET voice_channel_a = ?, voice_channel_b = ? WHERE match_id = ?`, 
       [channelA.id, channelB.id, matchId]);
 
-    // Oyuncuları eşleştir ve DB'ye yaz
+    // Map players and save to DB
     const movePlayers = async (team: any, teamChar: string, voiceChannelId: string) => {
       for (const roster of team.roster) {
         const faceitId = roster.id;
-        // Bu Faceit ID'sine sahip Discord kullanıcısını bul
+        // Find Discord user with this Faceit ID
         const rows = await conn.query('SELECT discord_id FROM users WHERE faceit_id = ?', [faceitId]);
         if (rows.length > 0) {
           const discordId = rows[0].discord_id;
@@ -54,11 +54,11 @@ export async function handleMatchReady(payload: any) {
           await conn.query('INSERT INTO match_players (match_id, discord_id, team) VALUES (?, ?, ?)', 
             [matchId, discordId, teamChar]);
 
-          // Kullanıcı şu an sunucuda bir seste mi?
+          // Is the user currently in a voice channel?
           const member = guild.members.cache.get(discordId);
           if (member && member.voice.channelId) {
-            await member.voice.setChannel(voiceChannelId).catch(err => logger.error(`Kullanıcı taşınamadı: ${discordId}`, err));
-            logger.info(`${member.user.tag} -> ${teamChar} takım odasına taşındı.`);
+            await member.voice.setChannel(voiceChannelId).catch(err => logger.error(`Could not move user: ${discordId}`, err));
+            logger.info(`${member.user.tag} -> moved to team ${teamChar} channel.`);
           }
         }
       }
@@ -68,7 +68,7 @@ export async function handleMatchReady(payload: any) {
     await movePlayers(teamB, 'B', channelB.id);
 
   } catch (error) {
-    logger.error('handleMatchReady hatası:', error);
+    logger.error('handleMatchReady error:', error);
   } finally {
     if (conn) conn.release();
   }
@@ -91,8 +91,8 @@ export async function handleMatchFinished(payload: any) {
     const guild = client.guilds.cache.get(process.env.GUILD_ID!);
     if (!guild) return;
 
-    // Oyuncuları bekleme odasına (veya null'a) geri al
-    const LOBBY_CHANNEL_ID = process.env.LOBBY_CHANNEL_ID; // İsteğe bağlı
+    // Move players back to waiting room (or null)
+    const LOBBY_CHANNEL_ID = process.env.LOBBY_CHANNEL_ID; // Optional
     const players = await conn.query('SELECT discord_id FROM match_players WHERE match_id = ?', [matchId]);
     
     for (const p of players) {
@@ -106,7 +106,7 @@ export async function handleMatchFinished(payload: any) {
       }
     }
 
-    // Odaları sil
+    // Delete channels
     if (match.voice_channel_a) {
       const ch = guild.channels.cache.get(match.voice_channel_a);
       if (ch) await ch.delete().catch(() => {});
@@ -117,7 +117,7 @@ export async function handleMatchFinished(payload: any) {
     }
 
   } catch (error) {
-    logger.error('handleMatchFinished hatası:', error);
+    logger.error('handleMatchFinished error:', error);
   } finally {
     if (conn) conn.release();
   }

@@ -10,7 +10,7 @@ const router = Router();
 
 // FACEIT Webhook Endpoint
 router.post('/faceit-webhook', async (req, res) => {
-  // Basit Authorization (İsteğe bağlı, Faceit ayarlarına bağlı)
+  // Simple Authorization (Optional, depends on Faceit config)
   const authHeader = req.headers.authorization;
   if (process.env.FACEIT_WEBHOOK_SECRET && authHeader !== `Bearer ${process.env.FACEIT_WEBHOOK_SECRET}`) {
     return res.status(401).send('Unauthorized');
@@ -19,7 +19,7 @@ router.post('/faceit-webhook', async (req, res) => {
   const payload = req.body;
   const event = payload.event;
   
-  logger.info(`FACEIT Webhook alındı: ${event}`);
+  logger.info(`FACEIT Webhook received: ${event}`);
 
   try {
     if (event === 'match_status_ready') {
@@ -30,7 +30,7 @@ router.post('/faceit-webhook', async (req, res) => {
 
     res.status(200).send('OK');
   } catch (error) {
-    logger.error('Webhook işlenirken hata oluştu:', error);
+    logger.error('Error processing webhook:', error);
     res.status(500).send('Internal Server Error');
   }
 });

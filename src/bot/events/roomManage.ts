@@ -24,10 +24,10 @@ async function handleButton(interaction: ButtonInteraction) {
   const channel = interaction.channel as VoiceChannel;
   if (!channel || !channel.isVoiceBased()) return;
 
-  // Sadece odayı oluşturan veya yetkili (Administrator) işlem yapabilir.
-  // Odalar "[Tür] İsim" formatında. Basitlik adına, kanalın permission overwrite'ında
-  // etkileşimi yapan kişinin açıkça izni var mı diye bakabiliriz veya kanal isminden vs.
-  // Ama en güvenlisi: o kişinin kanalda özel izin override'ı var mı?
+  // Only the room creator or admin can manage
+  // Rooms are in "[Type] Name" format. For simplicity we check
+  // if the user has explicit Connect permission on the channel.
+  // Most reliable: does this user have a custom permission override?
   const memberPerms = channel.permissionOverwrites.cache.get(interaction.user.id);
   const isOwner = memberPerms && memberPerms.allow.has(PermissionFlagsBits.Connect);
   const isAdmin = (interaction.member?.permissions as any)?.has(PermissionFlagsBits.Administrator);
@@ -47,8 +47,8 @@ async function handleButton(interaction: ButtonInteraction) {
       await interaction.deferReply({ ephemeral: true });
       const verifiedRoles = [VERIFIED_ROLE_ID, CS16_ROLE_ID, STEAM_VERIFIED_ROLE].filter(Boolean);
       
-      // Odanın şu anki verified rol izinlerini kontrol et
-      // Eğer bir rolün izni false ise (kilitli), true yapacağız. True veya null ise false yapacağız.
+      // Check current verified role permissions on the room
+      // If a role has Connect denied (locked), we'll allow it. Otherwise we'll deny it.
       let isCurrentlyLocked = false;
       if (verifiedRoles.length > 0) {
         const firstRoleId = verifiedRoles[0] as string;
@@ -69,7 +69,7 @@ async function handleButton(interaction: ButtonInteraction) {
         for (const roleId of verifiedRoles) {
           await channel.permissionOverwrites.edit(roleId, { Connect: false });
         }
-        // @everyone'ı da kesin olarak kapat (zaten kapalıydı ama garanti olsun)
+        // Also deny @everyone explicitly (should already be denied, but ensure it)
         await channel.permissionOverwrites.edit(channel.guild.id, { Connect: false });
         await interaction.editReply({ content: '🔒 Room is now **LOCKED**. Only you and whitelisted users can join.' });
       }
@@ -112,11 +112,11 @@ async function handleWhitelistSelect(interaction: UserSelectMenuInteraction) {
     const hasAccess = existingPerms && existingPerms.allow.has(PermissionFlagsBits.Connect);
 
     if (hasAccess) {
-      // Çıkar
+      // Remove
       await channel.permissionOverwrites.delete(targetUserId);
       await interaction.editReply({ content: `✅ <@${targetUserId}> has been **removed** from the whitelist.`, components: [] });
     } else {
-      // Ekle
+      // Add
       await channel.permissionOverwrites.edit(targetUserId, {
         ViewChannel: true,
         Connect: true,

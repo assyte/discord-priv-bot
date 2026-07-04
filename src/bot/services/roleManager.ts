@@ -3,8 +3,9 @@ import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('RoleManager');
 
-// Bu objeyi doldurmak için kullanıcıdan ID'ler beklenecek
+// Role IDs are loaded from environment variables
 export const ROLE_MAP: Record<number, string> = {
+  0: '1522991993519603852', // Level 0 (Unranked)
   1: process.env.ROLE_LEVEL_1 || '',
   2: process.env.ROLE_LEVEL_2 || '',
   3: process.env.ROLE_LEVEL_3 || '',
@@ -31,7 +32,7 @@ export async function assignVerifiedRoles(discordId: string, faceitLevel: number
     const rolesToAdd: string[] = [];
     const rolesToRemove: string[] = [];
 
-    // Önceki seviye rollerini temizlemek için tespit et
+    // Detect old level roles to clean up
     for (const [levelStr, roleId] of Object.entries(ROLE_MAP)) {
       if (!roleId) continue;
       const level = parseInt(levelStr);
@@ -48,16 +49,16 @@ export async function assignVerifiedRoles(discordId: string, faceitLevel: number
 
     if (rolesToRemove.length > 0) {
       await member.roles.remove(rolesToRemove);
-      logger.debug(`${member.user.tag} kullanıcısından eski seviye rolleri alındı.`);
+      logger.debug(`Removed old level roles from ${member.user.tag}`);
     }
 
     if (rolesToAdd.length > 0) {
       await member.roles.add(rolesToAdd);
-      logger.info(`${member.user.tag} kullanıcısına Level ${faceitLevel} ve Verified rolü verildi.`);
+      logger.info(`Assigned Level ${faceitLevel} and Verified role to ${member.user.tag}`);
     }
 
   } catch (error) {
-    logger.error(`assignVerifiedRoles hatası: ${discordId}`, error);
+    logger.error(`assignVerifiedRoles error: ${discordId}`, error);
   }
 }
 
@@ -74,10 +75,10 @@ export async function assignSteamVerifiedRole(discordId: string) {
 
     if (!member.roles.cache.has(STEAM_VERIFIED_ROLE_ID)) {
       await member.roles.add(STEAM_VERIFIED_ROLE_ID);
-      logger.info(`${member.user.tag} kullanıcısına Steam Verified rolü verildi.`);
+      logger.info(`Assigned Steam Verified role to ${member.user.tag}`);
     }
   } catch (error) {
-    logger.error(`assignSteamVerifiedRole hatası: ${discordId}`, error);
+    logger.error(`assignSteamVerifiedRole error: ${discordId}`, error);
   }
 }
 
@@ -106,7 +107,7 @@ export async function assignFastcupRoles(discordId: string, fastcupLevel: string
     const rolesToAdd: string[] = [];
     const rolesToRemove: string[] = [];
 
-    // Önceki seviye rollerini temizle
+    // Clean up previous rank roles
     for (const [levelChar, roleId] of Object.entries(FASTCUP_ROLE_MAP)) {
       if (!roleId) continue;
       if (levelChar === fastcupLevel.toUpperCase()) {
@@ -122,15 +123,15 @@ export async function assignFastcupRoles(discordId: string, fastcupLevel: string
 
     if (rolesToRemove.length > 0) {
       await member.roles.remove(rolesToRemove);
-      logger.debug(`${member.user.tag} kullanıcısından eski Fastcup rolleri alındı.`);
+      logger.debug(`Removed old Fastcup roles from ${member.user.tag}`);
     }
 
     if (rolesToAdd.length > 0) {
       await member.roles.add(rolesToAdd);
-      logger.info(`${member.user.tag} kullanıcısına Fastcup Rank ${fastcupLevel} ve CS16 Player rolü verildi.`);
+      logger.info(`Assigned Fastcup Rank ${fastcupLevel} and CS16 Player role to ${member.user.tag}`);
     }
 
   } catch (error) {
-    logger.error(`assignFastcupRoles hatası: ${discordId}`, error);
+    logger.error(`assignFastcupRoles error: ${discordId}`, error);
   }
 }

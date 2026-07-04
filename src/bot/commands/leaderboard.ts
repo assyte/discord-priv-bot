@@ -8,7 +8,7 @@ const logger = new Logger('LeaderboardCommand');
 export default {
   data: new SlashCommandBuilder()
     .setName('leaderboard')
-    .setDescription('Sunucudaki en yüksek FACEIT ELO\'suna sahip oyuncuları listeler.'),
+    .setDescription('Lists the players with the highest FACEIT ELO on the server.'),
   async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
@@ -24,13 +24,13 @@ export default {
       `);
 
       if (!rows || rows.length === 0) {
-        return interaction.editReply({ content: 'Liderlik tablosu henüz boş. Kimse kayıt olmamış!' });
+        return interaction.editReply({ content: 'The leaderboard is empty. No one has registered yet!' });
       }
 
       const embed = new EmbedBuilder()
         .setColor('#D4AF37')
-        .setTitle('🏆 CLUTCH.GG ELO LİDERLİK TABLOSU 🏆')
-        .setDescription('Sunucumuzun en iyi 10 CS2 oyuncusu:')
+        .setTitle(' FACEIT ELO LEADERBOARD')
+        .setDescription('Top 10 CS2 players on our server:')
         .setTimestamp()
         .setFooter({ text: 'FACEITLUTCH', iconURL: interaction.client.user?.displayAvatarURL() });
 
@@ -45,8 +45,8 @@ export default {
       await interaction.editReply({ embeds: [embed] });
 
     } catch (error) {
-      logger.error('Leaderboard hatası:', error);
-      await interaction.editReply({ content: 'Liderlik tablosu çekilirken bir hata oluştu.' });
+    logger.error('Leaderboard error:', error);
+    await interaction.editReply({ content: 'An error occurred while fetching the leaderboard.' });
     } finally {
       if (conn) conn.release();
     }

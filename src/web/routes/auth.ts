@@ -70,7 +70,7 @@ router.get('/step2', (req, res) => {
 
 router.get('/steam', (req, res, next) => {
   if (!req.user || !(req.user as any).discordId) return res.redirect('/');
-  // Discord datasını session'da geçici tut
+  // Store Discord data temporarily in session
   (req.session as any).tempDiscord = req.user;
   next();
 }, passport.authenticate('steam'));
@@ -83,7 +83,7 @@ router.get('/steam/callback', (req, res, next) => {
   failureRedirect: '/?error=steam_failed',
   keepSessionInfo: true
 }), (req, res) => {
-  // Steam dönüşü req.user Steam bilgisini alır, önceki Discord datasını birleştirelim
+  // Steam callback gets steam data in req.user; merge with previous Discord data
   const steamData = req.user as any;
   const discordData = (req.session as any).tempDiscord;
   
@@ -117,14 +117,14 @@ router.post('/complete', async (req, res) => {
   let faceitUsername = req.body.faceit_username?.trim();
   let fastcupUrl = req.body.fastcup_url?.trim();
 
-  // Her ikisini de boş bırakırlarsa sadece Steam Verified olacaklar.
-  // Bu yüzden hata fırlatmıyoruz, devam etmelerine izin veriyoruz.
+  // If both are empty, they'll just be Steam Verified.
+  // So we don't throw an error, just let them proceed.
 
   let faceitId = null, faceitElo = 1000, faceitLevel = 1;
   let fastcupId = null, fastcupSkill = 1000, fastcupLevel = 'E';
 
   try {
-    // 1. FACEIT İŞLEMLERİ (Varsa)
+    // 1. FACEIT PROCESSING (If provided)
     if (faceitUsername) {
       logger.info('Querying Faceit API for: ' + faceitUsername);
       const response = await axios.get(`https://open.faceit.com/data/v4/players?nickname=${faceitUsername}&game=cs2`, {
@@ -138,7 +138,7 @@ router.post('/complete', async (req, res) => {
       logger.info('user.steamId64: ' + user.steamId64);
 
       if (faceitData.steam_id_64 && String(faceitData.steam_id_64) !== String(user.steamId64)) {
-        return res.render('step3', { user, error: 'Girdiğiniz FACEIT hesabı, kullandığınız Steam hesabına bağlı değil!' });
+        return res.render('step3', { user, error: 'The FACEIT account you entered is not linked to your Steam account!' });
       } else if (!faceitData.steam_id_64 && faceitSteamId && String(faceitSteamId) !== String(user.steamId64)) {
         // Fallback
       }
@@ -146,10 +146,24 @@ router.post('/complete', async (req, res) => {
       faceitId = faceitData.player_id;
       const cs2Data = faceitData.games?.cs2 || {};
       faceitElo = cs2Data.faceit_elo || 1000;
-      faceitLevel = cs2Data.skill_level || 1;
+      let tempLevel = cs2Data.skill_level || 1;
+
+      try {
+        const statsRes = await axios.get(`https://open.faceit.com/data/v4/players/${faceitId}/stats/cs2`, {
+          headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
+        });
+        const totalMatches = parseInt(statsRes.data.lifetime?.Matches || '0');
+        if (totalMatches < 10) {
+          tempLevel = 0;
+        }
+      } catch (err) {
+        tempLevel = 0; // Returns 404 if no matches played
+      }
+      
+      faceitLevel = tempLevel;
     }
 
-    // 2. FASTCUP İŞLEMLERİ (Varsa)
+    // 2. FASTCUP PROCESSING (If provided)
     if (fastcupUrl) {
       const { scrapeFastcupProfile } = await import('../services/fastcupScraper.js');
       const fData = await scrapeFastcupProfile(fastcupUrl);
@@ -158,7 +172,7 @@ router.post('/complete', async (req, res) => {
       fastcupLevel = fData.level;
     }
 
-    // 3. VERİTABANI KAYDI
+    // 3. DATABASE RECORD
     const conn = await dbPool.getConnection();
     try {
       if (faceitUsername && fastcupUrl) {
@@ -179,7 +193,7 @@ router.post('/complete', async (req, res) => {
         `, [user.discordId, user.steamId64, faceitId, faceitUsername, faceitElo, faceitLevel, fastcupUrl, fastcupId, fastcupSkill, fastcupLevel]);
       } 
       else if (faceitUsername) {
-        // Sadece Faceit
+        // Faceit only
         await conn.query(`
           INSERT INTO users (discord_id, steam_id_64, faceit_id, faceit_username, faceit_elo, faceit_level, is_verified)
           VALUES (?, ?, ?, ?, ?, ?, 1)
@@ -193,8 +207,8 @@ router.post('/complete', async (req, res) => {
         `, [user.discordId, user.steamId64, faceitId, faceitUsername, faceitElo, faceitLevel]);
       } 
       else if (fastcupUrl) {
-        // Sadece Fastcup (Faceit boş)
-        // NOT: Mevcut tabloda faceit_id NOT NULL UNIQUE olduğu için dummy değer atanmalıdır
+        // Fastcup only (Faceit empty)
+        // NOTE: faceit_id is NOT NULL UNIQUE, so we assign a dummy value
         const dummyFaceitId = `fc_${fastcupId}`;
         await conn.query(`
           INSERT INTO users (discord_id, steam_id_64, faceit_id, faceit_username, fastcup_url, fastcup_id, fastcup_skill, fastcup_level, is_verified)
@@ -209,7 +223,7 @@ router.post('/complete', async (req, res) => {
         `, [user.discordId, user.steamId64, dummyFaceitId, 'N/A', fastcupUrl, fastcupId, fastcupSkill, fastcupLevel]);
       }
 
-      logger.info(`${user.username} (${user.discordId}) doğrulamasını tamamladı.`);
+      logger.info(`${user.username} (${user.discordId}) completed verification.`);
       
       // DISCORD ROL ATAMALARI
       await assignSteamVerifiedRole(user.discordId);
@@ -236,20 +250,20 @@ router.post('/complete', async (req, res) => {
 
   } catch (error: any) {
     if (error.response) {
-      logger.error('Faceit/Fastcup API Hatası (HTTP ' + error.response.status + '): ' + JSON.stringify(error.response.data));
+      logger.error('Faceit/Fastcup API Error (HTTP ' + error.response.status + '): ' + JSON.stringify(error.response.data));
     } else {
-      logger.error('Sistem Hatası: ' + error.stack);
+      logger.error('System Error: ' + error.stack);
     }
     const errorMsg = error.message === 'Invalid Fastcup URL format'
-      ? 'Geçersiz Fastcup Profil URLsi! Lütfen profil linkinizi tam girin (Örn: https://cs.fastcup.net/id12345) veya boş bırakın.'
+      ? 'Invalid Fastcup Profile URL! Please enter your full profile link (e.g. https://cs.fastcup.net/id12345) or leave it blank.'
       : (error.response?.status === 404 
-        ? 'Kullanıcı bulunamadı. Lütfen kullanıcı adınızı kontrol edin.' 
-        : 'API veya Sistem Hatası. Lütfen daha sonra tekrar deneyin.');
+        ? 'User not found. Please check your username.' 
+        : 'API or System Error. Please try again later.');
     res.render('step3', { user, error: errorMsg });
   }
 });
 
-// Logout rotası
+// Logout route
 router.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) { return next(err); }
@@ -257,10 +271,10 @@ router.get('/logout', (req, res, next) => {
   });
 });
 
-// Dashboard'dan sonradan bağlama işlemi
+// Link accounts from dashboard
 router.post('/dashboard/connect', async (req, res) => {
   if (!req.user) {
-    return res.status(401).json({ success: false, message: 'Oturum süreniz dolmuş.' });
+    return res.status(401).json({ success: false, message: 'Your session has expired.' });
   }
 
   const { type, link } = req.body;
@@ -277,9 +291,23 @@ router.post('/dashboard/connect', async (req, res) => {
       });
       
       const faceitId = faceitRes.data.player_id;
-      const faceitLevel = faceitRes.data.games.cs2?.skill_level || faceitRes.data.games.csgo?.skill_level || 1;
+      const cs2Data = faceitRes.data.games?.cs2 || {};
+      const faceitElo = cs2Data.faceit_elo || 1000;
+      let faceitLevel = cs2Data.skill_level || 1;
       
-      await conn.query('UPDATE users SET faceit_id = ?, faceit_username = ? WHERE discord_id = ?', [faceitId, faceitUsername, user.id]);
+      try {
+        const statsRes = await axios.get(`https://open.faceit.com/data/v4/players/${faceitId}/stats/cs2`, {
+          headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
+        });
+        const totalMatches = parseInt(statsRes.data.lifetime?.Matches || '0');
+        if (totalMatches < 10) {
+          faceitLevel = 0;
+        }
+      } catch (err) {
+        faceitLevel = 0;
+      }
+      
+      await conn.query('UPDATE users SET faceit_id = ?, faceit_username = ?, faceit_level = ?, faceit_elo = ? WHERE discord_id = ?', [faceitId, faceitUsername, faceitLevel, faceitElo, user.id]);
       
       const { assignVerifiedRoles } = await import('../../bot/services/roleManager.js');
       await assignVerifiedRoles(user.id, faceitLevel);
@@ -300,7 +328,7 @@ router.post('/dashboard/connect', async (req, res) => {
     
   } catch (error: any) {
     logger.error(`Dashboard connect error (${type}):`, error.message);
-    res.status(500).json({ success: false, message: 'Bağlantı başarısız oldu. Girdiğiniz linki kontrol edin.' });
+    res.status(500).json({ success: false, message: 'Connection failed. Please check the link you entered.' });
   }
 });
 
