@@ -65,9 +65,9 @@ export async function initRulesPanel(guild: Guild) {
       .setTimestamp();
 
     const acceptButton = new ButtonBuilder()
-      .setCustomId(BUTTON_CUSTOM_ID)
-      .setLabel('✓ Accept Rules')
-      .setStyle(ButtonStyle.Success)
+      .setLabel('✓ Accept Rules & Verify')
+      .setStyle(ButtonStyle.Link)
+      .setURL('https://discord.com/channels/' + guild.id + '/1522961876139376640')
       .setEmoji('✅');
 
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(acceptButton);
@@ -77,42 +77,19 @@ export async function initRulesPanel(guild: Guild) {
     const botId = guild.client.user?.id;
     if (!botId) return;
 
-    const existingPanel = existingMessages.find(m => {
-      if (m.author.id !== botId || !m.components.length) return false;
-      const firstRow = m.components.at(0);
-      if (!firstRow || !('components' in firstRow)) return false;
-      return firstRow.components.some((c: any) => c.customId === BUTTON_CUSTOM_ID);
-    });
-
-    if (existingPanel) {
-      await existingPanel.edit({ embeds: [embed], components: [row] });
-      logger.info('Rules panel updated');
-    } else {
-      await channel.send({ embeds: [embed], components: [row] });
-      logger.info('Rules panel posted');
+    for (const [_, msg] of existingMessages) {
+      if (msg.author.id === botId && msg.embeds.length > 0) {
+        await msg.delete().catch(() => {});
+      }
     }
+
+    await channel.send({ embeds: [embed], components: [row] });
+    logger.info('Rules panel posted');
   } catch (error) {
     logger.error('Failed to initialize rules panel', error);
   }
 }
 
 export async function handleRulesAccept(interaction: import('discord.js').ButtonInteraction) {
-  const member = interaction.member;
-  if (!member || !('roles' in member)) {
-    return interaction.reply({ content: 'Could not process your request.', ephemeral: true });
-  }
-
-  const memberRoles = member.roles as import('discord.js').GuildMemberRoleManager;
-
-  if (memberRoles.cache.has(VERIFIED_ROLE_ID)) {
-    return interaction.reply({ content: 'You have already accepted the rules!', ephemeral: true });
-  }
-
-  await memberRoles.add(VERIFIED_ROLE_ID);
-  await memberRoles.remove(UNVERIFIED_ROLE_ID);
-
-  await interaction.reply({
-    content: '✅ Rules accepted! You now have full access to the server.',
-    ephemeral: true
-  });
+  return interaction.reply({ content: 'Bu buton artık kullanılmıyor, lütfen sayfayı yenileyin veya yeni panele tıklayın.', ephemeral: true });
 }
