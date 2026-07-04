@@ -80,7 +80,8 @@ router.get('/steam/callback', (req, res, next) => {
   logger.info('Session contents: ' + JSON.stringify(req.session));
   next();
 }, passport.authenticate('steam', {
-  failureRedirect: '/?error=steam_failed'
+  failureRedirect: '/?error=steam_failed',
+  keepSessionInfo: true
 }), (req, res) => {
   // Steam dönüşü req.user Steam bilgisini alır, önceki Discord datasını birleştirelim
   const steamData = req.user as any;
