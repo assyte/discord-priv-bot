@@ -64,5 +64,3 @@ export default {
     }
   },
 };
-
-export default command;

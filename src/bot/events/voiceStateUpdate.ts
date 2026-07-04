@@ -28,5 +28,3 @@ export default {
     }
   },
 };
-
-export default event;

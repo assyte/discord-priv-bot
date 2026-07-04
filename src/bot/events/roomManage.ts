@@ -129,5 +129,3 @@ async function handleWhitelistSelect(interaction: UserSelectMenuInteraction) {
     await interaction.editReply({ content: '❌ An error occurred.', components: [] });
   }
 }
-
-export default event;
