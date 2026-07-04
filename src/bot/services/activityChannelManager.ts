@@ -4,12 +4,12 @@ import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('ActivityChannelManager');
 
-const CATEGORY_NAME = 'Game Activity';
+const CATEGORY_NAME = '🎮 | Game Activity';
 const CHANNELS: Record<string, string> = {
-  cs2: 'cs-2-activity',
-  faceit: 'faceit-activity',
-  cs16: 'cs-1-6-activity',
-  fastcup: 'fastcup-activity'
+  cs2: '🔫・cs-2-activity',
+  faceit: '🟠・faceit-activity',
+  cs16: '💣・cs-1-6-activity',
+  fastcup: '🟢・fastcup-activity'
 };
 
 const PANEL_MESSAGES: Record<string, Message | null> = {
