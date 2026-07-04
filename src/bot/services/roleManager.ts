@@ -79,6 +79,11 @@ export async function assignSteamVerifiedRole(discordId: string) {
     const member = await guild.members.fetch(discordId).catch(() => null);
     if (!member) return;
 
+    if (member.roles.cache.has(UNVERIFIED_ROLE_ID)) {
+      await member.roles.remove(UNVERIFIED_ROLE_ID);
+      logger.debug(`Removed Unverified role from ${member.user.tag}`);
+    }
+
     if (!member.roles.cache.has(STEAM_VERIFIED_ROLE_ID)) {
       await member.roles.add(STEAM_VERIFIED_ROLE_ID);
       logger.info(`Assigned Steam Verified role to ${member.user.tag}`);
@@ -125,6 +130,10 @@ export async function assignFastcupRoles(discordId: string, fastcupLevel: string
 
     if (CS16_ROLE_ID && !member.roles.cache.has(CS16_ROLE_ID)) {
       rolesToAdd.push(CS16_ROLE_ID);
+    }
+
+    if (member.roles.cache.has(UNVERIFIED_ROLE_ID)) {
+      rolesToRemove.push(UNVERIFIED_ROLE_ID);
     }
 
     if (rolesToRemove.length > 0) {
