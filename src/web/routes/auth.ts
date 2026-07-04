@@ -6,7 +6,7 @@ import { config } from 'dotenv';
 import axios from 'axios';
 import { Logger } from '../../utils/logger.js';
 import { dbPool } from '../../database/connection.js';
-import { assignVerifiedRoles } from '../../bot/services/roleManager.js';
+import { assignVerifiedRoles, assignSteamVerifiedRole, assignFastcupRoles } from '../../bot/services/roleManager.js';
 
 config();
 
@@ -116,10 +116,9 @@ router.post('/complete', async (req, res) => {
 
   let faceitUsername = req.body.faceit_username?.trim();
   let fastcupUrl = req.body.fastcup_url?.trim();
-  
-  if (!faceitUsername && !fastcupUrl) {
-    return res.render('step3', { user, error: 'Lütfen en az bir hesabı (FACEIT veya Fastcup) bağlayın.' });
-  }
+
+  // Her ikisini de boş bırakırlarsa sadece Steam Verified olacaklar.
+  // Bu yüzden hata fırlatmıyoruz, devam etmelerine izin veriyoruz.
 
   let faceitId = null, faceitElo = 1000, faceitLevel = 1;
   let fastcupId = null, fastcupSkill = 1000, fastcupLevel = 'E';
@@ -213,11 +212,12 @@ router.post('/complete', async (req, res) => {
       logger.info(`${user.username} (${user.discordId}) doğrulamasını tamamladı.`);
       
       // DISCORD ROL ATAMALARI
+      await assignSteamVerifiedRole(user.discordId);
+
       if (faceitUsername) {
         await assignVerifiedRoles(user.discordId, faceitLevel);
       }
       if (fastcupUrl) {
-        const { assignFastcupRoles } = await import('../../bot/services/roleManager.js');
         await assignFastcupRoles(user.discordId, fastcupLevel);
       }
 

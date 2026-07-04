@@ -61,6 +61,26 @@ export async function assignVerifiedRoles(discordId: string, faceitLevel: number
   }
 }
 
+export const STEAM_VERIFIED_ROLE_ID = process.env.ROLE_STEAM_VERIFIED || '1522986492757278810';
+
+export async function assignSteamVerifiedRole(discordId: string) {
+  const client = getClient();
+  const guild = client.guilds.cache.get(process.env.GUILD_ID!);
+  if (!guild || !STEAM_VERIFIED_ROLE_ID) return;
+
+  try {
+    const member = await guild.members.fetch(discordId).catch(() => null);
+    if (!member) return;
+
+    if (!member.roles.cache.has(STEAM_VERIFIED_ROLE_ID)) {
+      await member.roles.add(STEAM_VERIFIED_ROLE_ID);
+      logger.info(`${member.user.tag} kullanıcısına Steam Verified rolü verildi.`);
+    }
+  } catch (error) {
+    logger.error(`assignSteamVerifiedRole hatası: ${discordId}`, error);
+  }
+}
+
 export const FASTCUP_ROLE_MAP: Record<string, string> = {
   'S': process.env.ROLE_FASTCUP_S || '',
   'A': process.env.ROLE_FASTCUP_A || '',
