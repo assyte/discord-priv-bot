@@ -34,6 +34,7 @@
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
     "passport-steam": "^1.0.18",
+    "puppeteer": "^25.3.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {

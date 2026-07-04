@@ -95,52 +95,109 @@ router.get('/step3', (req, res) => {
   res.render('step3', { user: req.user, error: null });
 });
 
-router.post('/faceit', async (req, res) => {
+router.post('/complete', async (req, res) => {
   const user = req.user as any;
   if (!user || !user.steamId64) return res.redirect('/');
 
   const faceitUsername = req.body.faceit_username;
-  if (!faceitUsername) return res.render('step3', { user, error: 'Lütfen FACEIT kullanıcı adınızı girin.' });
+  const fastcupUrl = req.body.fastcup_url;
+  
+  if (!faceitUsername && !fastcupUrl) {
+    return res.render('step3', { user, error: 'Lütfen en az bir hesabı (FACEIT veya Fastcup) bağlayın.' });
+  }
+
+  let faceitId = null, faceitElo = 1000, faceitLevel = 1;
+  let fastcupId = null, fastcupSkill = 1000, fastcupLevel = 'E';
 
   try {
-    // Faceit API'ye istek at
-    const response = await axios.get(`https://open.faceit.com/data/v4/players?nickname=${faceitUsername}&game=cs2`, {
-      headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
-    });
+    // 1. FACEIT İŞLEMLERİ (Varsa)
+    if (faceitUsername) {
+      const response = await axios.get(`https://open.faceit.com/data/v4/players?nickname=${faceitUsername}&game=cs2`, {
+        headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
+      });
+      const faceitData = response.data;
+      const faceitSteamId = faceitData.platforms?.steam;
+      
+      if (faceitSteamId && faceitSteamId !== user.steamId64) {
+        return res.render('step3', { user, error: 'Girdiğiniz FACEIT hesabı, kullandığınız Steam hesabına bağlı değil!' });
+      }
 
-    const faceitData = response.data;
-    const faceitId = faceitData.player_id;
-    const cs2Data = faceitData.games.cs2;
-    const faceitElo = cs2Data.faceit_elo;
-    const faceitLevel = cs2Data.skill_level;
-
-    // Steam eşleşme kontrolü (Opsiyonel ama güvenlik için çok önemli)
-    // Eğer FACEIT API'den gelen Steam ID ile bizim login olduğumuz Steam ID uyuşmuyorsa reddet!
-    // Faceit API genelde steam_id_64 döner.
-    const faceitSteamId = faceitData.platforms?.steam;
-    if (faceitSteamId && faceitSteamId !== user.steamId64) {
-      return res.render('step3', { user, error: 'Bu FACEIT hesabı, giriş yaptığınız Steam hesabına bağlı değil!' });
+      faceitId = faceitData.player_id;
+      const cs2Data = faceitData.games?.cs2 || {};
+      faceitElo = cs2Data.faceit_elo || 1000;
+      faceitLevel = cs2Data.skill_level || 1;
     }
 
-    // MariaDB'ye Kayıt (veya Güncelleme)
+    // 2. FASTCUP İŞLEMLERİ (Varsa)
+    if (fastcupUrl) {
+      const { scrapeFastcupProfile } = await import('../services/fastcupScraper.js');
+      const fData = await scrapeFastcupProfile(fastcupUrl);
+      fastcupId = fData.fastcupId;
+      fastcupSkill = fData.skill;
+      fastcupLevel = fData.level;
+    }
+
+    // 3. VERİTABANI KAYDI
     const conn = await dbPool.getConnection();
     try {
-      await conn.query(`
-        INSERT INTO users (discord_id, steam_id_64, faceit_id, faceit_username, faceit_elo, faceit_level, is_verified)
-        VALUES (?, ?, ?, ?, ?, ?, 1)
-        ON DUPLICATE KEY UPDATE 
-          steam_id_64 = VALUES(steam_id_64),
-          faceit_id = VALUES(faceit_id),
-          faceit_username = VALUES(faceit_username),
-          faceit_elo = VALUES(faceit_elo),
-          faceit_level = VALUES(faceit_level),
-          is_verified = 1
-      `, [user.discordId, user.steamId64, faceitId, faceitUsername, faceitElo, faceitLevel]);
+      if (faceitUsername && fastcupUrl) {
+        await conn.query(`
+          INSERT INTO users (discord_id, steam_id_64, faceit_id, faceit_username, faceit_elo, faceit_level, fastcup_url, fastcup_id, fastcup_skill, fastcup_level, is_verified)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+          ON DUPLICATE KEY UPDATE 
+            steam_id_64 = VALUES(steam_id_64),
+            faceit_id = VALUES(faceit_id),
+            faceit_username = VALUES(faceit_username),
+            faceit_elo = VALUES(faceit_elo),
+            faceit_level = VALUES(faceit_level),
+            fastcup_url = VALUES(fastcup_url),
+            fastcup_id = VALUES(fastcup_id),
+            fastcup_skill = VALUES(fastcup_skill),
+            fastcup_level = VALUES(fastcup_level),
+            is_verified = 1
+        `, [user.discordId, user.steamId64, faceitId, faceitUsername, faceitElo, faceitLevel, fastcupUrl, fastcupId, fastcupSkill, fastcupLevel]);
+      } 
+      else if (faceitUsername) {
+        // Sadece Faceit
+        await conn.query(`
+          INSERT INTO users (discord_id, steam_id_64, faceit_id, faceit_username, faceit_elo, faceit_level, is_verified)
+          VALUES (?, ?, ?, ?, ?, ?, 1)
+          ON DUPLICATE KEY UPDATE 
+            steam_id_64 = VALUES(steam_id_64),
+            faceit_id = VALUES(faceit_id),
+            faceit_username = VALUES(faceit_username),
+            faceit_elo = VALUES(faceit_elo),
+            faceit_level = VALUES(faceit_level),
+            is_verified = 1
+        `, [user.discordId, user.steamId64, faceitId, faceitUsername, faceitElo, faceitLevel]);
+      } 
+      else if (fastcupUrl) {
+        // Sadece Fastcup (Faceit boş)
+        // NOT: Mevcut tabloda faceit_id NOT NULL UNIQUE olduğu için dummy değer atanmalıdır
+        const dummyFaceitId = `fc_${fastcupId}`;
+        await conn.query(`
+          INSERT INTO users (discord_id, steam_id_64, faceit_id, faceit_username, fastcup_url, fastcup_id, fastcup_skill, fastcup_level, is_verified)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+          ON DUPLICATE KEY UPDATE 
+            steam_id_64 = VALUES(steam_id_64),
+            fastcup_url = VALUES(fastcup_url),
+            fastcup_id = VALUES(fastcup_id),
+            fastcup_skill = VALUES(fastcup_skill),
+            fastcup_level = VALUES(fastcup_level),
+            is_verified = 1
+        `, [user.discordId, user.steamId64, dummyFaceitId, 'N/A', fastcupUrl, fastcupId, fastcupSkill, fastcupLevel]);
+      }
 
-      logger.info(`${user.username} (${user.discordId}) başarıyla FACEIT doğrulamasını tamamladı. (Level: ${faceitLevel})`);
+      logger.info(`${user.username} (${user.discordId}) doğrulamasını tamamladı.`);
       
-      // Bot'a Discord Rolünü verme emri gönder
-      await assignVerifiedRoles(user.discordId, faceitLevel);
+      // DISCORD ROL ATAMALARI
+      if (faceitUsername) {
+        await assignVerifiedRoles(user.discordId, faceitLevel);
+      }
+      if (fastcupUrl) {
+        const { assignFastcupRoles } = await import('../../bot/services/roleManager.js');
+        await assignFastcupRoles(user.discordId, fastcupLevel);
+      }
 
     } finally {
       conn.release();

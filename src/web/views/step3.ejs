@@ -39,12 +39,21 @@
       </div>
     <% } %>
 
-    <form action="/auth/faceit" method="POST">
+    <form action="/auth/complete" method="POST">
       <div class="input-group">
-        <label for="faceit_username">FACEIT Username</label>
-        <input type="text" id="faceit_username" name="faceit_username" placeholder="e.g. s1mple" required autocomplete="off">
+        <label for="faceit_username">FACEIT Username (CS2)</label>
+        <input type="text" id="faceit_username" name="faceit_username" placeholder="e.g. s1mple" autocomplete="off">
       </div>
-      <button type="submit" class="btn btn-gold">Complete Verification</button>
+
+      <div class="input-group" style="margin-top: 15px;">
+        <label for="fastcup_url">Link Fastcup Account (CS 1.6)</label>
+        <input type="text" id="fastcup_url" name="fastcup_url" placeholder="Enter your Fastcup Profile URL (e.g., https://cs.fastcup.net/id12345)" autocomplete="off">
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">
+          🔒 Fastcup Notice: Fastcup does not provide a public API key system. We will only analyze your public profile URL using secure web-scraping to read your public CS 1.6 Skill Level, Rank, and Match count. We NEVER ask for your passwords or private data.
+        </p>
+      </div>
+
+      <button type="submit" class="btn btn-gold" style="margin-top: 20px;">Complete Verification</button>
     </form>
 
     <div class="security-notice">

@@ -29,6 +29,10 @@ export async function initDatabase() {
         faceit_username VARCHAR(32) NOT NULL,
         faceit_elo INT NOT NULL DEFAULT 1000,
         faceit_level INT NOT NULL DEFAULT 1,
+        fastcup_url VARCHAR(255) DEFAULT NULL,
+        fastcup_id VARCHAR(50) DEFAULT NULL UNIQUE,
+        fastcup_skill INT DEFAULT 1000,
+        fastcup_level VARCHAR(2) DEFAULT 'E',
         is_verified TINYINT(1) NOT NULL DEFAULT 0,
         registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -36,6 +40,19 @@ export async function initDatabase() {
         INDEX idx_steam (steam_id_64)
       ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     `);
+
+    // Hızlı Migrasyon: Sütunlar eksikse ekle
+    try {
+      await conn.query('ALTER TABLE users ADD COLUMN fastcup_url VARCHAR(255) DEFAULT NULL');
+      await conn.query('ALTER TABLE users ADD COLUMN fastcup_id VARCHAR(50) DEFAULT NULL UNIQUE');
+      await conn.query('ALTER TABLE users ADD COLUMN fastcup_skill INT DEFAULT 1000');
+      await conn.query('ALTER TABLE users ADD COLUMN fastcup_level VARCHAR(2) DEFAULT "E"');
+      logger.info('Fastcup sütunları başarıyla eklendi.');
+    } catch (e: any) {
+      if (e.code !== 'ER_DUP_FIELDNAME') {
+        logger.error('Fastcup sütunları eklenirken hata: ' + e.message);
+      }
+    }
 
     // 2. Canlı Hub Maçları ve Lobi Takip Tablosu
     await conn.query(`
