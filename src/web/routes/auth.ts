@@ -114,8 +114,8 @@ router.post('/complete', async (req, res) => {
   const user = req.user as any;
   if (!user || !user.steamId64) return res.redirect('/');
 
-  const faceitUsername = req.body.faceit_username;
-  const fastcupUrl = req.body.fastcup_url;
+  let faceitUsername = req.body.faceit_username?.trim();
+  let fastcupUrl = req.body.fastcup_url?.trim();
   
   if (!faceitUsername && !fastcupUrl) {
     return res.render('step3', { user, error: 'Lütfen en az bir hesabı (FACEIT veya Fastcup) bağlayın.' });
@@ -127,6 +127,7 @@ router.post('/complete', async (req, res) => {
   try {
     // 1. FACEIT İŞLEMLERİ (Varsa)
     if (faceitUsername) {
+      logger.info('Querying Faceit API for: ' + faceitUsername);
       const response = await axios.get(`https://open.faceit.com/data/v4/players?nickname=${faceitUsername}&game=cs2`, {
         headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
       });
@@ -223,10 +224,14 @@ router.post('/complete', async (req, res) => {
     });
 
   } catch (error: any) {
-    logger.error('Faceit API Hatası:', error.response?.data || error.message);
+    if (error.response) {
+      logger.error('Faceit/Fastcup API Hatası (HTTP ' + error.response.status + '): ' + JSON.stringify(error.response.data));
+    } else {
+      logger.error('Sistem Hatası: ' + error.stack);
+    }
     const errorMsg = error.response?.status === 404 
-      ? 'FACEIT kullanıcısı bulunamadı.' 
-      : 'API Hatası. Lütfen daha sonra tekrar deneyin.';
+      ? 'Kullanıcı bulunamadı.' 
+      : 'API veya Sistem Hatası. Lütfen daha sonra tekrar deneyin.';
     res.render('step3', { user, error: errorMsg });
   }
 });
