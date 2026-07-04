@@ -55,7 +55,14 @@ export default {
           },
           {
             id: member.id, // Creator
-            allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.Connect, PermissionFlagsBits.SendMessages],
+            allow: [
+              PermissionFlagsBits.ViewChannel, 
+              PermissionFlagsBits.Connect, 
+              PermissionFlagsBits.SendMessages,
+              PermissionFlagsBits.Speak,
+              PermissionFlagsBits.UseVAD,
+              PermissionFlagsBits.MuteMembers
+            ],
           },
         ],
       }) as VoiceChannel;
@@ -66,6 +73,8 @@ export default {
         await voiceChannel.permissionOverwrites.create(roleId, {
           Connect: true,
           SendMessages: true,
+          Speak: true,
+          UseVAD: true, // Bypass push-to-talk requirement
         }).catch(() => null);
       }
 
