@@ -1,6 +1,5 @@
 import { Events, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 import type { StringSelectMenuInteraction, VoiceChannel, CategoryChannel } from 'discord.js';
-import type { BotEvent } from '../../types/index.js';
 import { Logger } from '../../utils/logger.js';
 import { VERIFIED_ROLE_ID, CS16_ROLE_ID } from '../services/roleManager.js';
 
@@ -16,7 +15,7 @@ const ROOM_NAMES: Record<string, string> = {
   'cs16_5v5': 'CS1.6 5v5',
 };
 
-const event: BotEvent = {
+export default {
   name: Events.InteractionCreate,
   async execute(client: any, interaction: any) {
     if (!interaction.isStringSelectMenu()) return;

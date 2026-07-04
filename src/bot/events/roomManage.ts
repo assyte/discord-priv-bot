@@ -1,13 +1,12 @@
 import { Events, PermissionFlagsBits, ActionRowBuilder, UserSelectMenuBuilder } from 'discord.js';
 import type { ButtonInteraction, VoiceChannel, UserSelectMenuInteraction } from 'discord.js';
-import type { BotEvent } from '../../types/index.js';
 import { Logger } from '../../utils/logger.js';
 import { VERIFIED_ROLE_ID, CS16_ROLE_ID } from '../services/roleManager.js';
 
 const logger = new Logger('PrivateRoomManage');
 const STEAM_VERIFIED_ROLE = process.env.ROLE_STEAM_VERIFIED || '1522986492757278810';
 
-const event: BotEvent = {
+export default {
   name: Events.InteractionCreate,
   async execute(client: any, interaction: any) {
     if (interaction.isButton()) {
@@ -52,7 +51,8 @@ async function handleButton(interaction: ButtonInteraction) {
       // Eğer bir rolün izni false ise (kilitli), true yapacağız. True veya null ise false yapacağız.
       let isCurrentlyLocked = false;
       if (verifiedRoles.length > 0) {
-        const firstRolePerms = channel.permissionOverwrites.cache.get(verifiedRoles[0]);
+        const firstRoleId = verifiedRoles[0] as string;
+        const firstRolePerms = channel.permissionOverwrites.cache.get(firstRoleId);
         if (firstRolePerms && firstRolePerms.deny.has(PermissionFlagsBits.Connect)) {
           isCurrentlyLocked = true;
         }

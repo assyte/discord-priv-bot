@@ -1,6 +1,5 @@
 import { Events } from 'discord.js';
 import type { VoiceState, VoiceChannel } from 'discord.js';
-import type { BotEvent } from '../../types/index.js';
 import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('PrivateRoomVoiceUpdate');
@@ -8,7 +7,7 @@ const logger = new Logger('PrivateRoomVoiceUpdate');
 // Özel oda isim pattern'i (Örn: "[CS2 MM] assyte")
 const ROOM_NAME_REGEX = /^\[CS(?:2|1\.6) (?:MM|Faceit|5v5|Pub|Fastcup)\]/;
 
-const event: BotEvent = {
+export default {
   name: Events.VoiceStateUpdate,
   async execute(client: any, oldState: VoiceState, newState: VoiceState) {
     // Sadece kanaldan ayrılma veya kanal değiştirme işlemlerinde eski kanalı kontrol et

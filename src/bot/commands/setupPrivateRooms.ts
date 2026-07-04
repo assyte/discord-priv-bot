@@ -1,18 +1,17 @@
 import { SlashCommandBuilder, PermissionFlagsBits, ChannelType, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import type { ChatInputCommandInteraction, TextChannel } from 'discord.js';
-import type { BotCommand } from '../../types/index.js';
 import type { ClutchClient } from '../client.js';
 import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('SetupPrivateRooms');
 
-const command: BotCommand = {
+export default {
   data: new SlashCommandBuilder()
     .setName('setup-private-rooms')
     .setDescription('Creates the Private Rooms category and setup panel.')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   guildOnly: true,
-  async execute(interaction: ChatInputCommandInteraction, client: Client) {
+  async execute(interaction: ChatInputCommandInteraction, client: ClutchClient) {
     await interaction.deferReply({ ephemeral: true });
 
     try {
