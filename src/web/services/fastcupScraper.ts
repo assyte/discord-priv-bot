@@ -10,11 +10,15 @@ export interface FastcupData {
 }
 
 export async function scrapeFastcupProfile(url: string): Promise<FastcupData> {
-  const match = url.match(/(?:cs\.)?fastcup\.net\/id(\d+)/);
-  if (!match) {
+  if (!url || !url.includes('cs.fastcup.net/')) {
     throw new Error('Invalid Fastcup URL format');
   }
-  const fastcupId = match[1] as string;
+  const urlParts = url.split('/');
+  const lastPart = urlParts[urlParts.length - 1] || '';
+  // `id12345` ise `12345` al, değilse (custom URL) direkt `asyte` olarak sakla.
+  const fastcupId = lastPart.startsWith('id') && !isNaN(Number(lastPart.replace('id', ''))) 
+    ? lastPart.replace('id', '') 
+    : lastPart;
 
   let browser;
   try {

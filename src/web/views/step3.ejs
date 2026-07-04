@@ -43,6 +43,7 @@
     <form action="/auth/complete" method="POST">
       <div class="input-group">
         <label class="input-label" for="faceit_username">Link FACEIT Account (Optional)</label>
+        <p style="font-size: 12px; color: #b9bbbe; margin-bottom: 8px;">CS2 FACEIT oynuyorsanız doldurun. Oynamıyorsanız <b>boş bırakın</b>.</p>
         <input type="text" id="faceit_username" name="faceit_username" class="input-field" placeholder="Enter your FACEIT Nickname (e.g., nartforge)">
       </div>
 
@@ -50,9 +51,10 @@
 
       <div class="input-group">
         <label class="input-label" for="fastcup_url">Link Fastcup Account (Optional)</label>
-        <input type="text" id="fastcup_url" name="fastcup_url" class="input-field" placeholder="Enter your Fastcup Profile URL (e.g., https://cs.fastcup.net/id12345)" autocomplete="off">
+        <p style="font-size: 12px; color: #b9bbbe; margin-bottom: 8px;">CS 1.6 Fastcup oynuyorsanız doldurun. Oynamıyorsanız <b>boş bırakın</b>.</p>
+        <input type="text" id="fastcup_url" name="fastcup_url" class="input-field" placeholder="Enter your Fastcup Profile URL (e.g., https://cs.fastcup.net/asyte)" autocomplete="off">
         <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">
-          🔒 Fastcup Notice: Fastcup does not provide a public API key system. We will only analyze your public profile URL using secure web-scraping to read your public CS 1.6 Skill Level, Rank, and Match count. We NEVER ask for your passwords or private data.
+          🔒 Fastcup Notice: We only analyze your public profile URL to read your CS 1.6 Skill Level, Rank, and Match count.
         </p>
       </div>
 
