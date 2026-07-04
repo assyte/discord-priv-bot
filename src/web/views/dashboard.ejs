@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLUTCH - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #F0E6D2;
+            --secondary: #C8AA6E;
+            --accent: #FFD700;
+            --bg-dark: #0A0A0C;
+            --bg-panel: #1E2328;
+            --success: #00FF00;
+            --danger: #FF0000;
+        }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--primary);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(200, 170, 110, 0.15) 0%, transparent 50%),
+                linear-gradient(rgba(10, 10, 12, 0.9), rgba(10, 10, 12, 0.9)),
+                url('https://cdn.akamai.steamstatic.com/apps/csgo/images/csgo_react/main/bg_dust2_02.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container {
+            background: rgba(30, 35, 40, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(200, 170, 110, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid var(--secondary);
+            backdrop-filter: blur(10px);
+        }
+        .header {
+            margin-bottom: 30px;
+        }
+        .header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            margin-bottom: 15px;
+        }
+        h1 {
+            font-family: 'Teko', sans-serif;
+            font-size: 3em;
+            color: var(--accent);
+            margin: 0 0 10px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        p {
+            font-size: 1.2em;
+            color: #A0A0A0;
+            margin-bottom: 20px;
+        }
+        .connection-card {
+            background: rgba(10, 10, 12, 0.8);
+            border: 1px solid var(--secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .connection-card:hover {
+            box-shadow: 0 0 15px rgba(200, 170, 110, 0.3);
+            transform: translateY(-2px);
+        }
+        .connection-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+        .connection-info i {
+            font-size: 2em;
+        }
+        .connection-info .fa-steam { color: #171a21; background: white; border-radius: 50%; padding: 2px; }
+        .connection-info .fa-gamepad { color: #FF5500; }
+        .connection-info .fa-trophy { color: #00FF00; }
+        .connection-details h3 {
+            margin: 0;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.5em;
+            color: var(--primary);
+        }
+        .connection-details span {
+            font-size: 0.9em;
+            color: #A0A0A0;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .status.connected {
+            background: rgba(0, 255, 0, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        .status.disconnected {
+            background: rgba(255, 0, 0, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        .btn {
+            background: linear-gradient(135deg, var(--secondary) 0%, #a68a53 100%);
+            color: var(--bg-dark);
+            border: none;
+            padding: 8px 15px;
+            font-size: 1em;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--secondary);
+            color: var(--bg-dark);
+        }
+        .btn:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .hidden-form {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+            width: 100%;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            background: rgba(10, 10, 12, 0.8);
+            border: 1px solid var(--secondary);
+            color: var(--primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1em;
+            border-radius: 5px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
+        }
+        .logout-btn {
+            margin-top: 20px;
+            background: transparent;
+            color: #A0A0A0;
+            border: 1px solid #A0A0A0;
+        }
+        .logout-btn:hover {
+            background: rgba(255, 0, 0, 0.1);
+            color: var(--danger);
+            border-color: var(--danger);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+        }
+        .alert {
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .alert.error {
+            background: rgba(255, 0, 0, 0.1);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        .alert.success {
+            background: rgba(0, 255, 0, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" alt="Profile Picture" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+            <h1>WELCOME, <%= user.username %>!</h1>
+            <p>Manage your linked gaming accounts below.</p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <!-- STEAM CARD -->
+        <div class="connection-card">
+            <div class="connection-info">
+                <i class="fa-brands fa-steam"></i>
+                <div class="connection-details">
+                    <h3>Steam Account</h3>
+                    <span>Required for all verifications</span>
+                </div>
+            </div>
+            <% if (dbUser && dbUser.steam_id_64) { %>
+                <div class="status connected"><i class="fa-solid fa-check"></i> Connected</div>
+            <% } else { %>
+                <a href="/auth/steam" class="btn">Connect</a>
+            <% } %>
+        </div>
+
+        <!-- FACEIT CARD -->
+        <div class="connection-card" style="flex-direction: column; align-items: stretch;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="connection-info">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <div class="connection-details">
+                        <h3>Faceit Account</h3>
+                        <span><% if (dbUser && dbUser.faceit_username && dbUser.faceit_username !== 'N/A') { %><%= dbUser.faceit_username %><% } else { %>Optional<% } %></span>
+                    </div>
+                </div>
+                <% if (dbUser && dbUser.faceit_username && dbUser.faceit_username !== 'N/A') { %>
+                    <div class="status connected"><i class="fa-solid fa-check"></i> Connected</div>
+                <% } else { %>
+                    <button class="btn" onclick="toggleForm('faceitForm')">Connect</button>
+                <% } %>
+            </div>
+            <div id="faceitForm" class="hidden-form">
+                <p style="font-size: 0.9em; margin-bottom: 10px; text-align: left;">Enter your Faceit profile link:</p>
+                <form onsubmit="submitConnection(event, 'faceit')">
+                    <div class="input-group">
+                        <input type="text" id="faceitLink" placeholder="https://www.faceit.com/en/players/username" required>
+                        <button type="submit" class="btn" id="faceitBtn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- FASTCUP CARD -->
+        <div class="connection-card" style="flex-direction: column; align-items: stretch;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="connection-info">
+                    <i class="fa-solid fa-trophy"></i>
+                    <div class="connection-details">
+                        <h3>Fastcup Account</h3>
+                        <span><% if (dbUser && dbUser.fastcup_url) { %>ID: <%= dbUser.fastcup_id %><% } else { %>Optional<% } %></span>
+                    </div>
+                </div>
+                <% if (dbUser && dbUser.fastcup_url) { %>
+                    <div class="status connected"><i class="fa-solid fa-check"></i> Connected</div>
+                <% } else { %>
+                    <button class="btn" onclick="toggleForm('fastcupForm')">Connect</button>
+                <% } %>
+            </div>
+            <div id="fastcupForm" class="hidden-form">
+                <p style="font-size: 0.9em; margin-bottom: 10px; text-align: left;">Enter your Fastcup profile link:</p>
+                <form onsubmit="submitConnection(event, 'fastcup')">
+                    <div class="input-group">
+                        <input type="text" id="fastcupLink" placeholder="https://cs.fastcup.net/id12345" required>
+                        <button type="submit" class="btn" id="fastcupBtn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <form action="/auth/logout" method="GET" style="display:inline;">
+            <button type="submit" class="btn logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleForm(formId) {
+            const form = document.getElementById(formId);
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function submitConnection(event, type) {
+            event.preventDefault();
+            const btn = document.getElementById(type + 'Btn');
+            const input = document.getElementById(type + 'Link');
+            const alertBox = document.getElementById('alertBox');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            alertBox.style.display = 'none';
+            alertBox.className = 'alert';
+
+            try {
+                const response = await fetch('/auth/dashboard/connect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type: type,
+                        link: input.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alertBox.textContent = 'Account successfully connected! Roles are updated.';
+                    alertBox.classList.add('success');
+                    alertBox.style.display = 'block';
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    alertBox.textContent = data.message || 'An error occurred. Please try again.';
+                    alertBox.classList.add('error');
+                    alertBox.style.display = 'block';
+                    btn.disabled = false;
+                    btn.innerHTML = 'Save';
+                }
+            } catch (error) {
+                alertBox.textContent = 'Network error. Please try again.';
+                alertBox.classList.add('error');
+                alertBox.style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = 'Save';
+            }
+        }
+    </script>
+</body>
+</html>

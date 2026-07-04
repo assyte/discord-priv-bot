@@ -28,12 +28,32 @@
     
     <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left;">
       <p style="margin-bottom: 8px;"><strong style="color: var(--gold);">Discord:</strong> <%= user.username %></p>
-      <p style="margin-bottom: 8px;"><strong style="color: var(--gold);">Steam ID:</strong> <%= user.steamId64 %></p>
-      <p style="margin-bottom: 8px;"><strong style="color: var(--gold);">FACEIT:</strong> <%= user.faceitUsername %></p>
-      <p><strong style="color: var(--gold);">Current Level:</strong> Lvl <%= user.faceitLevel %> (<%= user.faceitElo %> ELO)</p>
+      
+      <p style="margin-bottom: 8px; display: flex; justify-content: space-between;">
+        <strong style="color: var(--gold);"><i class="fa-brands fa-steam"></i> Steam:</strong> 
+        <span style="color: var(--success);">✅ Connected (<%= user.steamId64 %>)</span>
+      </p>
+      
+      <p style="margin-bottom: 8px; display: flex; justify-content: space-between;">
+        <strong style="color: var(--gold);"><i class="fa-solid fa-gamepad"></i> FACEIT:</strong> 
+        <% if (faceitUsername) { %>
+          <span style="color: var(--success);">✅ Connected (<%= faceitUsername %>)</span>
+        <% } else { %>
+          <span style="color: #666;">❌ Not Connected</span>
+        <% } %>
+      </p>
+
+      <p style="display: flex; justify-content: space-between;">
+        <strong style="color: var(--gold);"><i class="fa-solid fa-trophy"></i> Fastcup:</strong> 
+        <% if (fastcupUrl) { %>
+          <span style="color: var(--success);">✅ Connected</span>
+        <% } else { %>
+          <span style="color: #666;">❌ Not Connected</span>
+        <% } %>
+      </p>
     </div>
 
-    <p class="step-desc">Your roles and ELO have been updated successfully!</p>
+    <p class="step-desc">Your roles and access have been updated successfully!</p>
     
     <div class="user-card" style="margin-top: 2rem;">
       <p style="margin-bottom: 1rem; color: #b9bbbe; font-size: 14px;">You will be automatically redirected to the Discord server in 3 seconds...</p>

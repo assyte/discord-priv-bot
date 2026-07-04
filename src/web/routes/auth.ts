@@ -225,8 +225,13 @@ router.post('/complete', async (req, res) => {
       conn.release();
     }
 
-    req.login({ ...user, faceitUsername, faceitElo, faceitLevel }, (err) => {
-      res.render('success', { user: req.user, guildId: process.env.GUILD_ID });
+    req.login({ ...user, faceitUsername, faceitElo, faceitLevel, fastcupUrl, fastcupLevel }, (err) => {
+      res.render('success', { 
+        user: req.user, 
+        guildId: process.env.GUILD_ID,
+        faceitUsername,
+        fastcupUrl 
+      });
     });
 
   } catch (error: any) {
@@ -241,6 +246,61 @@ router.post('/complete', async (req, res) => {
         ? 'Kullanıcı bulunamadı. Lütfen kullanıcı adınızı kontrol edin.' 
         : 'API veya Sistem Hatası. Lütfen daha sonra tekrar deneyin.');
     res.render('step3', { user, error: errorMsg });
+  }
+});
+
+// Logout rotası
+router.get('/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
+
+// Dashboard'dan sonradan bağlama işlemi
+router.post('/dashboard/connect', async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ success: false, message: 'Oturum süreniz dolmuş.' });
+  }
+
+  const { type, link } = req.body;
+  const user = req.user as any;
+
+  try {
+    const conn = await dbPool.getConnection();
+    
+    if (type === 'faceit') {
+      const faceitUsername = link.split('/').pop()?.trim() || '';
+      
+      const faceitRes = await axios.get(`https://open.faceit.com/data/v4/players?nickname=${faceitUsername}`, {
+        headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
+      });
+      
+      const faceitId = faceitRes.data.player_id;
+      const faceitLevel = faceitRes.data.games.cs2?.skill_level || faceitRes.data.games.csgo?.skill_level || 1;
+      
+      await conn.query('UPDATE users SET faceit_id = ?, faceit_username = ? WHERE discord_id = ?', [faceitId, faceitUsername, user.id]);
+      
+      const { assignVerifiedRoles } = await import('../../bot/services/roleManager.js');
+      await assignVerifiedRoles(user.id, faceitLevel);
+      
+    } else if (type === 'fastcup') {
+      const { scrapeFastcupProfile } = await import('../services/fastcupScraper.js');
+      const fcData = await scrapeFastcupProfile(link);
+      
+      await conn.query('UPDATE users SET fastcup_url = ?, fastcup_id = ?, fastcup_skill = ?, fastcup_level = ? WHERE discord_id = ?', 
+        [link, fcData.id, fcData.skill, fcData.level, user.id]);
+        
+      const { assignFastcupRoles } = await import('../../bot/services/roleManager.js');
+      await assignFastcupRoles(user.id, fcData.level);
+    }
+    
+    conn.release();
+    res.json({ success: true });
+    
+  } catch (error: any) {
+    logger.error(`Dashboard connect error (${type}):`, error.message);
+    res.status(500).json({ success: false, message: 'Bağlantı başarısız oldu. Girdiğiniz linki kontrol edin.' });
   }
 });
 
