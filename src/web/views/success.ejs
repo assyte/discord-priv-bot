@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clutch.gg | Verification Success</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="border-color: var(--success); box-shadow: 0 20px 40px rgba(46, 125, 50, 0.3);">
+    <div class="logo-area">
+      <h1>FACEITLUTCH</h1>
+      <p>Verification Complete</p>
+    </div>
+
+    <div class="success-icon">✅</div>
+
+    <h2 style="color: var(--success); font-size: 24px; margin-bottom: 10px;">Account Verified!</h2>
+    
+    <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left;">
+      <p style="margin-bottom: 8px;"><strong style="color: var(--gold);">Discord:</strong> <%= user.username %></p>
+      <p style="margin-bottom: 8px;"><strong style="color: var(--gold);">Steam ID:</strong> <%= user.steamId64 %></p>
+      <p style="margin-bottom: 8px;"><strong style="color: var(--gold);">FACEIT:</strong> <%= user.faceitUsername %></p>
+      <p><strong style="color: var(--gold);">Current Level:</strong> Lvl <%= user.faceitLevel %> (<%= user.faceitElo %> ELO)</p>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+      Your Discord roles have been automatically assigned. You can now close this window and return to Discord.
+    </p>
+
+    <a href="https://discord.com/channels/<%= guildId %>" class="btn btn-discord">Return to Discord Server</a>
+  </div>
+</body>
+</html>

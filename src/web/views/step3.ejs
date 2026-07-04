@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clutch.gg | Link FACEIT</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="logo-area">
+      <h1>FACEITLUTCH</h1>
+      <p>Official Authentication Portal</p>
+    </div>
+
+    <div class="step-indicator">
+      <div class="step active"></div>
+      <div class="step active"></div>
+      <div class="step active"></div>
+    </div>
+
+    <div class="user-card">
+      <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="Discord Avatar" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+      <div class="user-card-info">
+        <strong><%= user.username %></strong>
+        <span>Steam Linked: <%= user.steamId64 %></span>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 25px;">
+      <h2 style="font-size: 20px; margin-bottom: 10px;">Step 3: FACEIT Integration</h2>
+      <p style="color: var(--text-muted); font-size: 14px;">Enter your FACEIT Username below to finalize your Clutch.gg profile setup.</p>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div style="background: rgba(211, 47, 47, 0.1); border: 1px solid #d32f2f; color: #ff5252; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 14px;">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form action="/auth/faceit" method="POST">
+      <div class="input-group">
+        <label for="faceit_username">FACEIT Username</label>
+        <input type="text" id="faceit_username" name="faceit_username" placeholder="e.g. s1mple" required autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-gold">Complete Verification</button>
+    </form>
+
+    <div class="security-notice">
+      <h3>🔒 Privacy & Security Notice</h3>
+      <p>We never ask for, collect, or store your Steam or FACEIT passwords. The authentication is handled directly through Steam's secure OpenID and FACEIT's official developer API. <br><br><strong>What we access:</strong> Only your public SteamID64, public profile name, and FACEIT Elo/Level data. Your account remains 100% secure.</p>
+    </div>
+  </div>
+</body>
+</html>

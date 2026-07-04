@@ -25,9 +25,9 @@ RUN npm ci --omit=dev
 # Derlenmiş kodu kopyala
 COPY --from=builder /app/dist ./dist
 
-# Asset dosyalarını kopyala (welcome banner vb.)
-COPY src/assets ./dist/assets
-
+# Asset dosyalarını kopyala (ejs, css)
+COPY src/web/views ./dist/web/views
+COPY src/web/public ./dist/web/public
 # Log dizinini oluştur ve node kullanıcısına ver
 RUN mkdir -p /app/logs && chown -R node:node /app/logs
 

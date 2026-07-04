@@ -1,55 +1,39 @@
-name: discord-bot-prod
+name: faceitlutch-prod
 
 services:
-  postgres:
-    image: postgres:16-alpine
+  mariadb:
+    image: mariadb:10.11
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-discord_bot}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    # ports:
-    #   - "5432:5432"
+      MARIADB_ROOT_PASSWORD: ${DB_PASS:-supersecret}
+      MARIADB_DATABASE: faceitlutch_db
+      MARIADB_USER: ${DB_USER:-root}
+      MARIADB_PASSWORD: ${DB_PASS:-supersecret}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 30s
 
-  redis:
-    image: redis:7-alpine
-    restart: always
-    command: redis-server --save 60 1 --loglevel warning
-    # ports:
-    #   - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  bot:
+  app:
     build:
       context: ..
       dockerfile: docker/Dockerfile.prod
     restart: always
     env_file:
       - ../.env
+    ports:
+      - "3000:3000"
     environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      LOG_LEVEL: info
+      DB_HOST: mariadb
+      DB_USER: ${DB_USER:-root}
+      DB_PASS: ${DB_PASS:-supersecret}
+      DB_NAME: faceitlutch_db
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
+      mariadb:
         condition: service_healthy
     logging:
       driver: "json-file"
@@ -58,5 +42,4 @@ services:
         max-file: "5"
 
 volumes:
-  postgres_data:
-  redis_data:
+  mariadb_data:
