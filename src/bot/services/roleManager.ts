@@ -3,6 +3,8 @@ import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('RoleManager');
 
+export const UNVERIFIED_ROLE_ID = '1522961867025416202';
+
 // Role IDs are loaded from environment variables
 export const ROLE_MAP: Record<number, string> = {
   0: '1522991993519603852', // Level 0 (Unranked)
@@ -45,6 +47,10 @@ export async function assignVerifiedRoles(discordId: string, faceitLevel: number
 
     if (VERIFIED_ROLE_ID && !member.roles.cache.has(VERIFIED_ROLE_ID)) {
       rolesToAdd.push(VERIFIED_ROLE_ID);
+    }
+
+    if (member.roles.cache.has(UNVERIFIED_ROLE_ID)) {
+      rolesToRemove.push(UNVERIFIED_ROLE_ID);
     }
 
     if (rolesToRemove.length > 0) {
