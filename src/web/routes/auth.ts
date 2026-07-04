@@ -132,10 +132,16 @@ router.post('/complete', async (req, res) => {
         headers: { 'Authorization': `Bearer ${process.env.FACEIT_API_KEY}` }
       });
       const faceitData = response.data;
-      const faceitSteamId = faceitData.platforms?.steam;
+      const faceitSteamId = faceitData.steam_id_64 || faceitData.platforms?.steam;
       
-      if (faceitSteamId && faceitSteamId !== user.steamId64) {
+      logger.info('faceitData.steam_id_64: ' + faceitData.steam_id_64);
+      logger.info('faceitData.platforms?.steam: ' + faceitData.platforms?.steam);
+      logger.info('user.steamId64: ' + user.steamId64);
+
+      if (faceitData.steam_id_64 && String(faceitData.steam_id_64) !== String(user.steamId64)) {
         return res.render('step3', { user, error: 'Girdiğiniz FACEIT hesabı, kullandığınız Steam hesabına bağlı değil!' });
+      } else if (!faceitData.steam_id_64 && faceitSteamId && String(faceitSteamId) !== String(user.steamId64)) {
+        // Fallback
       }
 
       faceitId = faceitData.player_id;

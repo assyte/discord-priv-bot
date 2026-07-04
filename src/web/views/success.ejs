@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="3;url=https://discord.com/channels/<%= guildId %>">
   <title>Clutch.gg | Verification Success</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/style.css">
@@ -32,11 +33,12 @@
       <p><strong style="color: var(--gold);">Current Level:</strong> Lvl <%= user.faceitLevel %> (<%= user.faceitElo %> ELO)</p>
     </div>
 
-    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
-      Your Discord roles have been automatically assigned. You can now close this window and return to Discord.
-    </p>
-
-    <a href="https://discord.com/channels/<%= guildId %>" class="btn btn-discord">Return to Discord Server</a>
+    <p class="step-desc">Your roles and ELO have been updated successfully!</p>
+    
+    <div class="user-card" style="margin-top: 2rem;">
+      <p style="margin-bottom: 1rem; color: #b9bbbe; font-size: 14px;">You will be automatically redirected to the Discord server in 3 seconds...</p>
+      <a href="https://discord.com/channels/<%= guildId %>" class="btn btn-discord">Return to Discord Server Now</a>
+    </div>
   </div>
 </body>
 </html>
