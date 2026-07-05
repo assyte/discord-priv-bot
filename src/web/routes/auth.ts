@@ -222,6 +222,17 @@ router.post('/complete', async (req, res) => {
             is_verified = 1
         `, [user.discordId, user.steamId64, dummyFaceitId, 'N/A', fastcupUrl, fastcupId, fastcupSkill, fastcupLevel]);
       }
+      else {
+        // Steam only
+        const dummyFaceitId = `st_${user.steamId64}`;
+        await conn.query(`
+          INSERT INTO users (discord_id, steam_id_64, faceit_id, faceit_username, is_verified)
+          VALUES (?, ?, ?, 'N/A', 1)
+          ON DUPLICATE KEY UPDATE 
+            steam_id_64 = VALUES(steam_id_64),
+            is_verified = 1
+        `, [user.discordId, user.steamId64, dummyFaceitId]);
+      }
 
       logger.info(`${user.username} (${user.discordId}) completed verification.`);
       

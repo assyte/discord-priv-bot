@@ -33,6 +33,10 @@ export async function initDatabase() {
         fastcup_id VARCHAR(50) DEFAULT NULL UNIQUE,
         fastcup_skill INT DEFAULT 1000,
         fastcup_level VARCHAR(2) DEFAULT 'E',
+        faceit_elo_start_of_week INT DEFAULT NULL,
+        message_count INT DEFAULT 0,
+        voice_minutes INT DEFAULT 0,
+        clutch_score INT DEFAULT 0,
         is_verified TINYINT(1) NOT NULL DEFAULT 0,
         registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -47,7 +51,11 @@ export async function initDatabase() {
       await conn.query('ALTER TABLE users ADD COLUMN fastcup_id VARCHAR(50) DEFAULT NULL UNIQUE');
       await conn.query('ALTER TABLE users ADD COLUMN fastcup_skill INT DEFAULT 1000');
       await conn.query('ALTER TABLE users ADD COLUMN fastcup_level VARCHAR(2) DEFAULT "E"');
-      logger.info('Fastcup columns added successfully.');
+      await conn.query('ALTER TABLE users ADD COLUMN faceit_elo_start_of_week INT DEFAULT NULL');
+      await conn.query('ALTER TABLE users ADD COLUMN message_count INT DEFAULT 0');
+      await conn.query('ALTER TABLE users ADD COLUMN voice_minutes INT DEFAULT 0');
+      await conn.query('ALTER TABLE users ADD COLUMN clutch_score INT DEFAULT 0');
+      logger.info('Stats columns added successfully.');
     } catch (e: any) {
       if (e.code !== 'ER_DUP_FIELDNAME') {
         logger.error('Error adding Fastcup columns: ' + e.message);
@@ -79,6 +87,14 @@ export async function initDatabase() {
         team CHAR(1) NOT NULL,
         FOREIGN KEY (match_id) REFERENCES active_matches(match_id) ON DELETE CASCADE,
         FOREIGN KEY (discord_id) REFERENCES users(discord_id) ON DELETE CASCADE
+      ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    `);
+
+    // 4. Bot Settings Table
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS bot_settings (
+        setting_key VARCHAR(50) PRIMARY KEY,
+        setting_value VARCHAR(255)
       ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     `);
 

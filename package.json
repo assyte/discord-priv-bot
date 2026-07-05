@@ -36,6 +36,8 @@
     "passport-discord": "^0.1.4",
     "passport-steam": "^1.0.18",
     "puppeteer": "^25.3.0",
+    "rss-parser": "^3.13.0",
+    "turndown": "^7.2.4",
     "winston": "^3.17.0"
   },
   "devDependencies": {
@@ -49,6 +51,7 @@
     "@types/passport": "^1.0.17",
     "@types/passport-discord": "^0.1.15",
     "@types/passport-steam": "^1.0.6",
+    "@types/turndown": "^5.0.6",
     "tsx": "^4.19.0",
     "typescript": "^5.8.0"
   }

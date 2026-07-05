@@ -1,0 +1,2036 @@
+{
+  "roles": [
+    {
+      "id": "1522138013533212732",
+      "name": "clutch.gg",
+      "position": 70,
+      "permissions": []
+    },
+    {
+      "id": "1521857192985104484",
+      "name": "FACEITLUTCH",
+      "position": 69,
+      "permissions": [
+        "Administrator"
+      ]
+    },
+    {
+      "id": "1521927480649187483",
+      "name": "OwO",
+      "position": 68,
+      "permissions": [
+        "Administrator"
+      ]
+    },
+    {
+      "id": "1522122168366792767",
+      "name": "Jockie Music",
+      "position": 67,
+      "permissions": [
+        "Administrator"
+      ]
+    },
+    {
+      "id": "1522122569116028970",
+      "name": "Jockie Music (3)",
+      "position": 66,
+      "permissions": [
+        "Administrator"
+      ]
+    },
+    {
+      "id": "1522164070676168744",
+      "name": "DISBOARD.org",
+      "position": 65,
+      "permissions": [
+        "CreateInstantInvite",
+        "ViewChannel",
+        "SendMessages",
+        "EmbedLinks"
+      ]
+    },
+    {
+      "id": "1522181708605296702",
+      "name": "Server Monitoring",
+      "position": 64,
+      "permissions": [
+        "CreateInstantInvite",
+        "ViewChannel",
+        "SendMessages",
+        "EmbedLinks",
+        "AttachFiles",
+        "ReadMessageHistory"
+      ]
+    },
+    {
+      "id": "1522182603434623002",
+      "name": "Top.gg",
+      "position": 63,
+      "permissions": [
+        "CreateInstantInvite"
+      ]
+    },
+    {
+      "id": "1522308846964445335",
+      "name": "Nart5v5",
+      "position": 62,
+      "permissions": [
+        "Administrator"
+      ]
+    },
+    {
+      "id": "1523008039714689044",
+      "name": "///////////////////////////////////////////////////",
+      "position": 61,
+      "permissions": []
+    },
+    {
+      "id": "1522961842664767509",
+      "name": "Owner",
+      "position": 60,
+      "permissions": [
+        "Administrator"
+      ]
+    },
+    {
+      "id": "1522961844279574639",
+      "name": "Moderator",
+      "position": 59,
+      "permissions": [
+        "KickMembers",
+        "BanMembers",
+        "ManageMessages"
+      ]
+    },
+    {
+      "id": "1264200789560135691",
+      "name": "Booster",
+      "position": 58,
+      "permissions": [
+        "ChangeNickname"
+      ]
+    },
+    {
+      "id": "1523008019024052354",
+      "name": "///////////////////////////////////////////////////",
+      "position": 57,
+      "permissions": []
+    },
+    {
+      "id": "1522961848406769676",
+      "name": "FACEIT Level 10",
+      "position": 56,
+      "permissions": []
+    },
+    {
+      "id": "1522961849522454762",
+      "name": "FACEIT Level 9",
+      "position": 55,
+      "permissions": []
+    },
+    {
+      "id": "1522961851800092883",
+      "name": "FACEIT Level 8",
+      "position": 54,
+      "permissions": []
+    },
+    {
+      "id": "1522961853737599016",
+      "name": "FACEIT Level 7",
+      "position": 53,
+      "permissions": []
+    },
+    {
+      "id": "1522961854996152332",
+      "name": "FACEIT Level 6",
+      "position": 52,
+      "permissions": []
+    },
+    {
+      "id": "1522961856732463194",
+      "name": "FACEIT Level 5",
+      "position": 51,
+      "permissions": []
+    },
+    {
+      "id": "1522961858892529694",
+      "name": "FACEIT Level 4",
+      "position": 50,
+      "permissions": []
+    },
+    {
+      "id": "1522961860394221818",
+      "name": "FACEIT Level 3",
+      "position": 49,
+      "permissions": []
+    },
+    {
+      "id": "1522961862520602750",
+      "name": "FACEIT Level 2",
+      "position": 48,
+      "permissions": []
+    },
+    {
+      "id": "1522961863933952001",
+      "name": "FACEIT Level 1",
+      "position": 47,
+      "permissions": []
+    },
+    {
+      "id": "1523007963235881061",
+      "name": "///////////////////////////////////////////////////",
+      "position": 46,
+      "permissions": []
+    },
+    {
+      "id": "1522986492757278810",
+      "name": "Steam Verified",
+      "position": 45,
+      "permissions": []
+    },
+    {
+      "id": "1522961865595158611",
+      "name": "Verified Player",
+      "position": 44,
+      "permissions": []
+    },
+    {
+      "id": "1522961867025416202",
+      "name": "Unverified",
+      "position": 43,
+      "permissions": []
+    },
+    {
+      "id": "1522965991473021081",
+      "name": "CS 1.6 Player",
+      "position": 42,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523007899347976272",
+      "name": "///////////////////////////////////////////////////",
+      "position": 41,
+      "permissions": []
+    },
+    {
+      "id": "1522965993972830298",
+      "name": "Fastcup | Rank S",
+      "position": 40,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522965995357081730",
+      "name": "Fastcup | Rank A",
+      "position": 39,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522965996623892501",
+      "name": "Fastcup | Rank B",
+      "position": 38,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522965997970260120",
+      "name": "Fastcup | Rank C",
+      "position": 37,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522966000021147768",
+      "name": "Fastcup | Rank D",
+      "position": 36,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522966001778561255",
+      "name": "Fastcup | Rank E",
+      "position": 35,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522966003204624464",
+      "name": "Fastcup | Rank F",
+      "position": 34,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522966004458848277",
+      "name": "Fastcup | Rank G",
+      "position": 33,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1522991993519603852",
+      "name": "Faceit Level 0",
+      "position": 32,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523008061411819722",
+      "name": "///////////////////////////////////////////////////",
+      "position": 31,
+      "permissions": []
+    },
+    {
+      "id": "1523008099399766137",
+      "name": "CS 2 | Unranked",
+      "position": 30,
+      "permissions": []
+    },
+    {
+      "id": "1523008681187479662",
+      "name": "CS 2 | Silver I",
+      "position": 29,
+      "permissions": []
+    },
+    {
+      "id": "1523008801551417524",
+      "name": "CS 2 | Silver II",
+      "position": 28,
+      "permissions": []
+    },
+    {
+      "id": "1523008834136703206",
+      "name": "CS 2 | Silver III",
+      "position": 27,
+      "permissions": []
+    },
+    {
+      "id": "1523008870442733609",
+      "name": "CS 2 | Silver IV",
+      "position": 26,
+      "permissions": []
+    },
+    {
+      "id": "1523008901983764641",
+      "name": "CS 2 | Silver Elite",
+      "position": 25,
+      "permissions": []
+    },
+    {
+      "id": "1523008935441727598",
+      "name": "CS 2 | Silver Elite Master",
+      "position": 24,
+      "permissions": []
+    },
+    {
+      "id": "1523008973853298851",
+      "name": "CS 2 | Gold Nova I",
+      "position": 23,
+      "permissions": []
+    },
+    {
+      "id": "1523009050340622518",
+      "name": "CS 2 | Gold Nova II",
+      "position": 22,
+      "permissions": []
+    },
+    {
+      "id": "1523009105852109102",
+      "name": "CS 2 | Gold Nova III",
+      "position": 21,
+      "permissions": []
+    },
+    {
+      "id": "1523009166036303964",
+      "name": "CS 2 | Gold Nova Master",
+      "position": 20,
+      "permissions": []
+    },
+    {
+      "id": "1523009233250029779",
+      "name": "CS 2 | Master Guardian I",
+      "position": 19,
+      "permissions": []
+    },
+    {
+      "id": "1523009766627086497",
+      "name": "CS 2 | Master Guardian II",
+      "position": 18,
+      "permissions": []
+    },
+    {
+      "id": "1523009811296293097",
+      "name": "CS 2 | Master Guardian Elite",
+      "position": 17,
+      "permissions": []
+    },
+    {
+      "id": "1523009890732343347",
+      "name": "CS 2 | Distinguished Master Guardian",
+      "position": 16,
+      "permissions": []
+    },
+    {
+      "id": "1523009991588577360",
+      "name": "CS 2 | Legendary Eeagle",
+      "position": 15,
+      "permissions": []
+    },
+    {
+      "id": "1523010039739191446",
+      "name": "CS 2 | Legendary Eagle Master",
+      "position": 14,
+      "permissions": []
+    },
+    {
+      "id": "1523010112015433779",
+      "name": "CS 2 | Supreme Master First Class",
+      "position": 13,
+      "permissions": []
+    },
+    {
+      "id": "1523010194223661076",
+      "name": "CS 2 | Global Elite",
+      "position": 12,
+      "permissions": []
+    },
+    {
+      "id": "1523008078105018478",
+      "name": "///////////////////////////////////////////////////",
+      "position": 11,
+      "permissions": []
+    },
+    {
+      "id": "1523035254263382200",
+      "name": "Color: Crimson Red",
+      "position": 10,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035258159890512",
+      "name": "Color: Neon Cyan",
+      "position": 9,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035260282081466",
+      "name": "Color: Electric Purple",
+      "position": 8,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035261947084830",
+      "name": "Color: Radioactive Green",
+      "position": 7,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035264304550009",
+      "name": "Color: Sunburst Gold",
+      "position": 6,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035265969426452",
+      "name": "Color: Hot Pink",
+      "position": 5,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035267903127562",
+      "name": "Color: Deep Sea Blue",
+      "position": 4,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035269320933458",
+      "name": "Color: Sunset Orange",
+      "position": 3,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035271002853622",
+      "name": "Color: Frost White",
+      "position": 2,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1523035273280229519",
+      "name": "Color: Obsidian Black",
+      "position": 1,
+      "permissions": [
+        "ViewChannel"
+      ]
+    },
+    {
+      "id": "1264110767641464844",
+      "name": "@everyone",
+      "position": 0,
+      "permissions": [
+        "ViewChannel"
+      ]
+    }
+  ],
+  "channels": [
+    {
+      "id": "1522961900214943856",
+      "name": "🛠️・admin-chat",
+      "type": 0,
+      "parentId": "1522961898083975310",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1523019495424393357",
+      "name": "💬・chat",
+      "type": 0,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseVAD",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961880308650094",
+      "name": "💬・general-chat",
+      "type": 0,
+      "parentId": "1522961877951447052",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "UseExternalStickers"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523020089463537664",
+      "name": "🔊 | Community Voice I",
+      "type": 2,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseVAD",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1264111848861601805",
+      "name": "sense",
+      "type": 0,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1523015285110603947",
+      "name": "💬・fastcup-chat",
+      "type": 0,
+      "parentId": "1523015193070932240",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961870041125025",
+      "name": "🛡️ | Info & Security",
+      "type": 4,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": [
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "ReadMessageHistory"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522988779290361908",
+      "name": "➕・room-creation",
+      "type": 0,
+      "parentId": "1522988777776091420",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "Stream",
+            "ViewChannel",
+            "ReadMessageHistory",
+            "Speak",
+            "UseVAD",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": [
+            "AddReactions",
+            "PrioritySpeaker",
+            "SendMessages",
+            "SendTTSMessages",
+            "ManageMessages",
+            "AttachFiles",
+            "MentionEveryone",
+            "UseExternalEmojis",
+            "Connect",
+            "MuteMembers",
+            "DeafenMembers",
+            "MoveMembers",
+            "ManageThreads",
+            "CreatePublicThreads",
+            "CreatePrivateThreads",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseEmbeddedActivities"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "UseExternalStickers"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961872880664658",
+      "name": "📢・announcements",
+      "type": 0,
+      "parentId": "1522961870041125025",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": [
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "ReadMessageHistory"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523006063488663554",
+      "name": "🔫・cs-2-activity",
+      "type": 0,
+      "parentId": "1523006061508952087",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961874541609150",
+      "name": "📜・rules",
+      "type": 0,
+      "parentId": "1522961870041125025",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": [
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "ReadMessageHistory"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961901972226148",
+      "name": "📋・audit-logs",
+      "type": 0,
+      "parentId": "1522961898083975310",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961881738776617",
+      "name": "🤝・faceit-lfg",
+      "type": 0,
+      "parentId": "1522961877951447052",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "UseExternalStickers"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523020127048568874",
+      "name": "🔊 | Community Voice II",
+      "type": 2,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseVAD",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523015318077964402",
+      "name": "🤝・fastcup-lfg",
+      "type": 0,
+      "parentId": "1523015193070932240",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523006061508952087",
+      "name": "🎮 | Game Activity",
+      "type": 4,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523019521651114015",
+      "name": "🤖・bot-command",
+      "type": 0,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseVAD",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523006070375579688",
+      "name": "🟠・faceit-activity",
+      "type": 0,
+      "parentId": "1523006061508952087",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961883102183565",
+      "name": "🤖・bot-commands",
+      "type": 0,
+      "parentId": "1522961877951447052",
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "UseExternalStickers"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523040262278873158",
+      "name": "🚪・join-log",
+      "type": 0,
+      "parentId": "1522961898083975310",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1523019444102893725",
+      "name": "🌍 | Community",
+      "type": 4,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseVAD",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961876139376640",
+      "name": "✅・verify-account",
+      "type": 0,
+      "parentId": "1522961870041125025",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": [
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "ReadMessageHistory"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523019559156584490",
+      "name": "📸・photo-chat",
+      "type": 0,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseVAD",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523020173127450654",
+      "name": "🔊 | Community Voice III",
+      "type": 2,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseVAD",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523006077107568774",
+      "name": "💣・cs-1-6-activity",
+      "type": 0,
+      "parentId": "1523006061508952087",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523028166459920648",
+      "name": "🤖・bot-commands",
+      "type": 0,
+      "parentId": "1523015193070932240",
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961877951447052",
+      "name": "🟠 | Faceit Hub",
+      "type": 4,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "UseExternalStickers"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961884469264424",
+      "name": "🏆・match-results",
+      "type": 0,
+      "parentId": "1522961877951447052",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "UseExternalStickers"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523006082187001940",
+      "name": "🟢・fastcup-activity",
+      "type": 0,
+      "parentId": "1523006061508952087",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel",
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "Connect"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523040364313710782",
+      "name": "🔐・verify-log",
+      "type": 0,
+      "parentId": "1522961898083975310",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1523030404389535845",
+      "name": "🔔・com-announce",
+      "type": 5,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "SendMessages"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1523030630584025098",
+      "name": "🎭・role-select",
+      "type": 0,
+      "parentId": "1522961870041125025",
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "SendMessages"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": [
+            "SendMessages"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "ReadMessageHistory"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523015361069322334",
+      "name": "🏆・match-results",
+      "type": 0,
+      "parentId": "1523015193070932240",
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523015193070932240",
+      "name": "🟢 | Fastcup Hub",
+      "type": 4,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "ReadMessageHistory"
+          ],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "Stream",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "Connect",
+            "Speak",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1523030328082698351",
+      "name": "❓・ask-problems",
+      "type": 15,
+      "parentId": "1523019444102893725",
+      "overwrites": [
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [
+            "ViewChannel",
+            "SendMessages"
+          ],
+          "deny": []
+        }
+      ]
+    },
+    {
+      "id": "1522961898083975310",
+      "name": "⚙️ | Management",
+      "type": 4,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "Moderator",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "Owner",
+          "type": "role",
+          "allow": [
+            "ViewChannel"
+          ],
+          "deny": []
+        },
+        {
+          "target": "@everyone",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        },
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [],
+          "deny": [
+            "ViewChannel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1522988777776091420",
+      "name": "🔒 | Private Rooms",
+      "type": 4,
+      "parentId": null,
+      "overwrites": [
+        {
+          "target": "Unverified",
+          "type": "role",
+          "allow": [
+            "Stream",
+            "ViewChannel",
+            "ReadMessageHistory",
+            "Speak",
+            "UseVAD",
+            "UseSoundboard",
+            "UseExternalSounds"
+          ],
+          "deny": [
+            "AddReactions",
+            "PrioritySpeaker",
+            "SendMessages",
+            "SendTTSMessages",
+            "ManageMessages",
+            "AttachFiles",
+            "MentionEveryone",
+            "UseExternalEmojis",
+            "Connect",
+            "MuteMembers",
+            "DeafenMembers",
+            "MoveMembers",
+            "ManageThreads",
+            "CreatePublicThreads",
+            "CreatePrivateThreads",
+            "UseExternalStickers",
+            "SendMessagesInThreads",
+            "UseEmbeddedActivities"
+          ]
+        },
+        {
+          "target": "Verified Player",
+          "type": "role",
+          "allow": [
+            "AddReactions",
+            "ViewChannel",
+            "SendMessages",
+            "EmbedLinks",
+            "AttachFiles",
+            "ReadMessageHistory",
+            "UseExternalEmojis",
+            "UseExternalStickers"
+          ],
+          "deny": []
+        }
+      ]
+    }
+  ]
+}
