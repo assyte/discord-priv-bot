@@ -3,7 +3,7 @@ import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('RoleManager');
 
-export const UNVERIFIED_ROLE_ID = '1522961867025416202';
+export const UNVERIFIED_ROLE_ID = process.env.ROLE_UNVERIFIED || '1522961867025416202';
 
 // Role IDs are loaded from environment variables
 export const ROLE_MAP: Record<number, string> = {
@@ -87,6 +87,11 @@ export async function assignSteamVerifiedRole(discordId: string) {
     if (!member.roles.cache.has(STEAM_VERIFIED_ROLE_ID)) {
       await member.roles.add(STEAM_VERIFIED_ROLE_ID);
       logger.info(`Assigned Steam Verified role to ${member.user.tag}`);
+    }
+
+    if (VERIFIED_ROLE_ID && !member.roles.cache.has(VERIFIED_ROLE_ID)) {
+      await member.roles.add(VERIFIED_ROLE_ID);
+      logger.info(`Assigned main Verified role to ${member.user.tag}`);
     }
   } catch (error) {
     logger.error(`assignSteamVerifiedRole error: ${discordId}`, error);

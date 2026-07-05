@@ -19,7 +19,7 @@ import { assignVerifiedRoles, assignSteamVerifiedRole, assignFastcupRoles, VERIF
 
 const logger = new Logger('ReadyEvent');
 
-const JOIN_ROLE_ID = '1522961867025416202';
+const JOIN_ROLE_ID = process.env.ROLE_UNVERIFIED || '1522961867025416202';
 const INTERACT_CATEGORY_ID = '1523019444102893725';
 const ADMIN_CATEGORY_IDS = ['1522961898083975310'];
 

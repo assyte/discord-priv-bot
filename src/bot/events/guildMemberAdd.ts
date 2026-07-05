@@ -6,7 +6,7 @@ import { Logger } from '../../utils/logger.js';
 
 const logger = new Logger('GuildMemberAdd');
 
-const JOIN_ROLE_ID = '1522961867025416202';
+const JOIN_ROLE_ID = process.env.ROLE_UNVERIFIED || '1522961867025416202';
 const WELCOME_CHANNEL_ID = '1523040262278873158';
 
 export default {

@@ -120,7 +120,9 @@ async function handleWhitelistSelect(interaction: UserSelectMenuInteraction) {
       await channel.permissionOverwrites.edit(targetUserId, {
         ViewChannel: true,
         Connect: true,
-        SendMessages: true
+        SendMessages: true,
+        Speak: true,
+        UseVAD: true
       });
       await interaction.editReply({ content: `✅ <@${targetUserId}> has been **added** to the whitelist.`, components: [] });
     }

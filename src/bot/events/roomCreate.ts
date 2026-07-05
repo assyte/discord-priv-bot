@@ -50,7 +50,7 @@ export default {
         permissionOverwrites: [
           {
             id: guild.id, // @everyone
-            allow: [PermissionFlagsBits.ViewChannel],
+            allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.Speak, PermissionFlagsBits.UseVAD],
             deny: [PermissionFlagsBits.Connect, PermissionFlagsBits.SendMessages],
           },
           {

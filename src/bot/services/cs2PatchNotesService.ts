@@ -47,7 +47,6 @@ export class CS2PatchNotesService {
       const feed = await parser.parseURL(RSS_FEED_URL);
       if (!feed.items || feed.items.length === 0) return;
 
-      // Filter items to only get actual updates (Release Notes or Updates)
       const updateItems = feed.items.filter(item => {
         const title = (item.title || '').toLowerCase();
         return title.includes('release notes') || title.includes('counter-strike 2 update') || title.includes('update');
@@ -55,15 +54,13 @@ export class CS2PatchNotesService {
 
       if (updateItems.length === 0) return;
 
-      // The feed items are ordered by date (newest first). Let's check the newest one.
-      // Or we can check all of them from oldest to newest if there are multiple missed updates.
-      // Let's reverse the array to process older updates first (if multiple)
+      // Chronological order (oldest first)
       updateItems.reverse();
 
       const conn = await dbPool.getConnection();
-      let lastGuid = null;
+      let lastGuid: string | null = null;
       try {
-        const rows = await conn.query('SELECT setting_value FROM bot_settings WHERE setting_key = "last_patch_note_guid"');
+        const [rows]: any = await conn.query('SELECT setting_value FROM bot_settings WHERE setting_key = "last_patch_note_guid"');
         if (rows && rows.length > 0) {
           lastGuid = rows[0].setting_value;
         }
@@ -71,23 +68,23 @@ export class CS2PatchNotesService {
         conn.release();
       }
 
-      for (const item of updateItems) {
-        if (!item.guid || item.guid === lastGuid) {
-          continue; // Already processed or invalid
-        }
+      const lastIndex = updateItems.findIndex(item => item.guid === lastGuid);
+      let itemsToProcess: any[] = [];
 
-        // It's a new update! Let's check if we've seen it (in case it was skipped because of order, though reversed shouldn't happen)
-        // Wait, if lastGuid is set, we ONLY want to process if the item is NEWER. RSS doesn't strictly give chronological guids, but pubDate works.
-        // Actually, matching the GUID is enough to know it's not the last one, but we might process OLD updates if lastGuid is null.
-        // Let's just assume if lastGuid is null, we only process the VERY LAST one.
-        
-        if (lastGuid === null && item !== updateItems[updateItems.length - 1]) {
-           continue; // Skip older items on first ever run
-        }
+      if (lastGuid === null) {
+        // First run, just get the newest one
+        itemsToProcess = [updateItems[updateItems.length - 1]!];
+      } else if (lastIndex !== -1) {
+        // Get everything newer than the last processed guid
+        itemsToProcess = updateItems.slice(lastIndex + 1);
+      } else {
+        // lastGuid fell off the feed. Just get the newest one to avoid spamming the whole feed.
+        itemsToProcess = [updateItems[updateItems.length - 1]!];
+      }
 
+      for (const item of itemsToProcess) {
         await this.postPatchNotes(item);
         
-        // Update lastGuid in DB
         const conn2 = await dbPool.getConnection();
         try {
           await conn2.query(`
@@ -100,7 +97,6 @@ export class CS2PatchNotesService {
           conn2.release();
         }
       }
-
     } catch (error) {
       logger.error('Error fetching CS2 patch notes:', error);
     } finally {
@@ -143,7 +139,11 @@ export class CS2PatchNotesService {
     }
 
     try {
-      await channel.send({ content: '**New CS2 Update Released!**', embeds: [embed] });
+      await channel.send({ 
+        content: '**New CS2 Update Released!**', 
+        embeds: [embed],
+        allowedMentions: { parse: [] } 
+      });
       logger.info('Successfully posted patch notes: ' + item.title);
     } catch (err) {
       logger.error('Failed to post patch notes to channel:', err);
