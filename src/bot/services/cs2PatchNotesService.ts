@@ -60,7 +60,7 @@ export class CS2PatchNotesService {
       const conn = await dbPool.getConnection();
       let lastGuid: string | null = null;
       try {
-        const [rows]: any = await conn.query('SELECT setting_value FROM bot_settings WHERE setting_key = "last_patch_note_guid"');
+        const rows: any = await conn.query('SELECT setting_value FROM bot_settings WHERE setting_key = "last_patch_note_guid"');
         if (rows && rows.length > 0) {
           lastGuid = rows[0].setting_value;
         }
