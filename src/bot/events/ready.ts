@@ -21,6 +21,61 @@ const logger = new Logger('ReadyEvent');
 
 const JOIN_ROLE_ID = '1522961867025416202';
 const INTERACT_CATEGORY_ID = '1523019444102893725';
+const ADMIN_CATEGORY_IDS = ['1522961898083975310'];
+
+const channelTypesWithPerms = [ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildCategory, ChannelType.GuildStageVoice, ChannelType.GuildNews, ChannelType.GuildForum, ChannelType.GuildMedia];
+
+const readOnlyPerms: Record<string, boolean | null> = {
+  ViewChannel: true,
+  ReadMessageHistory: true,
+  SendMessages: false,
+  SendMessagesInThreads: false,
+  CreatePublicThreads: false,
+  CreatePrivateThreads: false,
+  Connect: false,
+  Speak: false,
+  Stream: false,
+  UseVAD: false,
+  AttachFiles: false,
+  AddReactions: false,
+  UseExternalEmojis: false,
+  UseExternalStickers: false,
+  UseExternalSounds: false,
+  UseEmbeddedActivities: false,
+  SendTTSMessages: false,
+  ManageMessages: false,
+  ManageThreads: false,
+  MentionEveryone: false,
+  MuteMembers: false,
+  DeafenMembers: false,
+  MoveMembers: false,
+  PrioritySpeaker: false
+};
+
+const fullPerms: Record<string, boolean | null> = {
+  ...readOnlyPerms,
+  SendMessages: true,
+  SendMessagesInThreads: true,
+  CreatePublicThreads: true,
+  CreatePrivateThreads: true,
+  Connect: true,
+  Speak: true,
+  Stream: true,
+  UseVAD: true,
+  AttachFiles: true,
+  AddReactions: true,
+  UseExternalEmojis: true,
+  UseExternalStickers: true,
+  UseExternalSounds: true,
+  UseEmbeddedActivities: true
+};
+
+async function applyCategoryPerms(category: CategoryChannel, roleId: string, perms: Record<string, boolean | null>) {
+  await category.permissionOverwrites.edit(roleId, perms);
+  for (const [, channel] of category.guild.channels.cache.filter(c => c.parentId === category.id && channelTypesWithPerms.includes(c.type))) {
+    await (channel as import('discord.js').TextChannel).permissionOverwrites.edit(roleId, perms);
+  }
+}
 
 async function setupJoinRolePermissions(guild: Guild) {
   const joinRole = guild.roles.cache.get(JOIN_ROLE_ID);
@@ -30,70 +85,38 @@ async function setupJoinRolePermissions(guild: Guild) {
   }
 
   const allCategories = guild.channels.cache.filter((c): c is CategoryChannel => c.type === ChannelType.GuildCategory);
+  const everyoneRole = guild.roles.everyone;
+  const verifiedRole = VERIFIED_ROLE_ID ? guild.roles.cache.get(VERIFIED_ROLE_ID) : null;
   let count = 0;
 
-  const readOnlyPerms: Record<string, boolean | null> = {
-    ViewChannel: true,
-    ReadMessageHistory: true,
+  const hiddenPerms: Record<string, boolean | null> = {
+    ViewChannel: false,
+    ReadMessageHistory: false,
     SendMessages: false,
-    SendMessagesInThreads: false,
-    CreatePublicThreads: false,
-    CreatePrivateThreads: false,
     Connect: false,
     Speak: false,
-    Stream: false,
-    UseVAD: false,
-    AttachFiles: false,
     AddReactions: false,
-    UseExternalEmojis: false,
-    UseExternalStickers: false,
-    UseExternalSounds: false,
     UseEmbeddedActivities: false,
-    SendTTSMessages: false,
-    ManageMessages: false,
-    ManageThreads: false,
-    MentionEveryone: false,
-    MuteMembers: false,
-    DeafenMembers: false,
-    MoveMembers: false,
-    PrioritySpeaker: false
+    AttachFiles: false
   };
-
-  const fullPerms: Record<string, boolean | null> = {
-    ...readOnlyPerms,
-    SendMessages: true,
-    SendMessagesInThreads: true,
-    CreatePublicThreads: true,
-    CreatePrivateThreads: true,
-    Connect: true,
-    Speak: true,
-    Stream: true,
-    UseVAD: true,
-    AttachFiles: true,
-    AddReactions: true,
-    UseExternalEmojis: true,
-    UseExternalStickers: true,
-    UseExternalSounds: true,
-    UseEmbeddedActivities: true
-  };
-
-  const verifiedRole = VERIFIED_ROLE_ID ? guild.roles.cache.get(VERIFIED_ROLE_ID) : null;
 
   for (const [, category] of allCategories) {
-    const isTarget = category.id === INTERACT_CATEGORY_ID;
-    await category.permissionOverwrites.edit(joinRole, isTarget ? fullPerms : readOnlyPerms);
-    if (verifiedRole) await category.permissionOverwrites.edit(verifiedRole, fullPerms);
+    const isAdminCategory = ADMIN_CATEGORY_IDS.includes(category.id);
 
-    const channelTypesWithPerms = [ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildCategory, ChannelType.GuildStageVoice, ChannelType.GuildNews, ChannelType.GuildForum, ChannelType.GuildMedia];
-    for (const [, channel] of guild.channels.cache.filter(c => c.parentId === category.id && channelTypesWithPerms.includes(c.type))) {
-      await (channel as import('discord.js').TextChannel).permissionOverwrites.edit(joinRole, isTarget ? fullPerms : readOnlyPerms);
-      if (verifiedRole) await (channel as import('discord.js').TextChannel).permissionOverwrites.edit(verifiedRole, fullPerms);
+    if (isAdminCategory) {
+      await applyCategoryPerms(category, everyoneRole.id, hiddenPerms);
+      await applyCategoryPerms(category, joinRole.id, hiddenPerms);
+      if (verifiedRole) await applyCategoryPerms(category, verifiedRole.id, hiddenPerms);
+    } else {
+      const isTarget = category.id === INTERACT_CATEGORY_ID;
+      await applyCategoryPerms(category, joinRole.id, isTarget ? fullPerms : readOnlyPerms);
+      if (verifiedRole) await applyCategoryPerms(category, verifiedRole.id, fullPerms);
     }
 
     count++;
   }
 
-  logger.info(`Permission setup complete — ${count} categories + child channels configured for join role`);
+  logger.info(`Permission setup complete — ${count} categories configured (${ADMIN_CATEGORY_IDS.length} admin-only)`);
 }
 
 async function restoreVerifiedRoles(guild: Guild) {

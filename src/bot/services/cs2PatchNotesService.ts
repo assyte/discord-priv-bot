@@ -113,19 +113,10 @@ export class CS2PatchNotesService {
     const guild = client.guilds.cache.get(process.env.GUILD_ID!);
     if (!guild) return;
 
-    // Find the #patch-notes channel
-    let channel = guild.channels.cache.find(c => c.name.includes('patch-notes') || c.name === 'announcements') as TextChannel;
-    
-    // If not found, create it under an info category or general
+    const channel = await guild.channels.fetch('1523292363454283818').catch(() => null) as TextChannel | null;
     if (!channel) {
-      logger.info('No #patch-notes channel found. Attempting to create one.');
-      const catInfo = guild.channels.cache.find(c => c.name.toLowerCase().includes('info') && c.type === 4); // 4 is GUILD_CATEGORY
-      channel = await guild.channels.create({
-        name: '📢・patch-notes',
-        type: 0, // GUILD_TEXT
-        parent: catInfo ? catInfo.id : undefined,
-        topic: 'Official CS2 Updates and Patch Notes'
-      });
+      logger.warn('Patch notes channel 1523292363454283818 not found');
+      return;
     }
 
     // Convert HTML to Markdown
@@ -152,7 +143,7 @@ export class CS2PatchNotesService {
     }
 
     try {
-      await channel.send({ content: '@everyone **New CS2 Update Released!**', embeds: [embed] });
+      await channel.send({ content: '**New CS2 Update Released!**', embeds: [embed] });
       logger.info('Successfully posted patch notes: ' + item.title);
     } catch (err) {
       logger.error('Failed to post patch notes to channel:', err);
