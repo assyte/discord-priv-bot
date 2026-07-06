@@ -37,6 +37,7 @@ export async function initDatabase() {
         message_count INT DEFAULT 0,
         voice_minutes INT DEFAULT 0,
         clutch_score INT DEFAULT 0,
+        clutch_coins INT DEFAULT 0,
         is_verified TINYINT(1) NOT NULL DEFAULT 0,
         registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -55,10 +56,11 @@ export async function initDatabase() {
       await conn.query('ALTER TABLE users ADD COLUMN message_count INT DEFAULT 0');
       await conn.query('ALTER TABLE users ADD COLUMN voice_minutes INT DEFAULT 0');
       await conn.query('ALTER TABLE users ADD COLUMN clutch_score INT DEFAULT 0');
+      await conn.query('ALTER TABLE users ADD COLUMN clutch_coins INT DEFAULT 0');
       logger.info('Stats columns added successfully.');
     } catch (e: any) {
       if (e.code !== 'ER_DUP_FIELDNAME') {
-        logger.error('Error adding Fastcup columns: ' + e.message);
+        logger.error('Error adding Fastcup/Stats columns: ' + e.message);
       }
     }
 
@@ -97,6 +99,32 @@ export async function initDatabase() {
         setting_value VARCHAR(255)
       ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
     `);
+
+    // 5. Reputations Table
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS reputations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        sender_id VARCHAR(20) NOT NULL,
+        receiver_id VARCHAR(20) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_receiver (receiver_id),
+        INDEX idx_sender_time (sender_id, created_at)
+      ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    `);
+
+    // 6. Active Perks Table (for VIP rooms and hoisted roles)
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS active_perks (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        discord_id VARCHAR(20) NOT NULL,
+        perk_type VARCHAR(50) NOT NULL, -- e.g., 'vip_room', 'colored_role', 'hoisted_role'
+        entity_id VARCHAR(50) NOT NULL, -- channel_id or role_id
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_expires (expires_at)
+      ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    `);
+
 
     logger.info('MariaDB connection successful and tables verified.');
   } catch (err) {

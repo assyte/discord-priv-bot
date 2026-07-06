@@ -9,6 +9,10 @@ const logger = new Logger('ActivityLogger');
 // Key: Discord ID, Value: Join timestamp (ms)
 const voiceSessions = new Map<string, number>();
 
+// Map to track message cooldowns for coins
+// Key: Discord ID, Value: Last message timestamp (ms)
+const messageCooldowns = new Map<string, number>();
+
 export class ActivityLogger {
   static init(client: ClutchClient) {
     logger.info('Initializing Activity Logger for messages and voice...');
@@ -20,13 +24,23 @@ export class ActivityLogger {
       try {
         const conn = await dbPool.getConnection();
         try {
-          // Increment message count. 
-          // We only track verified users or those in the DB.
+          // Cooldown check for coins (30 seconds)
+          const now = Date.now();
+          const lastMsg = messageCooldowns.get(message.author.id) || 0;
+          let coinsToGive = 0;
+          
+          if (now - lastMsg > 30000) {
+            coinsToGive = Math.floor(Math.random() * 3) + 1; // 1 to 3 coins
+            messageCooldowns.set(message.author.id, now);
+          }
+
+          // Increment message count and optionally coins
           await conn.query(`
             UPDATE users 
-            SET message_count = message_count + 1 
+            SET message_count = message_count + 1,
+                clutch_coins = clutch_coins + ?
             WHERE discord_id = ?
-          `, [message.author.id]);
+          `, [coinsToGive, message.author.id]);
         } finally {
           conn.release();
         }
@@ -75,11 +89,15 @@ export class ActivityLogger {
     try {
       const conn = await dbPool.getConnection();
       try {
+        // Give 10 coins for every 10 minutes
+        const coinsToGive = Math.floor(durationMinutes / 10) * 10;
+        
         await conn.query(`
           UPDATE users 
-          SET voice_minutes = voice_minutes + ? 
+          SET voice_minutes = voice_minutes + ?,
+              clutch_coins = clutch_coins + ?
           WHERE discord_id = ?
-        `, [durationMinutes, discordId]);
+        `, [durationMinutes, coinsToGive, discordId]);
       } finally {
         conn.release();
       }

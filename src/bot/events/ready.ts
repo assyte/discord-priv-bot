@@ -9,6 +9,7 @@ import { sendRoleSelectionPanel } from '../services/rolePanelManager.js';
 
 import { LobbyStatusManager } from '../services/lobbyStatusManager.js';
 import { ActivityLogger } from '../services/activityLogger.js';
+import { PerkExpirationWorker } from '../services/perkExpirationWorker.js';
 import { ClutchOfTheWeekService } from '../services/clutchOfTheWeekService.js';
 import { WeeklyLeaderboardService } from '../services/weeklyLeaderboardService.js';
 import { GlobalLeaderboardPanel } from '../services/globalLeaderboardPanel.js';
@@ -177,6 +178,9 @@ export default {
 
       // Initialize Dynamic Lobby Limits
       LobbyStatusManager.init(client);
+
+      // Initialize Economy Workers
+      PerkExpirationWorker.init(client);
 
       // Initialize Advanced Systems
       try {
