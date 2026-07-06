@@ -2,6 +2,7 @@ import { VoiceState, Message } from 'discord.js';
 import type { ClutchClient } from '../client.js';
 import { dbPool } from '../../database/connection.js';
 import { Logger } from '../../utils/logger.js';
+import { CoinLogger } from './coinLogger.js';
 
 const logger = new Logger('ActivityLogger');
 
@@ -98,6 +99,10 @@ export class ActivityLogger {
               clutch_coins = clutch_coins + ?
           WHERE discord_id = ?
         `, [durationMinutes, coinsToGive, discordId]);
+
+        if (coinsToGive > 0) {
+          CoinLogger.log(discordId, coinsToGive, 'Voice Activity', '🎙️');
+        }
       } finally {
         conn.release();
       }

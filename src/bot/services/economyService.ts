@@ -1,5 +1,6 @@
 import { dbPool } from '../../database/connection.js';
 import { Logger } from '../../utils/logger.js';
+import { CoinLogger } from './coinLogger.js';
 import { Client, Guild, TextChannel, VoiceChannel, CategoryChannel, ChannelType, OverwriteResolvable } from 'discord.js';
 
 const logger = new Logger('EconomyService');
@@ -113,6 +114,10 @@ export class EconomyService {
 
       // Give 50 coins to receiver
       await this.addCoins(receiverId, 50);
+      
+      // Log the reward
+      CoinLogger.log(receiverId, 50, `+Rep Received from <@${senderId}>`, '🌟');
+      
       return true;
     } catch (err) {
       logger.error('Error giving reputation:', err);

@@ -3,6 +3,7 @@ import type { ClutchClient } from '../client.js';
 import { dbPool } from '../../database/connection.js';
 import { assignVerifiedRoles, assignSteamVerifiedRole, assignFastcupRoles } from '../services/roleManager.js';
 import { Logger } from '../../utils/logger.js';
+import { InviteTracker } from '../services/inviteTracker.js';
 
 const logger = new Logger('GuildMemberAdd');
 
@@ -46,7 +47,10 @@ export default {
       }
     }
 
-    // 2. Send Welcome Embed
+    // 3. Process Invite Tracking
+    await InviteTracker.handleMemberJoin(member);
+
+    // 4. Send Welcome Embed
     try {
       const channel = await member.guild.channels.fetch(WELCOME_CHANNEL_ID).catch(() => null) as TextChannel;
       if (channel) {

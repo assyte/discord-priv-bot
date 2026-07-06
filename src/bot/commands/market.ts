@@ -24,7 +24,7 @@ const PRICES = {
 const command = {
   data: new SlashCommandBuilder()
     .setName('market')
-    .setDescription('Clutch Coin\'lerinizi kullanarak ödüller satın alın.'),
+    .setDescription('Purchase rewards using your Clutch Coins.'),
   guildOnly: true,
 
   async execute(interaction: CommandInteraction, client: ClutchClient) {
@@ -37,31 +37,31 @@ const command = {
     const embed = new EmbedBuilder()
       .setColor(0xFFD700)
       .setTitle('🛒 Clutch Coin Market')
-      .setDescription(`Mevcut Bakiyeniz: **${balance} 🪙**\n\nAşağıdaki menüden satın almak istediğiniz öğeyi seçin.`)
+      .setDescription(`Current Balance: **${balance} 🪙**\n\nSelect an item you'd like to purchase from the menu below.`)
       .addFields(
-        { name: '🎙️ VIP Ses Odası (24 Saat)', value: `**${PRICES.VIP_ROOM} 🪙**\nSunucunun en üstünde size özel kanal açar.`, inline: false },
-        { name: '🎨 Özel Renk Rolü (24 Saat)', value: `**${PRICES.COLORED_ROLE} 🪙**\nKendi seçeceğiniz renk ve isimle özel rol.`, inline: false },
-        { name: '👑 Zirve Rolü (7 Gün)', value: `**${PRICES.HOISTED_ROLE} 🪙**\nKişi listesinde en üst sıralarda görünün.`, inline: false }
+        { name: '🎙️ VIP Voice Room (24 Hours)', value: `**${PRICES.VIP_ROOM} 🪙**\nCreates a private voice channel at the top of the server.`, inline: false },
+        { name: '🎨 Custom Color Role (24 Hours)', value: `**${PRICES.COLORED_ROLE} 🪙**\nA personalized role with your chosen name and color.`, inline: false },
+        { name: '👑 Hoisted Role (7 Days)', value: `**${PRICES.HOISTED_ROLE} 🪙**\nAppear at the top of the member list.`, inline: false }
       )
       .setThumbnail(interaction.user.displayAvatarURL());
 
     const select = new StringSelectMenuBuilder()
       .setCustomId('market_select')
-      .setPlaceholder('Satın alacağınız ürünü seçin...')
+      .setPlaceholder('Select an item to purchase...')
       .addOptions(
         new StringSelectMenuOptionBuilder()
-          .setLabel('VIP Ses Odası')
-          .setDescription('24 Saatlik Özel Kanal')
+          .setLabel('VIP Voice Room')
+          .setDescription('24-Hour Private Channel')
           .setValue('vip_room')
           .setEmoji('🎙️'),
         new StringSelectMenuOptionBuilder()
-          .setLabel('Özel Renk Rolü')
-          .setDescription('24 Saatlik Renkli Rol')
+          .setLabel('Custom Color Role')
+          .setDescription('24-Hour Colored Role')
           .setValue('colored_role')
           .setEmoji('🎨'),
         new StringSelectMenuOptionBuilder()
-          .setLabel('Zirve Rolü')
-          .setDescription('7 Günlük Sağ Üstte Görünme')
+          .setLabel('Hoisted Role')
+          .setDescription('7-Day Top Position in Member List')
           .setValue('hoisted_role')
           .setEmoji('👑')
       );
@@ -75,7 +75,7 @@ const command = {
 
     collector.on('collect', async i => {
       if (i.user.id !== interaction.user.id) {
-        await i.reply({ content: 'Bu menü size ait değil!', ephemeral: true });
+        await i.reply({ content: 'This menu is not for you!', ephemeral: true });
         return;
       }
 
@@ -83,16 +83,16 @@ const command = {
 
       if (selection === 'vip_room') {
         if (balance < PRICES.VIP_ROOM) {
-          await i.reply({ content: `❌ Yetersiz bakiye! VIP Oda için ${PRICES.VIP_ROOM} 🪙 gerekiyor.`, ephemeral: true });
+          await i.reply({ content: `❌ Insufficient balance! You need ${PRICES.VIP_ROOM} 🪙 for a VIP Room.`, ephemeral: true });
           return;
         }
 
         const modal = new ModalBuilder()
           .setCustomId('modal_vip_room')
-          .setTitle('VIP Oda Ayarları');
+          .setTitle('VIP Room Settings');
         const roomInput = new TextInputBuilder()
           .setCustomId('room_name')
-          .setLabel('Oda ismini yazın')
+          .setLabel('Enter Room Name')
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setMaxLength(30);
@@ -129,9 +129,9 @@ const command = {
             // Log to database for expiration
             await EconomyService.grantPerk(interaction.user.id, 'vip_room', vc.id, 24);
             
-            await submitted.reply({ content: `✅ VIP Odanız oluşturuldu: <#${vc.id}> (24 Saat geçerlidir)`, ephemeral: true });
+            await submitted.reply({ content: `✅ Your VIP Room has been created: <#${vc.id}> (Valid for 24 Hours)`, ephemeral: true });
           } else {
-            await submitted.reply({ content: '❌ Bakiye düşülürken hata oluştu.', ephemeral: true });
+            await submitted.reply({ content: '❌ An error occurred while deducting coins.', ephemeral: true });
           }
         } catch (err) {
           // Modal timeout
@@ -139,22 +139,22 @@ const command = {
 
       } else if (selection === 'colored_role') {
         if (balance < PRICES.COLORED_ROLE) {
-          await i.reply({ content: `❌ Yetersiz bakiye! Özel Renk Rolü için ${PRICES.COLORED_ROLE} 🪙 gerekiyor.`, ephemeral: true });
+          await i.reply({ content: `❌ Insufficient balance! You need ${PRICES.COLORED_ROLE} 🪙 for a Color Role.`, ephemeral: true });
           return;
         }
 
         const modal = new ModalBuilder()
           .setCustomId('modal_colored_role')
-          .setTitle('Renk Rolü Ayarları');
+          .setTitle('Color Role Settings');
         const roleNameInput = new TextInputBuilder()
           .setCustomId('role_name')
-          .setLabel('Rol İsmi')
+          .setLabel('Role Name')
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setMaxLength(30);
         const roleColorInput = new TextInputBuilder()
           .setCustomId('role_color')
-          .setLabel('Renk Hex Kodu (Örn: #FF0000)')
+          .setLabel('Color Hex Code (e.g. #FF0000)')
           .setStyle(TextInputStyle.Short)
           .setRequired(true)
           .setMaxLength(7);
@@ -175,7 +175,7 @@ const command = {
           
           let roleColor: any = roleColorStr;
           if (!/^#[0-9A-F]{6}$/i.test(roleColor)) {
-            await submitted.reply({ content: '❌ Geçersiz renk kodu! #FF0000 formatında olmalı.', ephemeral: true });
+            await submitted.reply({ content: '❌ Invalid color code! It must be in #FF0000 format.', ephemeral: true });
             return;
           }
 
@@ -193,9 +193,9 @@ const command = {
             await member.roles.add(newRole);
             await EconomyService.grantPerk(interaction.user.id, 'colored_role', newRole.id, 24);
 
-            await submitted.reply({ content: `✅ Rolünüz oluşturuldu ve size verildi: <@&${newRole.id}> (24 Saat geçerlidir)`, ephemeral: true });
+            await submitted.reply({ content: `✅ Your role has been created and assigned: <@&${newRole.id}> (Valid for 24 Hours)`, ephemeral: true });
           } else {
-            await submitted.reply({ content: '❌ Bakiye düşülürken hata oluştu.', ephemeral: true });
+            await submitted.reply({ content: '❌ An error occurred while deducting coins.', ephemeral: true });
           }
         } catch (err) {
           // Modal timeout
@@ -203,7 +203,7 @@ const command = {
 
       } else if (selection === 'hoisted_role') {
         if (balance < PRICES.HOISTED_ROLE) {
-          await i.reply({ content: `❌ Yetersiz bakiye! Zirve Rolü için ${PRICES.HOISTED_ROLE} 🪙 gerekiyor.`, ephemeral: true });
+          await i.reply({ content: `❌ Insufficient balance! You need ${PRICES.HOISTED_ROLE} 🪙 for a Hoisted Role.`, ephemeral: true });
           return;
         }
 
@@ -212,9 +212,9 @@ const command = {
         if (success) {
           // TODO: Actually assign the hoisted role and record in active_perks
           // For now just tell them it's processed (needs the role ID set up on server)
-          await i.update({ content: '✅ Zirve Rolü satın alındı! Rolünüz yakında verilecek.', components: [], embeds: [] });
+          await i.update({ content: '✅ Hoisted Role purchased! You will receive it shortly.', components: [], embeds: [] });
         } else {
-          await i.update({ content: '❌ İşlem sırasında bir hata oluştu.', components: [], embeds: [] });
+          await i.update({ content: '❌ An error occurred during the transaction.', components: [], embeds: [] });
         }
       }
     });

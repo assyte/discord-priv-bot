@@ -10,6 +10,8 @@ import { sendRoleSelectionPanel } from '../services/rolePanelManager.js';
 import { LobbyStatusManager } from '../services/lobbyStatusManager.js';
 import { ActivityLogger } from '../services/activityLogger.js';
 import { PerkExpirationWorker } from '../services/perkExpirationWorker.js';
+import { CoinLogger } from '../services/coinLogger.js';
+import { InviteTracker } from '../services/inviteTracker.js';
 import { ClutchOfTheWeekService } from '../services/clutchOfTheWeekService.js';
 import { WeeklyLeaderboardService } from '../services/weeklyLeaderboardService.js';
 import { GlobalLeaderboardPanel } from '../services/globalLeaderboardPanel.js';
@@ -180,6 +182,8 @@ export default {
       LobbyStatusManager.init(client);
 
       // Initialize Economy Workers
+      await CoinLogger.init(client);
+      await InviteTracker.init(client);
       PerkExpirationWorker.init(client);
 
       // Initialize Advanced Systems

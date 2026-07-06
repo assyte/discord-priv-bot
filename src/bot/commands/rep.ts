@@ -5,24 +5,24 @@ import { ClutchClient } from '../client.js';
 const command = {
   data: new SlashCommandBuilder()
     .setName('rep')
-    .setDescription('Bir kullanıcıya +rep vererek ona 50 Clutch Coin kazandırın.')
+    .setDescription('Give +rep to a user to reward them with 50 Clutch Coins.')
     .addUserOption(option => 
-      option.setName('kullanici')
-        .setDescription('Rep vermek istediğiniz kullanıcı')
+      option.setName('user')
+        .setDescription('The user you want to rep')
         .setRequired(true)),
   guildOnly: true,
 
   async execute(interaction: CommandInteraction, client: ClutchClient) {
     if (!interaction.isChatInputCommand()) return;
     
-    const targetUser = interaction.options.getUser('kullanici', true);
+    const targetUser = interaction.options.getUser('user', true);
 
     if (targetUser.bot) {
-      return interaction.reply({ content: '❌ Botlara +rep veremezsiniz!', ephemeral: true });
+      return interaction.reply({ content: '❌ You cannot give +rep to bots!', ephemeral: true });
     }
 
     if (targetUser.id === interaction.user.id) {
-      return interaction.reply({ content: '❌ Kendinize +rep veremezsiniz!', ephemeral: true });
+      return interaction.reply({ content: '❌ You cannot give +rep to yourself!', ephemeral: true });
     }
 
     await interaction.deferReply();
@@ -30,13 +30,13 @@ const command = {
     const success = await EconomyService.giveReputation(interaction.user.id, targetUser.id);
 
     if (!success) {
-      return interaction.editReply('⏱️ **Cooldown:** Her 12 saatte sadece 1 kişiye +rep verebilirsiniz. Lütfen daha sonra tekrar deneyin.');
+      return interaction.editReply('⏱️ **Cooldown:** You can only give +rep to 1 person every 12 hours. Please try again later.');
     }
 
     const embed = new EmbedBuilder()
       .setColor(0x2ECC71) // Green
-      .setTitle('🌟 +Rep Verildi!')
-      .setDescription(`<@${interaction.user.id}>, <@${targetUser.id}> adlı kullanıcıya **+rep** verdi!\n\n<@${targetUser.id}> bu sayede **50 Clutch Coin** 🪙 kazandı.`)
+      .setTitle('🌟 +Rep Given!')
+      .setDescription(`<@${interaction.user.id}> gave **+rep** to <@${targetUser.id}>!\n\n<@${targetUser.id}> earned **50 Clutch Coins** 🪙 as a reward.`)
       .setTimestamp();
 
     await interaction.editReply({ embeds: [embed] });
