@@ -1,9 +1,8 @@
 import { SlashCommandBuilder, CommandInteraction, EmbedBuilder } from 'discord.js';
-import type { BotCommand } from '../../types/index.js';
 import { EconomyService } from '../../services/economyService.js';
-import { Client } from '../../client.js';
+import { ClutchClient } from '../../client.js';
 
-const command: BotCommand = {
+export const command = {
   data: new SlashCommandBuilder()
     .setName('rep')
     .setDescription('Bir kullanıcıya +rep vererek ona 50 Clutch Coin kazandırın.')
@@ -13,7 +12,7 @@ const command: BotCommand = {
         .setRequired(true)),
   guildOnly: true,
 
-  async execute(interaction: CommandInteraction, client: Client) {
+  async execute(interaction: CommandInteraction, client: ClutchClient) {
     if (!interaction.isChatInputCommand()) return;
     
     const targetUser = interaction.options.getUser('kullanici', true);
@@ -44,4 +43,4 @@ const command: BotCommand = {
   }
 };
 
-export default command;
+

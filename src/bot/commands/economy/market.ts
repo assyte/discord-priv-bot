@@ -9,11 +9,11 @@ import {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-  ModalActionRowComponentBuilder
+  ModalActionRowComponentBuilder,
+  ChannelType
 } from 'discord.js';
-import type { BotCommand } from '../../types/index.js';
 import { EconomyService } from '../../services/economyService.js';
-import { Client } from '../../client.js';
+import { ClutchClient } from '../../client.js';
 
 const PRICES = {
   VIP_ROOM: 500,
@@ -21,13 +21,13 @@ const PRICES = {
   HOISTED_ROLE: 1500
 };
 
-const command: BotCommand = {
+export const command = {
   data: new SlashCommandBuilder()
     .setName('market')
     .setDescription('Clutch Coin\'lerinizi kullanarak ödüller satın alın.'),
   guildOnly: true,
 
-  async execute(interaction: CommandInteraction, client: Client) {
+  async execute(interaction: CommandInteraction, client: ClutchClient) {
     if (!interaction.isChatInputCommand()) return;
     
     await interaction.deferReply({ ephemeral: true });
@@ -221,4 +221,4 @@ const command: BotCommand = {
   }
 };
 
-export default command;
+
