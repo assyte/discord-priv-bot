@@ -80,14 +80,27 @@ export async function sendRoleSelectionPanel(channelId: string) {
   const row2 = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(premierSelect);
   const row3 = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(colorSelect);
 
-  // Clear previous messages
+  // Clear previous messages or edit existing
   const messages = await channel.messages.fetch({ limit: 10 });
-  for (const [_, msg] of messages) {
-    await msg.delete().catch(() => {});
+  const botId = client.user?.id;
+  let existingPanel = null;
+
+  if (botId) {
+    for (const [_, msg] of messages) {
+      if (msg.author.id === botId && msg.embeds.length > 0 && msg.embeds[0].title === '✨ PROFILE CUSTOMIZATION PANEL ✨') {
+        existingPanel = msg;
+        break;
+      }
+    }
   }
 
-  await channel.send({ embeds: [embed], components: [row1, row2, row3] });
-  logger.info('Role selection panel sent to ' + channelId);
+  if (existingPanel) {
+    await existingPanel.edit({ embeds: [embed], components: [row1, row2, row3] });
+    logger.info('Role selection panel updated (not recreated)');
+  } else {
+    await channel.send({ embeds: [embed], components: [row1, row2, row3] });
+    logger.info('Role selection panel sent to ' + channelId);
+  }
 }
 
 import { STEAM_VERIFIED_ROLE_ID } from './roleManager.js';

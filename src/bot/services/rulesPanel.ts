@@ -73,18 +73,24 @@ export async function initRulesPanel(guild: Guild) {
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(acceptButton);
 
     const existingMessages = await channel.messages.fetch({ limit: 50 });
-
     const botId = guild.client.user?.id;
     if (!botId) return;
 
+    let existingPanel = null;
     for (const [_, msg] of existingMessages) {
-      if (msg.author.id === botId && msg.embeds.length > 0) {
-        await msg.delete().catch(() => {});
+      if (msg.author.id === botId && msg.embeds.length > 0 && msg.embeds[0].title === '📜 Server Rules') {
+        existingPanel = msg;
+        break;
       }
     }
 
-    await channel.send({ embeds: [embed], components: [row] });
-    logger.info('Rules panel posted');
+    if (existingPanel) {
+      await existingPanel.edit({ embeds: [embed], components: [row] });
+      logger.info('Rules panel updated (not recreated)');
+    } else {
+      await channel.send({ embeds: [embed], components: [row] });
+      logger.info('Rules panel posted new');
+    }
   } catch (error) {
     logger.error('Failed to initialize rules panel', error);
   }
