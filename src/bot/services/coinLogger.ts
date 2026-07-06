@@ -16,13 +16,13 @@ export class CoinLogger {
     if (!guild) return;
 
     // Find the channel
-    let channel = guild.channels.cache.find(c => c.name === 'coin-notifications' && c.type === ChannelType.GuildText) as TextChannel;
+    let channel = guild.channels.cache.find(c => c.name.includes('coin-notifications') && c.type === ChannelType.GuildText) as TextChannel;
     
     // Create if missing
     if (!channel) {
       try {
         channel = await guild.channels.create({
-          name: 'coin-notifications',
+          name: '🪙・coin-notifications',
           type: ChannelType.GuildText,
           parent: COMMUNITY_CATEGORY_ID,
           topic: 'Live updates of Clutch Coin earnings!',
