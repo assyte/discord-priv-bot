@@ -78,7 +78,7 @@ export async function initRulesPanel(guild: Guild) {
 
     let existingPanel = null;
     for (const [_, msg] of existingMessages) {
-      if (msg.author.id === botId && msg.embeds.length > 0 && msg.embeds[0].title === '📜 Server Rules') {
+      if (msg.author.id === botId && msg.embeds.length > 0 && msg.embeds[0]?.title === '📜 Server Rules') {
         existingPanel = msg;
         break;
       }

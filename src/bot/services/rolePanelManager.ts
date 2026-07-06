@@ -87,7 +87,7 @@ export async function sendRoleSelectionPanel(channelId: string) {
 
   if (botId) {
     for (const [_, msg] of messages) {
-      if (msg.author.id === botId && msg.embeds.length > 0 && msg.embeds[0].title === '✨ PROFILE CUSTOMIZATION PANEL ✨') {
+      if (msg.author.id === botId && msg.embeds.length > 0 && msg.embeds[0]?.title === '✨ PROFILE CUSTOMIZATION PANEL ✨') {
         existingPanel = msg;
         break;
       }
