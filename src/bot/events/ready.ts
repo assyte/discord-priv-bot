@@ -6,7 +6,7 @@ import { ActivityTracker } from '../services/activityTracker.js';
 import { initRulesPanel } from '../services/rulesPanel.js';
 import { TeammatePanelManager } from '../services/teammatePanelManager.js';
 import { sendRoleSelectionPanel } from '../services/rolePanelManager.js';
-import { CS2PatchNotesService } from '../services/cs2PatchNotesService.js';
+
 import { LobbyStatusManager } from '../services/lobbyStatusManager.js';
 import { ActivityLogger } from '../services/activityLogger.js';
 import { ClutchOfTheWeekService } from '../services/clutchOfTheWeekService.js';
@@ -173,7 +173,7 @@ export default {
       await sendRoleSelectionPanel('1523030630584025098');
       
       // Initialize CS2 Patch Notes Service
-      CS2PatchNotesService.init();
+
 
       // Initialize Dynamic Lobby Limits
       LobbyStatusManager.init(client);
